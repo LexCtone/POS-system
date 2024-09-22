@@ -166,31 +166,62 @@ body {
   margin-top: 20px;
 }
 
-/* Left Column: Table */
-.table-container {
-  width: 100%;
-  margin-right: 5px;
-  border: 1px solid #000;
-  box-sizing: border-box;
-}
-
+/* Table styles */
 .table-container table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+  border: 1px solid black;
 }
 
-.table-container th, .table-container td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-}
-
-.table-container th {
+/* Table header */
+.table-container thead {
   background-color: #1C75A6;
   color: white;
 }
 
-.table-container tr:nth-child(even) {
+.table-container th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #1C75A6;
+}
+
+/* Table body */
+.table-container tbody {
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(95vh - 300px); /* Adjust this value as needed */
+}
+
+/* Table rows */
+.table-container tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Table cells */
+.table-container th, 
+.table-container td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  width: 12.5%; /* 100% divided by 8 columns */
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ensure header row is full width */
+.table-container thead tr {
+  width: calc(100% - 17px); /* Adjust for scrollbar width */
+}
+
+/* Alternating row colors */
+.table-container tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
