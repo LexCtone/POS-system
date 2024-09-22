@@ -1,0 +1,150 @@
+body {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
+.sidebar {
+  position: fixed;
+  width: 350px;
+  height: 100%;
+  background-color: #1c75a6;
+  transition: all 0.5s ease;
+  top: 0;
+  left: 0;
+}
+
+.sidebar header {
+  font-size: 28px;
+  color: white;
+  text-align: center;
+  line-height: 39px;
+  background: #1c75a6;
+  font-family: monospace;
+  user-select: none;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.sidebar header img {
+  width: 120px;
+  height: 120px;
+  margin-top: 25px;
+  margin-left: 10px;
+}
+
+.sidebar ul a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 70px;
+  font-size: 20px;
+  color: white;
+  padding-left: 0px;
+  box-sizing: border-box;
+  text-align: left;
+  text-decoration: none;
+}
+
+.sidebar ul li:hover a {
+  padding-left: 10px;
+  color: black;
+  transition: padding-left 0.1s, color 0.1s;
+}
+
+.sidebar ul a i {
+  margin-right: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.StockHeader {
+  background-color: #1C75A6;
+  color: white;
+  padding: 35px;
+  margin-left: 350px;
+  margin-top: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+.container {
+  margin-left: 350px;
+  padding: 20px;
+  margin-top: 0;
+}
+.container button {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  margin: 0; /* Add margin between buttons */
+  font-size: 20px;
+  border: none;
+}
+
+
+.vendor {
+  width: 10%;
+  background-color: #1C75A6;
+  color: white;
+}
+
+.print-preview-text {
+  font-family: Arial, sans-serif;
+  color: #1E88E5; /* Blue color */
+  font-weight: bold;
+}
+
+.print-preview-button {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 1300px;
+  margin-top: 20px;
+}
+
+.print-preview-button .fa-print {
+  font-size: 24px; /* Adjust size as needed */
+  color: #1ca658; /* Yellow color */
+  margin-right: 8px;
+}
+
+
+/* Container for the two columns */
+.content {
+  display: flex;
+  margin-top: 20px;
+}
+
+
+/* Left Column: Table */
+.table-container {
+  width: 100%; /* Reduce width slightly */
+  margin-right: 5px; /* Reduce the space between the two columns */
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th, .table-container td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.table-container th {
+  background-color: #1C75A6;
+  color: white;
+}
+
+.table-container tr:nth-child(even) {
+  background-color: #f2f2f2;
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Entry</title>
+  <link rel="stylesheet" href="CSS/StockinHistory.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <header>
+    <h2 class="StockHeader">Stock In</h2>
+  </header>
+  <div class="button-container">
+    <button onclick="location.href='StockEntry.php'">Stock Entry</button>
+    <button onclick="location.href='StockinHistory.php'">Stock in History</button> 
+  </div>
+
+  <form id="filter-form" method="GET" action="StockinHistory.php">
+    <label class="labelstart" for="stockInDate">Start Date:</label>
+    <input type="date" id="stockInDate" name="startDate" value="<?php echo isset($_GET['startDate']) ? htmlspecialchars($_GET['startDate']) : ''; ?>">
+    <label class="labelend" for="endDate">End Date:</label>
+    <input type="date" id="endDate" name="endDate" class="date-input" value="<?php echo isset($_GET['endDate']) ? htmlspecialchars($_GET['endDate']) : ''; ?>">
+    <button type="submit">Filter</button>
+    <button type="button" onclick="clearFilters()">Reload</button>
+  </form>
+  
+  <nav class="sidebar">
+    <header>
+      <img src="profile.png" alt="profile"/>
+      <br>ADMINISTRATOR
+    </header>
+    <ul>
+      <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
+      <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>
+      <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
+      <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
+      <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
+      <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
+      <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
+      <li><a href="SalesHistory.php"><i class='fa-solid fa-clock-rotate-left' style='font-size:30px'></i>Sales History</a></li>
+      <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
+      <li><a href="#"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="table-container">
+    <table class="table" id="product-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>BARCODE</th>
+          <th>REF#</th>
+          <th>Description</th>
+          <th>QTY</th>
+          <th>STOCK IN DATE</th>
+          <th>STOCK IN BY</th>
+          <th>VENDOR</th>
+        </tr>
+      </thead>
+      <tbody>
+      <?php
+      // Include database connection
+      include 'connect.php';
+
+      // Initialize variables for date range filtering
+      $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : '';
+      $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
+
+      // Base query
+      $query = "SELECT * FROM stock_in_history";
+
+      // Apply date range filtering if both dates are provided
+      if ($startDate && $endDate) {
+          $query .= " WHERE stock_in_date BETWEEN ? AND ?";
+      }
+
+      // Default sorting
+      $query .= " ORDER BY stock_in_date DESC";
+
+      // Prepare the statement
+      $stmt = $conn->prepare($query);
+
+      // Bind parameters if filtering
+      if ($startDate && $endDate) {
+          $stmt->bind_param("ss", $startDate, $endDate);
+      }
+
+      // Execute the query
+      $stmt->execute();
+      $result = $stmt->get_result();
+
+      $rowId = 1;
+      // Check if the Barcode column data is fetched
+      if ($result->num_rows > 0) {
+          while ($row = $result->fetch_assoc()) {
+              echo "<tr>";
+              echo "<td>" . $rowId++ . "</td>";
+              echo "<td>" . htmlspecialchars($row['Barcode']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['reference']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['description']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['quantity']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['stock_in_date']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['stock_in_by']) . "</td>";
+              echo "<td>" . htmlspecialchars($row['vendor']) . "</td>";
+              echo "</tr>";
+          }
+      } else {
+          echo "<tr><td colspan='8'>No records found.</td></tr>";
+      }
+
+      $stmt->close();
+      $conn->close();
+      ?>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function clearFilters() {
+      // Redirect to the page without query parameters to clear the filters
+      window.location.href = 'StockinHistory.php';
+    }
+  </script>
+</body>
+</html>

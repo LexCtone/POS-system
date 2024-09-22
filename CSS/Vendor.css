@@ -1,0 +1,255 @@
+/* General styling */
+body {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
+.sidebar {
+  position: fixed;
+  width: 350px;
+  height: 100%;
+  background-color: #1c75a6;
+  transition: all 0.5s ease;
+  top: 0;
+  left: 0;
+}
+
+.sidebar header {
+  font-size: 28px;
+  color: white;
+  text-align: center;
+  line-height: 39px;
+  background: #1c75a6;
+  font-family: monospace;
+  user-select: none;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.sidebar header img {
+  width: 120px;
+  height: 120px;
+  margin-top: 25px;
+  margin-left: 10px;
+}
+
+.sidebar ul a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 70px;
+  font-size: 20px;
+  color: white;
+  padding-left: 0px;
+  box-sizing: border-box;
+  text-align: left;
+  text-decoration: none;
+}
+
+.sidebar ul li:hover a {
+  padding-left: 10px;
+  color: black;
+  transition: padding-left 0.1s, color 0.1s;
+}
+
+.sidebar ul a i {
+  margin-right: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.VendorHeader {
+  background-color: #1C75A6;
+  color: white;
+  padding: 20px;
+  margin-left: 350px;
+  margin-top: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 200px;
+  margin-left: 1000px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  background-color: #125275;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button i {
+  font-size: 18px;
+}
+
+.admin-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.admin-image {
+  width: 100px;
+  height: auto;
+  border-radius: 50%;
+}
+
+.admin-section h3 {
+  margin-top: 10px;
+  font-size: 1.2em;
+}
+
+/* Table styling */
+.table-container {
+  width: 80%; /* Reduce width slightly */
+  margin-right: 5px; /* Reduce the space between the two columns */
+  border: 1px solid #000;
+  box-sizing: border-box;
+  margin-left: 365px;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th, .table-container td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  font-size: 18px;
+}
+
+.table-container th {
+  background-color: #1C75A6;
+  color: white;
+}
+
+.table-container tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  box-sizing: border-box;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: calc(100% - 16px);
+  padding: 8px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #1c75a6;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+}
+.button {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.text-light {
+  color: #fff;
+}
+/* Modal styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+

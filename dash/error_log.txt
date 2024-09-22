@@ -1,0 +1,387 @@
+[2024-09-22 15:56:22] Received data: Array
+(
+    [invoice] => 20240922374125
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 15:56:22] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922374125', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'lex')
+[2024-09-22 15:56:56] Received data: Array
+(
+    [invoice] => 20240922374125
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 15:56:56] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922374125', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'lex')
+[2024-09-22 15:57:06] Received data: Array
+(
+    [invoice] => 20240922374125
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 15:57:06] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922374125', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'lex')
+[2024-09-22 15:59:10] Received data: Array
+(
+    [invoice] => 20240922374125
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+            [1] => Array
+                (
+                    [barcode] => 0200259677
+                    [description] => paa ni nognog
+                    [price] => 123.12
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123.12
+                )
+
+            [2] => Array
+                (
+                    [barcode] => 9876543
+                    [description] => Heavy Duty Hammer
+                    [price] => 20
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 20
+                )
+
+        )
+
+)
+
+[2024-09-22 15:59:10] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922374125', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'lex')
+[2024-09-22 15:59:10] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922374125', '0200259677', 'paa ni nognog', 123.12, 1, 0, 123.12, NOW(), 'lex')
+[2024-09-22 15:59:10] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922374125', '9876543', 'Heavy Duty Hammer', 20, 1, 0, 20, NOW(), 'lex')
+[2024-09-22 16:09:00] Received data: Array
+(
+    [invoice] => 20240922115302
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 6.15
+                    [total] => 116.85
+                )
+
+            [1] => Array
+                (
+                    [barcode] => 0200259677
+                    [description] => paa ni nognog
+                    [price] => 123.12
+                    [quantity] => 1
+                    [discount_amount] => 6.16
+                    [total] => 116.96
+                )
+
+        )
+
+)
+
+[2024-09-22 16:09:00] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922115302', '200110212312', 'asd', 123, 1, 6.15, 116.85, NOW(), 'lex')
+[2024-09-22 16:09:00] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922115302', '0200259677', 'paa ni nognog', 123.12, 1, 6.16, 116.96, NOW(), 'lex')
+[2024-09-22 16:09:38] Received data: Array
+(
+    [invoice] => 20240922115302
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 10
+                    [discount_amount] => 0
+                    [total] => 1230
+                )
+
+        )
+
+)
+
+[2024-09-22 16:09:38] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922115302', '200110212312', 'asd', 123, 10, 0, 1230, NOW(), 'lex')
+[2024-09-22 16:13:41] Received data: Array
+(
+    [invoice] => 20240922413607
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 16:13:41] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922413607', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'lex')
+[2024-09-22 16:16:19] Received data: Array
+(
+    [invoice] => 20240922503497
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 12.3
+                    [total] => 110.7
+                )
+
+            [1] => Array
+                (
+                    [barcode] => 9876543
+                    [description] => Heavy Duty Hammer
+                    [price] => 20
+                    [quantity] => 2
+                    [discount_amount] => 2
+                    [total] => 38
+                )
+
+            [2] => Array
+                (
+                    [barcode] => 0200259677
+                    [description] => paa ni nognog
+                    [price] => 123.12
+                    [quantity] => 1
+                    [discount_amount] => 6.16
+                    [total] => 116.96
+                )
+
+            [3] => Array
+                (
+                    [barcode] => 123456
+                    [description] => si celmar na toyo
+                    [price] => 25
+                    [quantity] => 1
+                    [discount_amount] => 1.25
+                    [total] => 23.75
+                )
+
+        )
+
+)
+
+[2024-09-22 16:16:19] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922503497', '200110212312', 'asd', 123, 1, 12.3, 110.7, NOW(), 'lex')
+[2024-09-22 16:16:19] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922503497', '9876543', 'Heavy Duty Hammer', 20, 2, 2, 38, NOW(), 'lex')
+[2024-09-22 16:16:19] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922503497', '0200259677', 'paa ni nognog', 123.12, 1, 6.16, 116.96, NOW(), 'lex')
+[2024-09-22 16:16:19] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922503497', '123456', 'si celmar na toyo', 25, 1, 1.25, 23.75, NOW(), 'lex')
+[2024-09-22 16:20:26] Received data: Array
+(
+    [invoice] => 20240922593469
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 16:20:26] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922593469', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'lex')
+[2024-09-22 16:26:24] Received data: Array
+(
+    [invoice] => 20240922593469
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 16:26:24] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922593469', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'lex')
+[2024-09-22 16:26:46] Received data: Array
+(
+    [invoice] => 20240922197973496
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 16:26:46] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922197973496', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'lex')
+[2024-09-22 16:26:57] Received data: Array
+(
+    [invoice] => 20240922207733490
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 16:26:57] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922207733490', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'lex')
+[2024-09-22 16:35:22] Received data: Array
+(
+    [invoice] => 20240922708977787
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 16:35:22] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922708977787', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'matet')
+[2024-09-22 16:36:26] Received data: Array
+(
+    [invoice] => 20240922777465798
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 200110212312
+                    [description] => asd
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-22 16:36:26] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922777465798', '200110212312', 'asd', 123, 1, 0, 123, NOW(), 'bong')
+[2024-09-22 17:00:47] Received data: Array
+(
+    [invoice] => 20240922216233630
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [barcode] => 123456
+                    [description] => si celmar na toyo
+                    [price] => 25
+                    [quantity] => 4
+                    [discount_amount] => 5
+                    [total] => 95
+                )
+
+        )
+
+)
+
+[2024-09-22 17:00:47] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240922216233630', '123456', 'si celmar na toyo', 25, 4, 5, 95, NOW(), 'lex')

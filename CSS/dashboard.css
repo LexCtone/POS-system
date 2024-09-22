@@ -1,0 +1,233 @@
+body {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
+.sidebar {
+  position: fixed;
+  width: 350px;
+  height: 100%;
+  background-color: #1c75a6;
+  transition: all 0.5s ease;
+  top: 0;
+  left: 0;
+}
+
+.sidebar header {
+  font-size: 28px;
+  color: white;
+  text-align: center;
+  line-height: 39px;
+  background: #1c75a6;
+  font-family: monospace;
+  user-select: none;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.sidebar header img {
+  width: 120px;
+  height: 120px;
+  margin-top: 25px;
+  margin-left: 10px;
+}
+
+.sidebar ul a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 70px;
+  font-size: 20px;
+  color: white;
+  padding-left: 0px;
+  box-sizing: border-box;
+  text-align: left;
+  text-decoration: none;
+}
+
+.sidebar ul li:hover a {
+  padding-left: 10px;
+  color: black;
+  transition: padding-left 0.1s, color 0.1s;
+}
+
+.sidebar ul a i {
+  margin-right: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  margin-left: 420px;
+  width: 75%;
+  height: 130px;
+}
+
+.container .orange {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FF9A24;
+  margin-top: 110px;
+  width: 100%;
+  height: 175px;
+  border-radius: 5px;
+  color: white;
+  font-size: 20px;
+  font-family: monospace;
+  text-align: center;
+  transition: all 0.5s ease;
+}
+
+.container .yellow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFD600;
+  margin-top: 110px;
+  width: 100%;
+  height: 175px;
+  border-radius: 5px;
+  color: white;
+  font-size: 20px;
+  font-family: monospace;
+  text-align: center;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.container .green {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #14C01B;
+  margin-top: 110px;
+  width: 100%;
+  height: 175px;
+  border-radius: 5px;
+  color: white;
+  font-size: 20px;
+  font-family: monospace;
+  text-align: center;
+}
+
+.pie-chart {
+  width: 570px;
+  height: 570px;
+  border-radius: 50%;
+  margin-top: 175px;
+  margin-left: 850px;
+  position: relative;
+  background: conic-gradient(
+    #57C3FF var(--slice-start, 0deg) 40%,
+    #1C75A6 var(--slice-end, 0deg) 100%
+  );
+}
+
+.text-at-40 {
+  position: absolute;
+  top: 20%;
+  left: 70%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-family: monospace;
+  color: rgb(255, 255, 255);
+  z-index: 2;
+}
+
+.text-at-60 {
+  position: absolute;
+  top: 70%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-family: monospace;
+  color: rgb(255, 255, 255);
+  z-index: 2;
+}
+
+.slice {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(50% 50%, 0 0, 100% 0);
+  --slice-start: 0deg;
+  --slice-end: 0deg;
+}
+
+.slice:nth-child(1) {
+  --percentage: 30;
+  --slice-end: calc(var(--percentage) * 4.6deg);
+}
+
+.slice:nth-child(2) {
+  --percentage-prev: 30;
+  --percentage: 40;
+  --slice-start: calc(var(--percentage-prev) * 3.6deg);
+  --slice-end: calc(var(--percentage-prev) * 3.6deg + var(--percentage) * 3.6deg);
+}
+
+.slice:nth-child(3) {
+  --percentage-prev: 45;
+  --percentage: 50;
+  --slice-start: calc(var(--percentage-prev) * 3.6deg);
+  --slice-end: calc(var(--percentage-prev) * 3.6deg + var(--percentage) * 3.6deg);
+}
+
+.inner-circle {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.small-container {
+  position: absolute;
+  top: 30%;
+  left: 95%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+}
+
+.box-container {
+  margin: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.small-container .first {
+  font-size: 18px;
+  font-family: monospace;
+  text-align: center;
+  background-color: #57C3FF;
+  color: white;
+}
+
+.small-container .second {
+  font-size: 18px;
+  font-family: monospace;
+  text-align: center;
+  background-color: #1C75A6;
+  color: white;
+}

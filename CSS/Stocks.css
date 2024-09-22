@@ -1,0 +1,524 @@
+body {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
+.StockHeader{
+  background-color: #1C75A6;
+  color: white;
+  padding: 35px;
+  margin-left: 350px;
+  margin-top: 0;
+}
+
+/* Style for search button */
+button {
+  border: none;
+  background-color: #1C75A6; /* You can change this color as needed */
+  color: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: 400px;
+  font-size: 18px;
+  padding: 10px 20px;
+}
+
+/* Style for search icon inside button */
+button i {
+  font-size: 30px;
+}
+
+.sidebar {
+  position: fixed;
+  width: 350px;
+  height: 100%;
+  background-color: #1c75a6;
+  transition: all 0.5s ease;
+  top: 0;
+  left: 0;
+}
+
+.sidebar header {
+  font-size: 28px;
+  color: white;
+  text-align: center;
+  line-height: 39px;
+  background: #1c75a6;
+  font-family: monospace;
+  user-select: none;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.sidebar header img {
+  width: 120px;
+  height: 120px;
+  margin-top: 25px;
+  margin-left: 10px;
+}
+
+.sidebar ul a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 70px;
+  font-size: 20px;
+  color: white;
+  padding-left: 0px;
+  box-sizing: border-box;
+  text-align: left;
+  text-decoration: none;
+}
+
+.sidebar ul li:hover a {
+  padding-left: 10px;
+  color: black;
+  transition: padding-left 0.1s, color 0.1s;
+}
+
+.sidebar ul a i {
+  margin-right: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.button-container {
+  align-items: left;
+  margin-right: 850px;
+  display: flex;
+  justify-content: center; /* To horizontally center the buttons */
+  margin-top: 35px; /* Add margin as needed */
+}
+
+.button-container button {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  margin: 0 1px; /* Add margin between buttons */
+  font-size: 20px;
+  border: 1px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(185, 185, 185);
+}
+
+.button-container button:hover {
+  background-color: #bfbfbf; /* Change the background color on hover */
+  color: #000000; /* Change the text color on hover */
+}
+h3 {
+  font-size: 24px;
+  color: #333;
+  margin-top: 20px;
+  text-align: left; /* Align the h3 text to the center */
+  margin-left: 400px;
+ 
+}
+form {
+  margin-top: 20px;
+  margin-left: 400px;
+}
+
+label {
+  font-weight: bold;
+  font-size: x-large;
+}
+
+input[type="datetime-local"] {
+  padding: 8px;
+  width: 250px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="submit"] {
+  padding: 20px;
+  border: none;
+  background-color: #125275;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #000000;
+}
+input[type="date"] {
+  padding: 10px; /* Increase padding for better appearance */
+  width: 300px; /* Increase width */
+  height: 30px; /* Increase height */
+  margin-top: 10px; /* Adjust margin as needed */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: x-large;
+}
+
+.modals{
+  margin-left: 400px;
+  margin-top: 20px;
+}
+
+.modal-content{
+  width: 50%;
+}
+
+.form-group-browse{
+  margin-left: 160px;
+}
+
+/* Product Modal Styling */
+/* Modal Overlay */
+.modal-overlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* Center the modal */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Adapt to screen size */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  animation: slide-down 0.3s ease-out;
+}
+
+/* Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Product List Table Styling */
+#productModalTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ddd;
+}
+
+/* Table Header Styling */
+#productModalTable th {
+  background-color: #1c75a6;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* Table Body Styling */
+#productModalTable td  {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Last column width adjustment */
+#productModalTable th:last-child,
+#productModalTable td:last-child {
+  width: 10px; /* Adjust this width as needed */
+  text-align: center;
+}
+
+/* Hover effect for rows */
+#productModalTable tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Scrolling for the product table */
+.modal-content {
+  max-height: 500px; /* Limit the height of modal */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Slide-down animation */
+@keyframes slide-down {
+  from {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Style for the select button */
+.btn-select {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #007bff; /* Blue color for the icon */
+  font-size: 1.2rem;
+  border-radius: 50%; /* Makes the button round */
+  padding: 4px; /* Reduced padding */
+  width: 30px; /* Adjust width to ensure round shape */
+  height: 30px; /* Adjust height to ensure round shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* Hover effect for the button */
+.btn-select:hover {
+  color: #0056b3; /* Darker blue on hover */
+}
+
+/* Style for Font Awesome icon within the button */
+.btn-select i {
+  margin: 0;
+}
+
+/* Product Table Styling */
+#product-table {
+  width: 100%;
+  border-collapse: collapse;
+  position: -webkit-sticky; /* For Safari */
+  position: sticky; /* For modern browsers */
+  z-index: 1; /* Ensure it stays above the other content */
+}
+
+#product-table th, 
+#product-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+#product-table th {
+  background-color: #1c75a6; /* Header background */
+  color: #fff; /* Header text color */
+}
+
+#product-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* Alternate row background */
+}
+
+#product-table tr:hover {
+  background-color: #f1f1f1; /* Row hover effect */
+}
+
+/* General button styling within the product table */
+#product-table td button {
+  background-color: #1c75a6; /* Button background color */
+  color: white; /* Button text color */
+  border: none; /* Remove default border */
+  padding: 8px 16px; /* Adequate padding for better visibility */
+  border-radius: 5px; /* Rounded corners for a modern look */
+  cursor: pointer; /* Pointer cursor to indicate clickability */
+  display: block; /* Ensure the button takes the full width of the cell */
+  width: 100%; /* Make the button fill the cell */
+  text-align: center; /* Center the button text */
+}
+
+#product-table td button i {
+  margin-right: 5px; /* Space between icon and text */
+}
+
+#product-table td button:hover {
+  background-color: #155d82; /* Darker color on hover */
+}
+
+
+/* Stock Table Styling */
+/* Container styling */
+.table-container {
+  height: 500px; /* Set the height of the table container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ddd; /* Optional: border around the container */
+  margin-left: 400px; /* Adjust as needed for your layout */
+  box-sizing: border-box; 
+  margin-right: 100px;
+  margin-top: 20px;/* Include padding and border in the element’s total width and height */
+}
+
+/* Table styling */
+.table {
+  width: 100%; /* Ensure the table width fits the container */
+  border-collapse: collapse;
+  margin: 0; /* Remove any margin around the table */
+}
+
+/* Table cells styling */
+.table th, 
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #1c75a6;
+  color: white;
+  position: -webkit-sticky; /* For Safari */
+  position: sticky; /* For modern browsers */
+  top: 0; /* Stick to the top of the container */
+  z-index: 1; /* Ensure it stays above the other content */
+  padding-bottom: 25px;
+}
+.table td {
+  font-size: 15px;
+  }
+  
+
+/* Last column styling */
+#product-table td:last-child {
+  width: 80px; /* Set an appropriate width */
+  max-width: 80px; /* Constrain the max width */
+  text-align: center; /* Center the button in the cell */
+  overflow: hidden; /* Hide any overflow */
+}
+
+/* Remove any extra space at the bottom */
+.table-container::after {
+  content: '';
+  display: block;
+  height: 1px; /* Ensure there’s no extra space */
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.horizontal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns of equal width */
+  grid-template-rows: repeat(3, auto); /* Three rows */
+  gap: 10px;
+}
+
+.form-group {
+  display: flex;
+  width: 90%;
+  align-items: center;
+}
+
+.form-group label {
+  min-width: 150px; /* Set a minimum width for labels to align them */
+  margin-right: 10px; /* Space between label and input */
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group select {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%; /* Ensure inputs take full width */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.form-group .generate-link{
+    color: #007bff;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 14px;
+  }  
+.form-group .browse-link {
+  color: #007bff;
+  text-decoration: none;
+  margin-left: 160px;
+  font-size: 14px;
+}
+
+.form-group .generate-link:hover,
+.form-group .browse-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .horizontal-form {
+    grid-template-columns: 1fr; /* Stacks all elements in a single column */
+  }
+
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-group label {
+    margin-bottom: 5px;
+  }
+
+  .form-group .generate-link,
+  .form-group .browse-link {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}
+.save-container {
+  margin-top: 20px; /* Adjust as needed */
+  text-align: left; /* Center the button */
+}
+
+#save-stock-entry {
+  background-color: #28a745; /* Green background */
+  color: white; /* White text */
+  border: none; /* Remove border */
+  padding: 10px 20px; /* Adjust padding */
+  font-size: 16px; /* Adjust font size */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+#save-stock-entry:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.remove-button {
+  background-color: #f44336; /* Red background */
+  color: white; /* White text */
+  border: none; /* Remove border */
+  padding: 5px 10px; /* Add padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Inline block display */
+  font-size: 14px; /* Font size */
+  margin: 4px 2px; /* Margins */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 4px; /* Rounded corners */
+}
+
+.remove-button:hover {
+  background-color: #d32f2f; /* Darker red on hover */
+}
