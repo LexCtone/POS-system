@@ -148,8 +148,8 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
           <thead>
             <tr>
               <th>#</th>
-              <th>PCODE</th>
-              <th>Description</th>
+              <th>BARCODE</th>
+              <th>DESCRIPTION</th>
               <th>PRICE</th>
               <th>QTY</th>
               <th>DISCOUNT</th>

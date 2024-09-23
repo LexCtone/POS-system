@@ -74,10 +74,10 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Barcode</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Total Sales</th>
+                <th>BARCODE</th>
+                <th>DESCRIPTION</th>
+                <th>QUANTITY</th>
+                <th>TOTAL SALES</th>
               </tr>
             </thead>
             <tbody>

@@ -121,30 +121,77 @@ body {
 }
 
 
-/* Left Column: Table */
+/* Left Column: Scrollable Table */
 .table-container {
-  width: 100%; /* Reduce width slightly */
-  margin-right: 5px; /* Reduce the space between the two columns */
-  border: 1px solid #000;
+  width: 100%; /* Keep full width */
+  max-height: calc(100vh - 300px); /* Adjust height based on available viewport */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ccc; /* Table border */
   box-sizing: border-box;
 }
 
+/* Table Styles */
 .table-container table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed; /* Ensures table width consistency */
 }
 
-.table-container th, .table-container td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
+.table-container thead {
+  position: sticky; /* Keep the header fixed at the top */
+  top: 0;
+  z-index: 2;
+  background-color: #1C75A6; /* Header background color */
+  color: white; /* Header text color */
 }
 
+/* Sticky header */
 .table-container th {
-  background-color: #1C75A6;
-  color: white;
+  position: sticky; /* Sticky for table headers */
+  top: 0;
+  background-color: #1C75A6; /* Header background color */
+  color: white; /* Text color */
+  z-index: 1;
+  padding: 10px;
 }
 
-.table-container tr:nth-child(even) {
+/* Table cells and row styles */
+.table-container th, 
+.table-container td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  width: 20%; /* Adjust based on the number of columns */
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Truncate overflowing text */
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+/* Alternating row colors for readability */
+.table-container tbody tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+/* Total Sales Section */
+.total-sales {
+  background-color: black;
+  color: white;
+  border: 2px solid white;
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 250px;
+  margin-left: 20px;
+  font-size: 15px;
+}
+
+/* Ensure full width for the table */
+.table-container {
+  width: 100%;
+}
+
+/* Content area takes full width minus the sidebar */
+.content {
+  width: calc(100% - 15px); /* Adjust based on sidebar width */
 }

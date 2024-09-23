@@ -166,61 +166,39 @@ body {
   margin-top: 20px;
 }
 
-/* Table styles */
+/* Left Column: Table */
+.table-container {
+  width: 100%;
+  margin-right: 5px;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  max-height: 600px; /* Adjust this value as needed */
+  overflow-y: auto;
+}
+
 .table-container table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;
-  border: 1px solid black;
 }
 
-/* Table header */
 .table-container thead {
-  background-color: #1C75A6;
-  color: white;
-}
-
-.table-container th {
   position: sticky;
   top: 0;
   z-index: 1;
   background-color: #1C75A6;
 }
 
-/* Table body */
-.table-container tbody {
-  display: block;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: calc(95vh - 300px); /* Adjust this value as needed */
-}
-
-/* Table rows */
-.table-container tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-
-/* Table cells */
-.table-container th, 
-.table-container td {
+.table-container th, .table-container td {
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 8px;
   text-align: left;
-  width: 12.5%; /* 100% divided by 8 columns */
-  box-sizing: border-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-/* Ensure header row is full width */
-.table-container thead tr {
-  width: calc(100% - 17px); /* Adjust for scrollbar width */
+.table-container th {
+  background-color: #1C75A6;
+  color: white;
 }
 
-/* Alternating row colors */
 .table-container tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
@@ -235,4 +213,21 @@ body {
   width: 250px;
   margin-left: 20px;
   font-size: 15px;
+}
+
+/* Ensure the scrollbar doesn't overlap content */
+.table-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

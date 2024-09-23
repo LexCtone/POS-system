@@ -72,10 +72,10 @@ if (!$result) {
           <thead>
             <tr>
               <th>#</th>
-              <th>PCODE</th>
-              <th>Description</th>
+              <th>BARCODE</th>
+              <th>DESCRIPTION</th>
               <th>PRICE</th>
-              <th>No. of Stocks</th>
+              <th>No. OF STOCKS</th>
             </tr>
           </thead>
           <tbody>

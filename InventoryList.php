@@ -42,50 +42,61 @@
         <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
       </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
-    <div class="print-preview-button">
+      <div class="print-preview-button" onclick="window.print()">
         <i class="fa-solid fa-print"></i>
         <span class="print-preview-text">Print Preview</span>
     </div>
 </div>
 <div class="content">
-      <!-- Left Column: Table -->
-      <div class="table-container">
+    <!-- Left Column: Table -->
+    <div class="table-container">
         <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Product code</th>
-              <th>Barcode</th>
-              <th>Description</th>
-              <th>Brand</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Stock on Hand</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>P0001</td>
-              <td>Heavy Duty Hammer</td>
-              <td>21</td>
-              <td>10,569.00</td>
-              <td>123</td>
-              <td>221</td>
-              <td>222</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>P0002</td>
-              <td>Steel Phillips Head Screws</td>
-              <td>21</td>
-              <td>7,569.00</td>
-              <td>102</td>
-              <td>221</td>
-              <td>222</td>
-            </tr>
-          </tbody>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>BARCODE</th>
+                    <th>DESCRIPTION</th>
+                    <th>BRAND</th>
+                    <th>CATEGORY</th>
+                    <th>PRICE</th>
+                    <th>STOCK ON HAND</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Include your database connection file
+                include 'connect.php';
+
+                // SQL query to fetch all products from the products table
+                $sql = "SELECT id, Barcode, Description, Brand, Category, Price, Quantity FROM products";
+                $result = $conn->query($sql);
+
+                // Check if any rows are returned
+                if ($result->num_rows > 0) {
+                    $counter = 1; // To display row numbers
+                    // Fetch each row and output the data
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $counter . "</td>";
+                        echo "<td>" . $row['Barcode'] . "</td>";
+                        echo "<td>" . $row['Description'] . "</td>";
+                        echo "<td>" . $row['Brand'] . "</td>";
+                        echo "<td>" . $row['Category'] . "</td>";
+                        echo "<td>" . number_format($row['Price'], 2) . "</td>"; // Format price with 2 decimal places
+                        echo "<td>" . $row['Quantity'] . "</td>";
+                        echo "</tr>";
+                        $counter++;
+                    }
+                } else {
+                    echo "<tr><td colspan='8'>No products found</td></tr>";
+                }
+
+                // Close the database connection (optional, if not handled in connect.php)
+                $conn->close();
+                ?>
+            </tbody>
         </table>
-      </div>
+    </div>
+</div>
 </body>
 </html>
