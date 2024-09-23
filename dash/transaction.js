@@ -500,15 +500,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const sales = [];
         
         rows.forEach(row => {
-            const barcode = row.dataset.barcode || '';
+            const productId = row.dataset.productId;
+            const barcode = row.dataset.barcode;
             const description = row.cells[1].textContent.trim();
             const price = parseFloat(row.cells[2].textContent.replace('₱', '').trim());
             const quantityInput = row.querySelector('.quantity-input');
             const quantity = quantityInput ? parseInt(quantityInput.value.trim()) : 0;
             const discountAmount = parseFloat(row.cells[4].textContent.replace('₱', '').trim());
             const total = parseFloat(row.cells[5].textContent.replace('₱', '').trim());
-
+    
             sales.push({
+                product_id: productId,
                 barcode: barcode,
                 description: description,
                 price: price,
@@ -517,7 +519,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 total: total
             });
         });
-
+    
         return sales;
     }
 
@@ -527,23 +529,38 @@ document.addEventListener('DOMContentLoaded', function() {
             invoice: document.getElementById('transactionNo').textContent,
             sales: sales
         };
-
+    
+        console.log('Sending transaction data:', JSON.stringify(transactionData));
+    
         try {
-            const response = await fetch('save_sales.php', {
+            const response = await fetch('update_quantities.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(transactionData)
             });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+    
+            const responseText = await response.text();
+            console.log('Raw response:', responseText);
+    
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                console.error('Error parsing JSON:', e);
+                throw new Error('Invalid JSON response from server');
             }
-
-            const result = await response.json();
+    
+            console.log('Parsed server response:', result);
+    
             if (result.success) {
+                console.log('Transaction successful, about to show alert');
                 alert('Transaction saved successfully!');
+                console.log('Alert should have been shown');
                 clearCart();
                 closeModal(settlePaymentModal);
                 
@@ -554,12 +571,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Reset the transaction counter
                 transactionCounter = 1;
             } else {
-                console.error('Server error:', result);
+                console.error('Server reported error:', result);
                 alert('Error saving transaction: ' + (result.message || 'Unknown error'));
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error in saveTransaction:', error);
             alert('An error occurred while saving the transaction: ' + error.message);
+        }
+    }
+    
+    function clearCart() {
+        console.log('Clearing cart');
+        tableBody.innerHTML = '';
+        updateTotalSales();
+        console.log('Cart cleared');
+    }
+    
+    function closeModal(modal) {
+        console.log('Closing modal:', modal);
+        if (modal) {
+            modal.style.display = 'none';
+            console.log('Modal closed');
+        } else {
+            console.log('Modal not found');
         }
     }
 

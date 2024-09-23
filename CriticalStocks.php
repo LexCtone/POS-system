@@ -1,9 +1,27 @@
+<?php
+// Include your database connection file here
+require_once 'connect.php';
+
+// Ensure the database connection is established
+if (!isset($conn) || $conn->connect_error) {
+    die("Database connection failed: " . ($conn->connect_error ?? "Unknown error"));
+}
+
+// Fetch products with quantity below 20
+$query = "SELECT id, Barcode, Description, Price, Quantity FROM products WHERE Quantity < 20 ORDER BY Quantity ASC";
+$result = $conn->query($query);
+
+if (!$result) {
+    die("Query failed: " . $conn->error);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Records</title>
+  <title>Critical Stocks</title>
   <link rel="stylesheet" href="CSS\CriticalStocks.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -42,8 +60,8 @@
         <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
       </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
-    <div class="print-preview-button">
-        <i class="fa-solid fa-print"></i>
+      <div class="print-preview-button" onclick="window.print()">
+      <i class="fa-solid fa-print"></i>
         <span class="print-preview-text">Print Preview</span>
     </div>
 </div>
@@ -61,22 +79,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>P0001</td>
-              <td>Heavy Duty Hammer</td>
-              <td>221</td>
-              <td>20</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>P0002</td>
-              <td>Steel Phillips Head Screws</td>
-              <td>212</td>
-              <td>20</td>
-            </tr>
+            <?php
+            if ($result->num_rows > 0) {
+                $counter = 1;
+                while($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $counter . "</td>";
+                    echo "<td>" . htmlspecialchars($row["Barcode"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["Description"]) . "</td>";
+                    echo "<td>₱" . number_format($row["Price"], 2) . "</td>";
+                    echo "<td>" . $row["Quantity"] . "</td>";
+                    echo "</tr>";
+                    $counter++;
+                }
+            } else {
+                echo "<tr><td colspan='5'>No critical stocks found</td></tr>";
+            }
+            ?>
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+  <script>
+    // Add any JavaScript you need here
+  </script>
 </body>
 </html>

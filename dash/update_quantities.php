@@ -1,16 +1,16 @@
 <?php
 // Disable error reporting for production
-error_reporting(E_ALL); // Enable error reporting for debugging
-ini_set('display_errors', 0); // Don't display errors directly
-ini_set('log_errors', 1); // Enable error logging
-ini_set('error_log', 'error_log.txt'); // Set path to error log file
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', 'error_log.txt');
 
 // Include database connection
-require_once '../connect.php'; // Adjust path as needed
+require_once '../connect.php';
 
-// Function to log errors
-function logError($message) {
-    error_log(date('[Y-m-d H:i:s] ') . $message . "\n", 3, 'error_log.txt');
+// Function to log errors and debug information
+function logMessage($message, $type = 'ERROR') {
+    error_log(date('[Y-m-d H:i:s] ') . "[$type] " . $message . "\n", 3, 'error_log.txt');
 }
 
 // Ensure we're only outputting JSON
@@ -24,10 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // Get the raw POST data
 $json = file_get_contents('php://input');
+logMessage("Received data: " . $json, 'DEBUG');
 $data = json_decode($json, true);
 
 // Check if data is valid
-if (!$data || !is_array($data)) {
+if (!$data || !isset($data['sales']) || !is_array($data['sales'])) {
+    logMessage("Invalid data format: " . print_r($data, true));
     echo json_encode(['success' => false, 'message' => 'Invalid data format']);
     exit;
 }
@@ -47,24 +49,24 @@ try {
         throw new Exception("Error preparing insert_sale_stmt: " . $conn->error);
     }
 
-    // Generate invoice number (current date + 4 random digits)
-    $invoice = date('Ymd') . str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
-
-    foreach ($data as $item) {
+    foreach ($data['sales'] as $item) {
         // Validate item data
         if (!isset($item['product_id'], $item['barcode'], $item['description'], $item['price'], $item['quantity'], $item['discount_amount'], $item['total'])) {
+            logMessage("Invalid item data: " . json_encode($item));
             throw new Exception("Invalid item data: " . json_encode($item));
         }
 
         // Update product quantity
         $update_product_stmt->bind_param("ii", $item['quantity'], $item['product_id']);
         if (!$update_product_stmt->execute()) {
+            logMessage("Error updating product quantity: " . $update_product_stmt->error);
             throw new Exception("Error updating product quantity: " . $update_product_stmt->error);
         }
+        logMessage("Updated quantity for product ID {$item['product_id']}: -{$item['quantity']}", 'DEBUG');
 
         // Insert sale record
         $insert_sale_stmt->bind_param("sssdidd", 
-            $invoice,
+            $data['invoice'],
             $item['barcode'],
             $item['description'],
             $item['price'],
@@ -73,27 +75,26 @@ try {
             $item['total']
         );
         if (!$insert_sale_stmt->execute()) {
+            logMessage("Error inserting sale record: " . $insert_sale_stmt->error);
             throw new Exception("Error inserting sale record: " . $insert_sale_stmt->error);
         }
+        logMessage("Inserted sale record for invoice {$data['invoice']}", 'DEBUG');
     }
 
     // Commit transaction
     $conn->commit();
-    echo json_encode(['success' => true, 'message' => 'Quantities updated and sales recorded successfully', 'invoice' => $invoice]);
+    logMessage("Transaction committed successfully", 'DEBUG');
+    echo json_encode(['success' => true, 'message' => 'Quantities updated and sales recorded successfully']);
 } catch (Exception $e) {
     // Rollback transaction on error
     $conn->rollback();
-    logError("Transaction failed: " . $e->getMessage());
+    logMessage("Transaction failed: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'Transaction failed: ' . $e->getMessage()]);
 }
 
 // Close prepared statements
-if (isset($update_product_stmt)) {
-    $update_product_stmt->close();
-}
-if (isset($insert_sale_stmt)) {
-    $insert_sale_stmt->close();
-}
+$update_product_stmt->close();
+$insert_sale_stmt->close();
 
 // Close database connection
 $conn->close();
