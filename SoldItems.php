@@ -13,7 +13,7 @@ $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
 $cashierName = isset($_GET['cashier']) ? $_GET['cashier'] : 'all';
 
 // Prepare the base query
-$query = "SELECT barcode, description, price, quantity, discount_amount, total, cashier_name FROM sales";
+$query = "SELECT barcode, description, price, quantity, discount_amount, total, cashier_name, sale_date FROM sales";
 
 // Add filters
 $conditions = [];
@@ -155,6 +155,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
               <th>DISCOUNT</th>
               <th>TOTAL SALES</th>
               <th>CASHIER</th>
+              <th>DATE</th>
             </tr>
           </thead>
           <tbody id="salesTableBody">
@@ -171,6 +172,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                 echo "<td>₱" . number_format($row['discount_amount'], 2) . "</td>";
                 echo "<td>₱" . number_format($row['total'], 2) . "</td>";
                 echo "<td>" . htmlspecialchars($row['cashier_name']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['sale_date']) . "</td>";
                 echo "</tr>";
                 $totalSales += $row['total'];
                 $rowNumber++;
@@ -209,6 +211,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                             <td>₱${parseFloat(row.discount_amount).toFixed(2)}</td>
                             <td>₱${parseFloat(row.total).toFixed(2)}</td>
                             <td>${escapeHtml(row.cashier_name)}</td>
+                            <td>${escapeHtml(row.sale_date)}</td>
                         </tr>`;
                         rowNumber++;
                     });

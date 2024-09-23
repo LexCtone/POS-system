@@ -44,10 +44,18 @@ try {
         throw new Exception("Error preparing update_product_stmt: " . $conn->error);
     }
 
-    $insert_sale_stmt = $conn->prepare("INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $insert_sale_stmt = $conn->prepare("INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, cashier_name, sale_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
     if (!$insert_sale_stmt) {
         throw new Exception("Error preparing insert_sale_stmt: " . $conn->error);
     }
+
+    // Get the current cashier's username
+    session_start();
+    if (!isset($_SESSION['username'])) {
+        logMessage("No cashier username found in session", 'WARNING');
+        throw new Exception("No cashier username found in session");
+    }
+    $cashier_username = $_SESSION['username'];
 
     foreach ($data['sales'] as $item) {
         // Validate item data
@@ -65,14 +73,15 @@ try {
         logMessage("Updated quantity for product ID {$item['product_id']}: -{$item['quantity']}", 'DEBUG');
 
         // Insert sale record
-        $insert_sale_stmt->bind_param("sssdidd", 
+        $insert_sale_stmt->bind_param("sssdiids", 
             $data['invoice'],
             $item['barcode'],
             $item['description'],
             $item['price'],
             $item['quantity'],
             $item['discount_amount'],
-            $item['total']
+            $item['total'],
+            $cashier_username
         );
         if (!$insert_sale_stmt->execute()) {
             logMessage("Error inserting sale record: " . $insert_sale_stmt->error);

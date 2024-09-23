@@ -586,3 +586,35 @@
 [2024-09-23 21:08:56] [DEBUG] Updated quantity for product ID 3: -90
 [2024-09-23 21:08:56] [DEBUG] Inserted sale record for invoice 20240923525358983
 [2024-09-23 21:08:56] [DEBUG] Transaction committed successfully
+[2024-09-23 21:10:53] [DEBUG] Received data: {"invoice":"20240923634886133","sales":[{"product_id":"4","barcode":"123456","description":"si celmar na toyo","price":25,"quantity":70,"discount_amount":0,"total":1750}]}
+[2024-09-23 21:10:53] [DEBUG] Updated quantity for product ID 4: -70
+[2024-09-23 21:10:53] [DEBUG] Inserted sale record for invoice 20240923634886133
+[2024-09-23 21:10:53] [DEBUG] Transaction committed successfully
+[2024-09-23 21:12:21] [DEBUG] Received data: {"invoice":"20240923731603563","sales":[{"product_id":"4","barcode":"123456","description":"si celmar na toyo","price":25,"quantity":9,"discount_amount":0,"total":225}]}
+[2024-09-23 21:12:21] [DEBUG] Updated quantity for product ID 4: -9
+[2024-09-23 21:12:21] [DEBUG] Inserted sale record for invoice 20240923731603563
+[2024-09-23 21:12:21] [DEBUG] Transaction committed successfully
+[2024-09-23 21:17:51] [DEBUG] Received data: {"invoice":"20240923057515540","sales":[{"product_id":"4","barcode":"123456","description":"si celmar na toyo","price":25,"quantity":10,"discount_amount":0,"total":250}]}
+[2024-09-23 21:17:51] [DEBUG] Updated quantity for product ID 4: -10
+[2024-09-23 21:17:51] [DEBUG] Inserted sale record for invoice 20240923057515540
+[2024-09-23 21:17:51] [DEBUG] Transaction committed successfully
+[2024-09-23 21:20:31] [DEBUG] Received data: {"invoice":"20240923072356913","sales":[{"product_id":"1","barcode":"200110212312","description":"asd","price":115,"quantity":1,"discount_amount":0,"total":115}]}
+[2024-09-23 21:20:31] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-23 21:20:31] [DEBUG] Inserted sale record for invoice 20240923072356913
+[2024-09-23 21:20:32] [DEBUG] Transaction committed successfully
+[2024-09-23 21:22:47] [DEBUG] Received data: {"invoice":"20240923361565967","sales":[{"product_id":"4","barcode":"123456","description":"si celmar na toyo","price":25,"quantity":1,"discount_amount":0,"total":25}]}
+[2024-09-23 21:22:47] [DEBUG] Updated quantity for product ID 4: -1
+[2024-09-23 21:22:47] [DEBUG] Inserted sale record for invoice 20240923361565967
+[2024-09-23 21:22:47] [DEBUG] Transaction committed successfully
+[2024-09-23 21:24:44] [DEBUG] Received data: {"invoice":"20240923470505322","sales":[{"product_id":"4","barcode":"123456","description":"si celmar na toyo","price":25,"quantity":2,"discount_amount":0,"total":50}]}
+[2024-09-23 21:24:44] [DEBUG] Updated quantity for product ID 4: -2
+[2024-09-23 21:24:44] [DEBUG] Inserted sale record for invoice 20240923470505322
+[2024-09-23 21:24:44] [DEBUG] Transaction committed successfully
+[2024-09-23 21:35:04] [DEBUG] Received data: {"invoice":"20240923094680376","sales":[{"product_id":"1","barcode":"200110212312","description":"asd","price":115,"quantity":2,"discount_amount":0,"total":230}]}
+[2024-09-23 21:35:04] [DEBUG] Updated quantity for product ID 1: -2
+[2024-09-23 21:35:04] [DEBUG] Inserted sale record for invoice 20240923094680376
+[2024-09-23 21:35:04] [DEBUG] Transaction committed successfully
+[2024-09-23 21:35:31] [DEBUG] Received data: {"invoice":"20240923105797820","sales":[{"product_id":"1","barcode":"200110212312","description":"asd","price":115,"quantity":2,"discount_amount":0,"total":230}]}
+[2024-09-23 21:35:31] [DEBUG] Updated quantity for product ID 1: -2
+[2024-09-23 21:35:31] [DEBUG] Inserted sale record for invoice 20240923105797820
+[2024-09-23 21:35:31] [DEBUG] Transaction committed successfully
