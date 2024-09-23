@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['barcode'])) {
     $quantity = $_POST['quantity'];
 
     // Validate input
-    if (!empty($barcode) && !empty($description) && !empty($brand) && !empty($category) && !empty($price) && !empty($quantity)) {
+    if (!empty($barcode) && !empty($description) && !empty($brand) && !empty($category) && is_numeric($price) && is_numeric($quantity)) {
         // Insert the new product into the database
         $stmt = $conn->prepare("INSERT INTO products (Barcode, Description, Brand, Category, Price, Quantity) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param('sssssi', $barcode, $description, $brand, $category, $price, $quantity);
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['barcode'])) {
 
         $stmt->close();
     } else {
-        echo 'All fields are required';
+        echo 'All fields are required and price/quantity must be numeric';
     }
 }
 
@@ -82,33 +82,49 @@ mysqli_close($conn);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product List</title>
-  <link rel="stylesheet" type="text/css" href="CSS\Product.css">
-  <script type="text/javascript" src="JAVASCRIPT\Product.js" defer></script>
+  <link rel="stylesheet" type="text/css" href="CSS/Product.css">
+  <script type="text/javascript" src="JAVASCRIPT/Product.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Search functionality
+          const searchInput = document.getElementById('search-input');
+          const productTable = document.getElementById('product-table');
+
+          searchInput.addEventListener('input', function() {
+              const searchTerm = this.value.toLowerCase();
+              const rows = productTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+              Array.from(rows).forEach(row => {
+                  const barcodeCell = row.cells[1].textContent.toLowerCase();
+                  row.style.display = barcodeCell.includes(searchTerm) ? '' : 'none';
+              });
+          });
+      });
+  </script>
 </head>
 <body>
     <nav class="sidebar">
-    <header>
+        <header>
             <img src="profile.png" alt="profile"/>
             <br>ADMINISTRATOR
-          </header>
-          <ul>
-              <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
-              <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>
-              <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
-              <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
-              <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
-              <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
-              <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
-              <li><a href="SalesHistory.php"><i class='fa-solid fa-clock-rotate-left' style='font-size:30px'></i>Sales History</a></li>
-              <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
-              <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
-              </ul>
+        </header>
+        <ul>
+            <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
+            <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>
+            <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
+            <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
+            <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
+            <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
+            <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
+            <li><a href="SalesHistory.php"><i class='fa-solid fa-clock-rotate-left' style='font-size:30px'></i>Sales History</a></li>
+            <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
+            <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
+        </ul>
     </nav>    
     <header>    
         <h2 class="ProductHeader">Product List  
             <input id="search-input" type="text" placeholder="Search...">
-            <button id="search-button"><i class="fas fa-search"></i></button>
             <button id="add-product-button"><i class='fas fa-plus'></i></button>
         </h2>    
     </header>
@@ -138,18 +154,18 @@ mysqli_close($conn);
                             <td><?= htmlspecialchars($row['Price']) ?></td>
                             <td><?= htmlspecialchars($row['Quantity']) ?></td>
                             <td>
-    <button class="button update-button" 
-            data-id="<?= $row['id'] ?>" 
-            data-barcode="<?= htmlspecialchars($row['Barcode']) ?>" 
-            data-description="<?= htmlspecialchars($row['Description']) ?>"
-            data-brand="<?= htmlspecialchars($row['Brand']) ?>"
-            data-category="<?= htmlspecialchars($row['Category']) ?>"
-            data-price="<?= htmlspecialchars($row['Price']) ?>"
-            data-quantity="<?= htmlspecialchars($row['Quantity']) ?>">
-        Update
-    </button>
-    <button class="button"><a href="?deleteid=<?= $row['id'] ?>" class="text-light">Delete</a></button>
-</td>
+                                <button class="button update-button" 
+                                        data-id="<?= $row['id'] ?>" 
+                                        data-barcode="<?= htmlspecialchars($row['Barcode']) ?>" 
+                                        data-description="<?= htmlspecialchars($row['Description']) ?>"
+                                        data-brand="<?= htmlspecialchars($row['Brand']) ?>"
+                                        data-category="<?= htmlspecialchars($row['Category']) ?>"
+                                        data-price="<?= htmlspecialchars($row['Price']) ?>"
+                                        data-quantity="<?= htmlspecialchars($row['Quantity']) ?>">
+                                    Update
+                                </button>
+                                <button class="button"><a href="?deleteid=<?= $row['id'] ?>" class="text-light">Delete</a></button>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 <?php endif; ?>
@@ -185,12 +201,13 @@ mysqli_close($conn);
                 <?php endwhile; ?>
             </select>
             <label for="price">Price:</label>
-            <input type="text" id="price" name="price" required>
+            <input type="number" id="price" name="price" required>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required>
             <button type="submit">Add Product</button>
         </form>
     </div>
 </div>
-
 <!-- Update Product Modal -->
 <div id="update-product-modal" class="modal">
     <div class="modal-content">
@@ -226,5 +243,38 @@ mysqli_close($conn);
         </form>
     </div>
 </div>
+<script>
+    // Handle barcode scanning
+    const barcodeInput = document.getElementById('barcode');
+    barcodeInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent form submission
+            const barcode = this.value.trim();
+
+            if (barcode) {
+                // Perform an AJAX request to fetch product details based on the barcode
+                fetch(`get_product.php?barcode=${encodeURIComponent(barcode)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data) {
+                            document.getElementById('description').value = data.Description;
+                            document.getElementById('brand').value = data.Brand;
+                            document.getElementById('category').value = data.Category;
+                            document.getElementById('price').value = data.Price;
+                            document.getElementById('quantity').value = data.Quantity;
+                        } else {
+                            alert('Product not found. You can add it as a new product.');
+                            document.getElementById('description').value = '';
+                            document.getElementById('brand').value = '';
+                            document.getElementById('category').value = '';
+                            document.getElementById('price').value = '';
+                            document.getElementById('quantity').value = '';
+                        }
+                    })
+                    .catch(error => console.error('Error fetching product details:', error));
+            }
+        }
+    });
+</script>
 </body>
 </html>

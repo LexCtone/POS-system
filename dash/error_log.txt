@@ -618,3 +618,17 @@
 [2024-09-23 21:35:31] [DEBUG] Updated quantity for product ID 1: -2
 [2024-09-23 21:35:31] [DEBUG] Inserted sale record for invoice 20240923105797820
 [2024-09-23 21:35:31] [DEBUG] Transaction committed successfully
+[2024-09-23 23:55:22] [DEBUG] Received data: {"invoice":"20240923234691130","sales":[{"product_id":"2","barcode":"731126101165","description":"sinipang lolo","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-23 23:55:22] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-23 23:55:22] [DEBUG] Inserted sale record for invoice 20240923234691130
+[2024-09-23 23:55:22] [DEBUG] Transaction committed successfully
+[2024-09-24 00:01:47] [DEBUG] Received data: {"invoice":"20240923872436359","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 00:01:47] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 00:01:47] [DEBUG] Inserted sale record for invoice 20240923872436359
+[2024-09-24 00:01:47] [DEBUG] Transaction committed successfully
+[2024-09-24 00:25:34] [DEBUG] Received data: {"invoice":"20240923908866824","sales":[{"product_id":"2","barcode":"731126101165","description":"qwe","price":123,"quantity":1,"discount_amount":0,"total":123},{"product_id":"1","barcode":"6935280818516","description":"Rk keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 00:25:34] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-24 00:25:34] [DEBUG] Inserted sale record for invoice 20240923908866824
+[2024-09-24 00:25:34] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 00:25:34] [DEBUG] Inserted sale record for invoice 20240923908866824
+[2024-09-24 00:25:34] [DEBUG] Transaction committed successfully

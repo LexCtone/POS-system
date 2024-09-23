@@ -57,7 +57,12 @@ while ($row = $result->fetch_assoc()) {
     $products[] = $row;
 }
 
-echo json_encode($products);
+// Return an empty array if no products found
+if (empty($products)) {
+    echo json_encode([]);
+} else {
+    echo json_encode($products);
+}
 
 $stmt->close();
 $conn->close();
