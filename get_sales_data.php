@@ -14,15 +14,16 @@ $sortOrder = isset($_GET['sortOrder']) ? $_GET['sortOrder'] : 'DESC';
 $sortBy = in_array($sortBy, ['quantity', 'total_amount']) ? $sortBy : 'total_amount';
 $sortOrder = in_array($sortOrder, ['ASC', 'DESC']) ? $sortOrder : 'DESC';
 
-$sql = "SELECT barcode, description, SUM(quantity) AS total_qty, SUM(total) AS total_sales 
+$sql = "SELECT barcode, description, SUM(quantity) AS total_qty, SUM(total) AS total_sales,
+               MIN(sale_date) AS first_sale_date, MAX(sale_date) AS last_sale_date
         FROM sales 
         WHERE 1=1";
 
 if ($startDate && $endDate) {
-    $sql .= " AND date BETWEEN ? AND ?";
+    $sql .= " AND sale_date BETWEEN ? AND ?";
 }
 
-$sql .= " GROUP BY barcode, description 
+$sql .= " GROUP BY barcode, description
           ORDER BY " . ($sortBy == 'quantity' ? 'total_qty' : 'total_sales') . " $sortOrder
           LIMIT 10";
 
