@@ -211,7 +211,6 @@
       }
     });
   }
-
   // Initial load
   loadData();
   </script>
