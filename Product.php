@@ -202,8 +202,6 @@ mysqli_close($conn);
             </select>
             <label for="price">Price:</label>
             <input type="number" id="price" name="price" required>
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required>
             <button type="submit">Add Product</button>
         </form>
     </div>
@@ -239,6 +237,8 @@ mysqli_close($conn);
             </select>
             <label for="update-price">Price:</label>
             <input type="text" id="update-price" name="price" required>
+            <div id="update-form-feedback" class="form-feedback"></div>
+            <div id="update-loading" class="loading-indicator" style="display: none;">Updating...</div>
             <button type="submit">Update Product</button>
         </form>
     </div>

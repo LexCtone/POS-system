@@ -632,3 +632,25 @@
 [2024-09-24 00:25:34] [DEBUG] Updated quantity for product ID 1: -1
 [2024-09-24 00:25:34] [DEBUG] Inserted sale record for invoice 20240923908866824
 [2024-09-24 00:25:34] [DEBUG] Transaction committed successfully
+[2024-09-24 01:23:48] [DEBUG] Received data: {"invoice":"20240923762783170","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk keyboard","price":120,"quantity":1,"discount_amount":0,"total":120},{"product_id":"2","barcode":"731126101165","description":"qwe","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-24 01:23:48] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 01:23:48] [DEBUG] Inserted sale record for invoice 20240923762783170
+[2024-09-24 01:23:48] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-24 01:23:48] [DEBUG] Inserted sale record for invoice 20240923762783170
+[2024-09-24 01:23:48] [DEBUG] Transaction committed successfully
+[2024-09-24 01:25:20] [DEBUG] Received data: {"invoice":"20240923830091310","sales":[{"product_id":"2","barcode":"731126101165","description":"qwe","price":123,"quantity":10,"discount_amount":0,"total":1230}]}
+[2024-09-24 01:25:20] [DEBUG] Updated quantity for product ID 2: -10
+[2024-09-24 01:25:20] [DEBUG] Inserted sale record for invoice 20240923830091310
+[2024-09-24 01:25:20] [DEBUG] Transaction committed successfully
+[2024-09-24 10:58:30] [DEBUG] Received data: {"invoice":"20240924983214320","sales":[{"product_id":"3","barcode":"195243500438","description":"Nike Shoes","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 10:58:30] [DEBUG] Updated quantity for product ID 3: -1
+[2024-09-24 10:58:30] [DEBUG] Inserted sale record for invoice 20240924983214320
+[2024-09-24 10:58:30] [DEBUG] Transaction committed successfully
+[2024-09-24 11:07:25] [DEBUG] Received data: {"invoice":"20240924312074293","sales":[{"product_id":"3","barcode":"195243500438","description":"qwe","price":124.99,"quantity":10,"discount_amount":0,"total":1249.9}]}
+[2024-09-24 11:07:25] [DEBUG] Updated quantity for product ID 3: -10
+[2024-09-24 11:07:25] [DEBUG] Inserted sale record for invoice 20240924312074293
+[2024-09-24 11:07:25] [DEBUG] Transaction committed successfully
+[2024-09-24 11:08:25] [DEBUG] Received data: {"invoice":"20240924846859989","sales":[{"product_id":"2","barcode":"731126101165","description":"qwe","price":123,"quantity":10,"discount_amount":0,"total":1230}]}
+[2024-09-24 11:08:25] [DEBUG] Updated quantity for product ID 2: -10
+[2024-09-24 11:08:25] [DEBUG] Inserted sale record for invoice 20240924846859989
+[2024-09-24 11:08:25] [DEBUG] Transaction committed successfully
