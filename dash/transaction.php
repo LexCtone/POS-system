@@ -271,12 +271,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
     </div>
 </div>
 
-    <!-- Daily Sales Modal -->
-    <div id="dailySalesModal" class="modal daily-sales-modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Daily Sales</h2>
-            <div class="filter-controls">
+<!-- Daily Sales Modal -->
+<div id="dailySalesModal" class="modal daily-sales-modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Daily Sales</h2>
+        <div class="sales-print-container">
+            <div class="filters filter-controls"> <!-- Added class 'filter-controls' here -->
                 <label for="dateFrom">From:</label>
                 <input type="date" id="dateFrom">
                 <label for="dateTo">To:</label>
@@ -295,31 +296,49 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
                     $stmt->close();
                     ?>
                 </select>
-                <button>Filter</button>
+                <button>Filter</button> <!-- This button is now inside 'filter-controls' -->
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Invoice</th>
-                        <th>Barcode</th>
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Discount</th>
-                        <th>Total</th>
-                        <th>Cashier</th>
-                    </tr>
-                </thead>
-                <tbody id="salesData">
-                    <!-- Sales data will be populated here -->
-                </tbody>
-            </table>
             <div class="total-sales">
-                Total Sales: <span id="modalTotalSales">₱0.00</span>
+                <span id="modalTotalSales">₱0.00</span>
             </div>
         </div>
+
+<!-- Table with scrollable tbody -->
+<table class="scrollable-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Invoice</th>
+            <th>Barcode</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Discount</th>
+            <th>Total</th>
+            <th>Cashier</th>
+            <th>Action</th> <!-- Added column for Void button -->
+        </tr>
+    </thead>
+    <tbody id="salesData" class="scrollable-tbody">
+        <!-- Sales data will be populated here dynamically -->
+        <!-- Example row with Void button -->
+        <tr>
+            <td>1</td>
+            <td>20240924102337722</td>
+            <td>6935280818516</td>
+            <td>Keyboard</td>
+            <td>₱279.00</td>
+            <td>1</td>
+            <td>₱0.00</td>
+            <td>₱279.00</td>
+            <td>lex</td>
+            <td><button class="void-btn">Void</button></td> <!-- Void button -->
+        </tr>
+        <!-- Additional rows will follow the same structure -->
+    </tbody>
+</table>
     </div>
+</div>
 
 
     <!-- User Settings Modal -->
@@ -361,5 +380,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
     const serverTimestamp = <?php echo $serverTimestamp; ?>;
     </script>
     <script src="transaction.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>

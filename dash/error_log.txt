@@ -654,3 +654,514 @@
 [2024-09-24 11:08:25] [DEBUG] Updated quantity for product ID 2: -10
 [2024-09-24 11:08:25] [DEBUG] Inserted sale record for invoice 20240924846859989
 [2024-09-24 11:08:25] [DEBUG] Transaction committed successfully
+[2024-09-24 11:17:03] [DEBUG] Received data: {"invoice":"20240924144783682","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 11:17:03] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 11:17:03] [DEBUG] Inserted sale record for invoice 20240924144783682
+[2024-09-24 11:17:03] [DEBUG] Transaction committed successfully
+[2024-09-24 11:17:34] [DEBUG] Received data: {"invoice":"20240924426803954","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 11:17:34] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 11:17:34] [DEBUG] Inserted sale record for invoice 20240924426803954
+[2024-09-24 11:17:34] [DEBUG] Transaction committed successfully
+[2024-09-24 11:39:25] [DEBUG] Received data: {"invoice":"20240924738955450","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":20,"discount_amount":0,"total":2400}]}
+[2024-09-24 11:39:25] [DEBUG] Updated quantity for product ID 1: -20
+[2024-09-24 11:39:25] [DEBUG] Inserted sale record for invoice 20240924738955450
+[2024-09-24 11:39:25] [DEBUG] Transaction committed successfully
+[2024-09-24 11:42:34] [DEBUG] Received data: {"invoice":"20240924946399865","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 11:42:34] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 11:42:34] [DEBUG] Inserted sale record for invoice 20240924946399865
+[2024-09-24 11:42:34] [DEBUG] Transaction committed successfully
+[2024-09-24 11:45:48] [DEBUG] Received data: {"invoice":"20240924135380589","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":4,"discount_amount":0,"total":480}]}
+[2024-09-24 11:45:48] [DEBUG] Updated quantity for product ID 1: -4
+[2024-09-24 11:45:48] [DEBUG] Inserted sale record for invoice 20240924135380589
+[2024-09-24 11:45:48] [DEBUG] Transaction committed successfully
+[2024-09-24 11:50:28] [DEBUG] Received data: {"invoice":"20240924420462519","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 11:50:28] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 11:50:28] [DEBUG] Inserted sale record for invoice 20240924420462519
+[2024-09-24 11:50:28] [DEBUG] Transaction committed successfully
+[2024-09-24 11:50:49] Received data: Array
+(
+    [invoice] => 20240924441311341
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => Rk Keyboard
+                    [price] => 120
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 120
+                )
+
+        )
+
+)
+
+[2024-09-24 11:50:49] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924441311341', '6935280818516', 'Rk Keyboard', 120, 1, 0, 120, NOW(), 'matet')
+[2024-09-24 11:51:09] Received data: Array
+(
+    [invoice] => 20240924460203937
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => Rk Keyboard
+                    [price] => 120
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 120
+                )
+
+        )
+
+)
+
+[2024-09-24 11:51:09] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924460203937', '6935280818516', 'Rk Keyboard', 120, 1, 0, 120, NOW(), 'matet')
+[2024-09-24 11:51:48] Received data: Array
+(
+    [invoice] => 20240924486656877
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => Rk Keyboard
+                    [price] => 120
+                    [quantity] => 1
+                    [discount_amount] => 6
+                    [total] => 114
+                )
+
+            [1] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 731126101165
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 6.15
+                    [total] => 116.85
+                )
+
+            [2] => Array
+                (
+                    [product_id] => 3
+                    [barcode] => 195243500438
+                    [description] => Heavy Duty Hammer
+                    [price] => 279
+                    [quantity] => 1
+                    [discount_amount] => 13.95
+                    [total] => 265.05
+                )
+
+        )
+
+)
+
+[2024-09-24 11:51:48] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924486656877', '6935280818516', 'Rk Keyboard', 120, 1, 6, 114, NOW(), 'matet')
+[2024-09-24 11:51:48] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924486656877', '731126101165', 'qwe', 123, 1, 6.15, 116.85, NOW(), 'matet')
+[2024-09-24 11:51:48] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924486656877', '195243500438', 'Heavy Duty Hammer', 279, 1, 13.95, 265.05, NOW(), 'matet')
+[2024-09-24 12:09:55] Received data: Array
+(
+    [invoice] => 20240924578827938
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => Rk Keyboard
+                    [price] => 120
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 120
+                )
+
+        )
+
+)
+
+[2024-09-24 12:09:55] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924578827938', '6935280818516', 'Rk Keyboard', 120, 1, 0, 120, NOW(), 'matet')
+[2024-09-24 12:10:20] Received data: Array
+(
+    [invoice] => 20240924612706071
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 731126101165
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+)
+
+[2024-09-24 12:10:20] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924612706071', '731126101165', 'qwe', 123, 1, 0, 123, NOW(), 'matet')
+[2024-09-24 12:10:49] Received data: Array
+(
+    [invoice] => 20240924641434326
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => Rk Keyboard
+                    [price] => 120
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 120
+                )
+
+        )
+
+)
+
+[2024-09-24 12:10:49] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924641434326', '6935280818516', 'Rk Keyboard', 120, 1, 0, 120, NOW(), 'matet')
+[2024-09-24 12:38:21] Received data: Array
+(
+    [invoice] => 20240924294962956
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => Rk Keyboard
+                    [price] => 120
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 120
+                )
+
+        )
+
+)
+
+[2024-09-24 12:38:21] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924294962956', '6935280818516', 'Rk Keyboard', 120, 1, 0, 120, NOW(), 'matet')
+[2024-09-24 12:48:41] Received data: Array
+(
+    [invoice] => 20240924915920649
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => Rk Keyboard
+                    [price] => 120
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 120
+                )
+
+        )
+
+)
+
+[2024-09-24 12:48:41] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924915920649', '6935280818516', 'Rk Keyboard', 120, 1, 0, 120, NOW(), 'matet')
+[2024-09-24 12:52:40] Received data: Array
+(
+    [invoice] => 20240924152456872
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => Rk Keyboard
+                    [price] => 120
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 120
+                )
+
+        )
+
+)
+
+[2024-09-24 12:52:40] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924152456872', '6935280818516', 'Rk Keyboard', 120, 1, 0, 120, NOW(), 'matet')
+[2024-09-24 12:54:23] Received data: Array
+(
+    [invoice] => 20240924162075412
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => Rk Keyboard
+                    [price] => 120
+                    [quantity] => 9
+                    [discount_amount] => 0
+                    [total] => 1080
+                )
+
+        )
+
+)
+
+[2024-09-24 12:54:23] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924162075412', '6935280818516', 'Rk Keyboard', 120, 9, 0, 1080, NOW(), 'matet')
+[2024-09-24 13:13:07] [DEBUG] Received data: {"invoice":"20240924378329000","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 13:13:07] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 13:13:07] [DEBUG] Inserted sale record for invoice 20240924378329000
+[2024-09-24 13:13:07] [DEBUG] Transaction committed successfully
+[2024-09-24 13:13:36] [DEBUG] Received data: {"invoice":"20240924388774520","sales":[{"product_id":"3","barcode":"195243500438","description":"Heavy Duty Hammer","price":279,"quantity":10,"discount_amount":0,"total":2790}]}
+[2024-09-24 13:13:36] [DEBUG] Updated quantity for product ID 3: -10
+[2024-09-24 13:13:36] [DEBUG] Inserted sale record for invoice 20240924388774520
+[2024-09-24 13:13:36] [DEBUG] Transaction committed successfully
+[2024-09-24 13:14:10] [DEBUG] Received data: {"invoice":"20240924417166426","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":10,"discount_amount":0,"total":1200}]}
+[2024-09-24 13:14:10] [DEBUG] Updated quantity for product ID 1: -10
+[2024-09-24 13:14:10] [DEBUG] Inserted sale record for invoice 20240924417166426
+[2024-09-24 13:14:10] [DEBUG] Transaction committed successfully
+[2024-09-24 13:15:48] [DEBUG] Received data: {"invoice":"20240924465425585","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":8,"discount_amount":0,"total":960}]}
+[2024-09-24 13:15:48] [DEBUG] Updated quantity for product ID 1: -8
+[2024-09-24 13:15:48] [DEBUG] Inserted sale record for invoice 20240924465425585
+[2024-09-24 13:15:48] [DEBUG] Transaction committed successfully
+[2024-09-24 13:16:24] [DEBUG] Received data: {"invoice":"20240924576872373","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 13:16:24] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 13:16:24] [DEBUG] Inserted sale record for invoice 20240924576872373
+[2024-09-24 13:16:24] [DEBUG] Transaction committed successfully
+[2024-09-24 15:53:48] [DEBUG] Received data: {"invoice":"20240924872806362","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":9,"discount_amount":0,"total":1080}]}
+[2024-09-24 15:53:48] [DEBUG] Updated quantity for product ID 1: -9
+[2024-09-24 15:53:48] [DEBUG] Inserted sale record for invoice 20240924872806362
+[2024-09-24 15:53:48] [DEBUG] Transaction committed successfully
+[2024-09-24 15:58:05] [DEBUG] Received data: {"invoice":"20240924029762551","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":10,"discount_amount":0,"total":1200}]}
+[2024-09-24 15:58:05] [DEBUG] Updated quantity for product ID 1: -10
+[2024-09-24 15:58:05] [DEBUG] Inserted sale record for invoice 20240924029762551
+[2024-09-24 15:58:05] [DEBUG] Transaction committed successfully
+[2024-09-24 16:12:39] [DEBUG] Received data: {"invoice":"20240924287056063","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 16:12:39] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 16:12:39] [DEBUG] Inserted sale record for invoice 20240924287056063
+[2024-09-24 16:12:39] [DEBUG] Transaction committed successfully
+[2024-09-24 16:13:25] [DEBUG] Received data: {"invoice":"20240924195036561","sales":[{"product_id":"1","barcode":"6935280818516","description":"Rk Keyboard","price":120,"quantity":1,"discount_amount":0,"total":120}]}
+[2024-09-24 16:13:25] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 16:13:25] [DEBUG] Inserted sale record for invoice 20240924195036561
+[2024-09-24 16:13:25] [DEBUG] Transaction committed successfully
+[2024-09-24 16:32:31] [DEBUG] Received data: {"invoice":"20240924074439632","sales":[{"product_id":"1","barcode":"6935280818516","description":"Royal Kludge Keyboard","price":120,"quantity":25,"discount_amount":0,"total":3000}]}
+[2024-09-24 16:32:31] [DEBUG] Updated quantity for product ID 1: -25
+[2024-09-24 16:32:31] [DEBUG] Inserted sale record for invoice 20240924074439632
+[2024-09-24 16:32:31] [DEBUG] Transaction committed successfully
+[2024-09-24 16:51:50] [DEBUG] Received data: {"invoice":"20240924445614033","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":80,"discount_amount":0,"total":22320}]}
+[2024-09-24 16:51:50] [DEBUG] Updated quantity for product ID 1: -80
+[2024-09-24 16:51:50] [DEBUG] Inserted sale record for invoice 20240924445614033
+[2024-09-24 16:51:50] [DEBUG] Transaction committed successfully
+[2024-09-24 16:52:16] [DEBUG] Received data: {"invoice":"20240924511543595","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":15,"discount_amount":0,"total":4185}]}
+[2024-09-24 16:52:16] [DEBUG] Updated quantity for product ID 1: -15
+[2024-09-24 16:52:16] [DEBUG] Inserted sale record for invoice 20240924511543595
+[2024-09-24 16:52:16] [DEBUG] Transaction committed successfully
+[2024-09-24 16:52:57] [DEBUG] Received data: {"invoice":"20240924537641431","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 16:52:57] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 16:52:57] [DEBUG] Inserted sale record for invoice 20240924537641431
+[2024-09-24 16:52:57] [DEBUG] Transaction committed successfully
+[2024-09-24 16:54:49] [DEBUG] Received data: {"invoice":"20240924578064728","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":13.95,"total":265.05}]}
+[2024-09-24 16:54:49] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 16:54:49] [DEBUG] Inserted sale record for invoice 20240924578064728
+[2024-09-24 16:54:49] [DEBUG] Transaction committed successfully
+[2024-09-24 17:30:57] [DEBUG] Received data: {"invoice":"20240924228580272","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 17:30:57] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 17:30:57] [DEBUG] Inserted sale record for invoice 20240924228580272
+[2024-09-24 17:30:57] [DEBUG] Transaction committed successfully
+[2024-09-24 17:41:30] Received data: Array
+(
+    [invoice] => 20240924479290292
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => keyboard
+                    [price] => 279
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 279
+                )
+
+        )
+
+    [totalAmount] => 279
+    [paymentAmount] => 280
+    [change] => 1
+)
+
+[2024-09-24 17:41:30] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924479290292', '6935280818516', 'keyboard', 279, 1, 0, 279, NOW(), 'lex')
+[2024-09-24 18:43:59] [DEBUG] Received data: {"invoice":"20240924226335295","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 18:43:59] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 18:43:59] [DEBUG] Inserted sale record for invoice 20240924226335295
+[2024-09-24 18:43:59] [DEBUG] Transaction committed successfully
+[2024-09-24 18:56:35] Received data: Array
+(
+    [invoice] => 20240924988904902
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => keyboard
+                    [price] => 279
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 279
+                )
+
+        )
+
+    [totalAmount] => 279
+    [paymentAmount] => 280
+    [change] => 1
+)
+
+[2024-09-24 18:56:35] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924988904902', '6935280818516', 'keyboard', 279, 1, 0, 279, NOW(), 'lex')
+[2024-09-24 18:57:15] Received data: Array
+(
+    [invoice] => 20240924029237362
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => keyboard
+                    [price] => 279
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 279
+                )
+
+        )
+
+    [totalAmount] => 279
+    [paymentAmount] => 280
+    [change] => 1
+)
+
+[2024-09-24 18:57:15] Executing query: INSERT INTO sales (invoice, barcode, description, price, quantity, discount_amount, total, sale_date, cashier_name)
+                      VALUES ('20240924029237362', '6935280818516', 'keyboard', 279, 1, 0, 279, NOW(), 'lex')
+[2024-09-24 19:27:05] Received data: Array
+(
+    [invoice] => 20240924818831851
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => keyboard
+                    [price] => 279
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 279
+                )
+
+        )
+
+)
+
+[2024-09-24 19:27:05] Error in transaction: Unknown column 'ReorderLevel' in 'field list'
+[2024-09-24 19:27:11] Received data: Array
+(
+    [invoice] => 20240924818831851
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 6935280818516
+                    [description] => keyboard
+                    [price] => 279
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 279
+                )
+
+        )
+
+)
+
+[2024-09-24 19:27:11] Error in transaction: Unknown column 'ReorderLevel' in 'field list'
+[2024-09-24 19:27:25] [DEBUG] Received data: {"invoice":"20240924840282501","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 19:27:25] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 19:27:25] [DEBUG] Inserted sale record for invoice 20240924840282501
+[2024-09-24 19:27:25] [DEBUG] Transaction committed successfully
+[2024-09-24 19:52:01] [DEBUG] Received data: {"invoice":"20240924311173587","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 19:52:01] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 19:52:01] [DEBUG] Inserted sale record for invoice 20240924311173587
+[2024-09-24 19:52:01] [DEBUG] Transaction committed successfully
+[2024-09-24 19:52:57] [DEBUG] Received data: {"invoice":"20240924371377676","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 19:52:57] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 19:52:57] [DEBUG] Inserted sale record for invoice 20240924371377676
+[2024-09-24 19:52:57] [DEBUG] Transaction committed successfully
+[2024-09-24 19:55:32] [DEBUG] Received data: {"invoice":"20240924523729448","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 19:55:32] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 19:55:32] [DEBUG] Inserted sale record for invoice 20240924523729448
+[2024-09-24 19:55:32] [DEBUG] Transaction committed successfully
+[2024-09-24 19:56:23] [DEBUG] Received data: {"invoice":"20240924533157831","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 19:56:23] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 19:56:23] [DEBUG] Inserted sale record for invoice 20240924533157831
+[2024-09-24 19:56:23] [DEBUG] Transaction committed successfully
+[2024-09-24 19:57:01] [DEBUG] Received data: {"invoice":"20240924613906348","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 19:57:01] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 19:57:01] [DEBUG] Inserted sale record for invoice 20240924613906348
+[2024-09-24 19:57:01] [DEBUG] Transaction committed successfully
+[2024-09-24 19:58:36] [DEBUG] Received data: {"invoice":"20240924708344348","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 19:58:36] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 19:58:36] [DEBUG] Inserted sale record for invoice 20240924708344348
+[2024-09-24 19:58:36] [DEBUG] Transaction committed successfully
+[2024-09-24 20:21:05] [DEBUG] Received data: {"invoice":"20240924059281554","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 20:21:05] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 20:21:05] [DEBUG] Inserted sale record for invoice 20240924059281554
+[2024-09-24 20:21:05] [DEBUG] Transaction committed successfully
+[2024-09-24 20:21:35] [DEBUG] Received data: {"invoice":"20240924087036238","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 20:21:35] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 20:21:35] [DEBUG] Inserted sale record for invoice 20240924087036238
+[2024-09-24 20:21:35] [DEBUG] Transaction committed successfully
+[2024-09-24 20:29:01] [DEBUG] Received data: {"invoice":"20240924534553420","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 20:29:01] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 20:29:01] [DEBUG] Inserted sale record for invoice 20240924534553420
+[2024-09-24 20:29:01] [DEBUG] Transaction committed successfully
+[2024-09-24 20:33:11] [DEBUG] Received data: {"invoice":"20240924785797460","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 20:33:11] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 20:33:11] [DEBUG] Inserted sale record for invoice 20240924785797460
+[2024-09-24 20:33:11] [DEBUG] Transaction committed successfully
+[2024-09-24 20:37:01] [DEBUG] Received data: {"invoice":"20240924015919243","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 20:37:01] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 20:37:01] [DEBUG] Inserted sale record for invoice 20240924015919243
+[2024-09-24 20:37:01] [DEBUG] Transaction committed successfully
+[2024-09-24 20:38:27] [DEBUG] Received data: {"invoice":"20240924102337722","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 20:38:27] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 20:38:27] [DEBUG] Inserted sale record for invoice 20240924102337722
+[2024-09-24 20:38:27] [DEBUG] Transaction committed successfully
+[2024-09-24 22:18:00] [DEBUG] Received data: {"invoice":"20240924064077900","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-24 22:18:00] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-24 22:18:00] [DEBUG] Inserted sale record for invoice 20240924064077900
+[2024-09-24 22:18:00] [DEBUG] Transaction committed successfully
+[2024-09-24 22:18:14] [DEBUG] Received data: {"invoice":"20240924081457568","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":5,"discount_amount":0,"total":1395}]}
+[2024-09-24 22:18:14] [DEBUG] Updated quantity for product ID 1: -5
+[2024-09-24 22:18:14] [DEBUG] Inserted sale record for invoice 20240924081457568
+[2024-09-24 22:18:14] [DEBUG] Transaction committed successfully

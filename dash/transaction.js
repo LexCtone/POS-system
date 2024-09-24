@@ -530,8 +530,6 @@ document.addEventListener('DOMContentLoaded', function() {
             sales: sales
         };
     
-        console.log('Sending transaction data:', JSON.stringify(transactionData));
-    
         try {
             const response = await fetch('update_quantities.php', {
                 method: 'POST',
@@ -541,44 +539,120 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(transactionData)
             });
     
-            console.log('Response status:', response.status);
-            console.log('Response headers:', response.headers);
-    
-            const responseText = await response.text();
-            console.log('Raw response:', responseText);
-    
-            let result;
-            try {
-                result = JSON.parse(responseText);
-            } catch (e) {
-                console.error('Error parsing JSON:', e);
-                throw new Error('Invalid JSON response from server');
-            }
-    
-            console.log('Parsed server response:', result);
+            const result = await response.json();
     
             if (result.success) {
-                console.log('Transaction successful, about to show alert');
                 alert('Transaction saved successfully!');
-                console.log('Alert should have been shown');
                 clearCart();
                 closeModal(settlePaymentModal);
-                
+    
                 // Generate a new transaction number
                 const newTransactionNo = generateTransactionNo();
-                console.log('New transaction number generated:', newTransactionNo);
-                
-                // Reset the transaction counter
                 transactionCounter = 1;
+    
+                // Prompt to print receipt
+                const printReceipt = confirm('Do you want to print the receipt?');
+                if (printReceipt) {
+                    // Generate and print the receipt
+                    generateReceipt(transactionData, totalAmount, paymentAmount, change);
+                }
+    
             } else {
-                console.error('Server reported error:', result);
                 alert('Error saving transaction: ' + (result.message || 'Unknown error'));
             }
         } catch (error) {
-            console.error('Error in saveTransaction:', error);
             alert('An error occurred while saving the transaction: ' + error.message);
         }
     }
+    
+    function generateReceipt(transactionData, totalAmount, paymentAmount, change) {
+        // Store Information
+        const storeInfo = `
+            <h2>STORE NAME</h2>
+            <p>Store Address</p>
+            <p>Contact Info (Phone/Email)</p>
+        `;
+    
+        // Transaction Information
+        const transactionInfo = `
+            <p>Receipt #: ${transactionData.invoice}</p>
+            <p>Date: ${new Date().toLocaleDateString()} Time: ${new Date().toLocaleTimeString()}</p>
+            <p>Cashier: John Doe</p>
+        `;
+    
+        // Itemized List of Products
+        let itemsList = `<table style="width: 100%;">
+            <tr>
+                <th>Item Description</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>`;
+    
+        transactionData.sales.forEach((item) => {
+            itemsList += `
+                <tr>
+                    <td>${item.description}</td>
+                    <td>${item.quantity}</td>
+                    <td>₱${item.price.toFixed(2)}</td>
+                    <td>₱${item.total.toFixed(2)}</td>
+                </tr>
+            `;
+        });
+    
+        itemsList += `</table>`;
+    
+        // Subtotal, Discounts, Taxes, Total, and Change
+        const receiptSummary = `
+            <p>Subtotal: ₱${totalAmount.toFixed(2)}</p>
+            <p>Tax (12%): ₱${(totalAmount * 0.12).toFixed(2)}</p>
+            <p>Total: ₱${(totalAmount * 1.12).toFixed(2)}</p>
+            <p>Amount Tendered: ₱${paymentAmount.toFixed(2)}</p>
+            <p>Change: ₱${change.toFixed(2)}</p>
+        `;
+    
+        // Footer
+        const footer = `
+            <p>Thank you for shopping with us!</p>
+            <p>Visit us again or check our website!</p>
+        `;
+    
+        // Combine all sections
+        const receiptContent = `
+            <div style="text-align: center;">
+                ${storeInfo}
+                <hr>
+                ${transactionInfo}
+                <hr>
+                ${itemsList}
+                <hr>
+                ${receiptSummary}
+                <hr>
+                ${footer}
+            </div>
+        `;
+    
+        // Create an iframe for printing (more reliable for some browsers)
+        const printFrame = document.createElement('iframe');
+        printFrame.style.position = 'absolute';
+        printFrame.style.width = '0';
+        printFrame.style.height = '0';
+        printFrame.style.border = 'none';
+        document.body.appendChild(printFrame);
+    
+        const printDocument = printFrame.contentDocument || printFrame.contentWindow.document;
+        printDocument.open();
+        printDocument.write(`<html><head><title>Receipt</title></head><body>${receiptContent}</body></html>`);
+        printDocument.close();
+    
+        printFrame.contentWindow.focus();
+        printFrame.contentWindow.print();
+    
+        // Remove the iframe after printing
+        document.body.removeChild(printFrame);
+    }
+    
+    
     
     function clearCart() {
         console.log('Clearing cart');
@@ -641,15 +715,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <td>₱${parseFloat(sale.discount_amount).toFixed(2)}</td>
                                 <td>₱${parseFloat(sale.total).toFixed(2)}</td>
                                 <td>${sale.cashier_name}</td>
+                                <td><button class="void-button" data-invoice="${sale.invoice}">Void</button></td>
                             </tr>
                         `;
                         salesDataBody.insertAdjacentHTML('beforeend', row);
                     });
                     updateModalTotalSales(data.totalSales);
                 } else {
-                    salesDataBody.innerHTML = '<tr><td colspan="9">No sales data found</td></tr>';
+                    salesDataBody.innerHTML = '<tr><td colspan="10">No sales data found</td></tr>'; // Adjust colspan to 10
                     updateModalTotalSales(0);
-                }
+                }                
             })
             .catch(error => {
                 console.error('Error:', error);

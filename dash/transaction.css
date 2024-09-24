@@ -242,15 +242,27 @@ body {
 /* Modal content */
 .modal-content {
     background-color: #fff;
-    margin: 5% auto; /* Center the modal */
+    width: 100%;
+    max-width: 1550px;
+    max-height: 100%;
+    margin: auto;
     padding: 20px;
     border-radius: 8px;
-    width: 80%;
-    max-width: 800px;
-    animation: slide-down 0.3s ease-in-out;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    margin-bottom: 20px; /* Ensure the bottom margin is same as padding */
 }
 
+/* Table container with a scrollable tbody */
+.table-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Add margin to the bottom */
+}
 /* Modal Header */
 .modal-content h2 {
     margin-top: 0;
@@ -516,7 +528,7 @@ body {
 .daily-sales-modal {
     display: none;
     position: fixed;
-    z-index: 9999; /* Ensure the modal is above all other content */
+    z-index: 9999;
     left: 0;
     top: 0;
     width: 100%;
@@ -524,32 +536,35 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-    overflow-y: auto; /* Allow scrolling if the modal content exceeds screen height */
-    padding: 20px; /* Add padding to prevent it from touching screen edges */
+    padding: 20px;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 /* Modal content */
 .modal-content {
     background-color: #fff;
-    width: 90%;
-    max-width: 1200px; /* Limit the width of the modal */
-    max-height: 90%;
+    width: 100%;
+    max-width: 1550px;
+    max-height: 100%;
     margin: auto;
     padding: 20px;
     border-radius: 8px;
-    overflow-y: auto; /* Make content scrollable if it's too tall */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
 
 /* Close button */
 .close-button {
     color: #aaa;
-    float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    align-self: flex-end;
 }
 
 .close-button:hover,
@@ -559,11 +574,11 @@ body {
     cursor: pointer;
 }
 
-/* Heading */
+/* Modal heading */
 .modal-content h2 {
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: 30px;
+    font-size: 30px;
     color: #1c75a6;
 }
 
@@ -572,9 +587,9 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
     gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .filters label {
@@ -606,20 +621,81 @@ body {
     background-color: #155d82;
 }
 
-/* Total Sales and Print Preview container */
+/* Align total sales to the right of the filter button */
 .sales-print-container {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 10px;
-    margin-left: auto;
+    width: 100%;
+    margin-top: 10px;
 }
 
 .total-sales {
     font-size: 20px;
     font-weight: bold;
-    color: #1c75a6;
+    color: #10fa07;
+    white-space: nowrap;
+    background-color: black;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
+/* Table container */
+.table-container {
+    flex-grow: 1;
+    margin-top: 20px;
+}
+
+/* Scrollable table body */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    table-layout: fixed;
+}
+
+table th,
+table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    font-size: 15px;
+    word-wrap: break-word;
+}
+
+table th {
+    background-color: #1c75a6;
+    color: white;
+    font-size: 18px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+/* Make tbody scrollable */
+table tbody {
+    display: block;
+    max-height: 400px; /* Adjust this value as needed */
+    overflow-y: auto;
+}
+
+table thead,
+table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Print button */
 .print-btn {
     padding: 10px 15px;
     background-color: #1c75a6;
@@ -634,37 +710,6 @@ body {
     background-color: #155d82;
 }
 
-/* Table styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
-}
-
-table th,
-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-}
-
-table th {
-    background-color: #1c75a6;
-    color: white;
-    font-size: 18px;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
-
-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .modal-content {
@@ -674,14 +719,14 @@ table tbody tr:hover {
 
     .filters {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
     }
 
     .filters input[type="date"],
     .filters select,
     .filters button {
         width: 100%;
-        text-align: center;
+        text-align: left;
     }
 
     .sales-print-container {
@@ -693,6 +738,7 @@ table tbody tr:hover {
 
     .total-sales {
         font-size: 18px;
+        margin-bottom: 20px;
     }
 
     .print-btn {
@@ -711,6 +757,7 @@ table tbody tr:hover {
         transform: scale(1);
     }
 }
+
 /* Per-Purchase Discount Modal Styling */
 #perPurchaseDiscountModal.modal {
     display: none;
