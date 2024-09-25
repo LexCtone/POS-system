@@ -2,7 +2,7 @@
 session_start();
 include '../connect.php';
 
-// Check if the user is a cashier
+// Check if the user is logged in and is a cashier
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'cashier') {
     header("Location: access_denied.php");
     exit();
@@ -25,23 +25,29 @@ $serverTimestamp = time() * 1000; // PHP time() * 1000 to get JS timestamp
 
 // Handle AJAX request for fetching sales data
 if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
-    // Check if the user is logged in and is a cashier
-    if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'cashier') {
-        echo json_encode(['error' => 'Unauthorized access']);
-        exit();
-    }
-
     // Get filter parameters
     $dateFrom = $_GET['dateFrom'] ?? '';
     $dateTo = $_GET['dateTo'] ?? '';
     $cashierId = $_GET['cashierId'] ?? 'all';
+    $view = $_GET['view'] ?? 'item'; // Default view is 'item'
 
-    // Prepare the SQL query
-    $sql = "SELECT s.id, s.invoice, s.barcode, s.description, s.price, s.quantity, s.discount_amount, s.total, a.username as cashier_name
-            FROM sales s
-            JOIN accounts a ON s.cashier_name = a.username
-            WHERE 1=1";
+    // Initialize base query
+    $sql = "";
+    if ($view === 'transaction') {
+        // Query for transaction summary
+        $sql = "SELECT s.invoice, MIN(s.sale_date) as date, a.username as cashier_name, SUM(s.total) as total
+                FROM sales s
+                JOIN accounts a ON s.cashier_name = a.username
+                WHERE 1=1";
+    } else {
+        // Query for item-level details
+        $sql = "SELECT s.id, s.invoice, s.barcode, s.description, s.price, s.quantity, s.discount_amount, s.total, a.username as cashier_name, s.sale_date
+                FROM sales s
+                JOIN accounts a ON s.cashier_name = a.username
+                WHERE 1=1";
+    }
 
+    // Add filters for date range and cashier
     if ($dateFrom) {
         $sql .= " AND DATE(s.sale_date) >= ?";
     }
@@ -52,13 +58,19 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
         $sql .= " AND a.id = ?";
     }
 
-    $sql .= " ORDER BY s.sale_date DESC";
+    // For transaction view, group by invoice
+    if ($view === 'transaction') {
+        $sql .= " GROUP BY s.invoice, a.username";
+        $sql .= " ORDER BY MIN(s.sale_date) DESC"; // Order by sale date for transaction view
+    } else {
+        $sql .= " ORDER BY s.sale_date DESC"; // Order by sale date for item view
+    }
 
+    // Prepare and bind the parameters
     $stmt = $conn->prepare($sql);
-
-    // Bind parameters
     $types = '';
     $params = [];
+
     if ($dateFrom) {
         $types .= 's';
         $params[] = $dateFrom;
@@ -72,29 +84,73 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
         $params[] = $cashierId;
     }
 
+    // Bind the parameters if there are any
     if (!empty($params)) {
         $stmt->bind_param($types, ...$params);
     }
 
+    // Execute the query and handle the result
     $stmt->execute();
     $result = $stmt->get_result();
 
     $sales = [];
     $totalSales = 0;
 
+    // Fetch the result set
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $sales[] = $row;
+            if ($view === 'transaction') {
+                // Transaction view: Fetch items for each transaction (invoice)
+                $invoice = $row['invoice'];
+                $itemsStmt = $conn->prepare("SELECT barcode, description, price, quantity, discount_amount, total FROM sales WHERE invoice = ?");
+                $itemsStmt->bind_param("s", $invoice);
+                $itemsStmt->execute();
+                $itemsResult = $itemsStmt->get_result();
+
+                $items = [];
+                while ($item = $itemsResult->fetch_assoc()) {
+                    $items[] = $item; // Collect items for this transaction
+                }
+                $itemsStmt->close();
+
+                // Add the transaction details and its items to the sales array
+                $sales[] = [
+                    'invoice' => $row['invoice'],
+                    'date' => $row['date'],
+                    'cashier_name' => $row['cashier_name'],
+                    'total' => $row['total'],
+                    'items' => $items // Add items array here
+                ];
+            } else {
+                // Item view: Add each item directly to the sales array
+                $sales[] = [
+                    'id' => $row['id'],
+                    'invoice' => $row['invoice'],
+                    'barcode' => $row['barcode'],
+                    'description' => $row['description'],
+                    'price' => $row['price'],
+                    'quantity' => $row['quantity'],
+                    'discount_amount' => $row['discount_amount'],
+                    'total' => $row['total'],
+                    'cashier_name' => $row['cashier_name'],
+                    'sale_date' => $row['sale_date']
+                ];
+            }
+
+            // Accumulate total sales for both views
             $totalSales += $row['total'];
         }
     }
 
+    // Close the main statement
     $stmt->close();
 
+    // Return the sales data as a JSON response
     echo json_encode(['sales' => $sales, 'totalSales' => $totalSales]);
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -275,9 +331,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
 <div id="dailySalesModal" class="modal daily-sales-modal">
     <div class="modal-content">
         <span class="close-button">&times;</span>
-        <h2>Daily Sales</h2>
+        <h2>Daily Sales</h2> 
+        
         <div class="sales-print-container">
-            <div class="filters filter-controls"> <!-- Added class 'filter-controls' here -->
+            <div class="filters filter-controls">
                 <label for="dateFrom">From:</label>
                 <input type="date" id="dateFrom">
                 <label for="dateTo">To:</label>
@@ -296,50 +353,129 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
                     $stmt->close();
                     ?>
                 </select>
-                <button>Filter</button> <!-- This button is now inside 'filter-controls' -->
+                <button>Filter</button>
             </div>
             <div class="total-sales">
                 <span id="modalTotalSales">₱0.00</span>
             </div>
         </div>
-
-<!-- Table with scrollable tbody -->
-<table class="scrollable-table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Invoice</th>
-            <th>Barcode</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Discount</th>
-            <th>Total</th>
-            <th>Cashier</th>
-            <th>Action</th> <!-- Added column for Void button -->
-        </tr>
-    </thead>
-    <tbody id="salesData" class="scrollable-tbody">
-        <!-- Sales data will be populated here dynamically -->
-        <!-- Example row with Void button -->
-        <tr>
-            <td>1</td>
-            <td>20240924102337722</td>
-            <td>6935280818516</td>
-            <td>Keyboard</td>
-            <td>₱279.00</td>
-            <td>1</td>
-            <td>₱0.00</td>
-            <td>₱279.00</td>
-            <td>lex</td>
-            <td><button class="void-btn">Void</button></td> <!-- Void button -->
-        </tr>
-        <!-- Additional rows will follow the same structure -->
-    </tbody>
-</table>
+        <div class="toggle-container">
+            <label for="toggleView">View:</label>
+            <button id="toggleView">Switch to Transaction View</button>
+                    <!-- Table with scrollable tbody -->
+        <table class="scrollable-table" id="salesTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Invoice</th>
+                    <th>Barcode</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Discount</th>
+                    <th>Total</th>
+                    <th>Cashier</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="salesData" class="scrollable-tbody">
+                <!-- Sales data will be populated here dynamically -->
+            </tbody>
+        </table>
     </div>
 </div>
+        </div>
+    </div>
 
+
+<!-- Cancel Order Modal -->
+<div id="cancelOrderModal" class="cancel-modal">
+    <div class="cancel-modal-content">
+        <div class="cancel-modal-header">
+            <h2>CANCEL ORDER DETAILS</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="cancel-modal-body">
+            <div class="grid">
+                <div>
+                    <h3 class="section-title">SOLD ITEM</h3>
+                    <div class="cancel-form-group">
+                        <label for="id">ID</label>
+                        <input type="text" id="id" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="productCode">PRODUCT CODE</label>
+                        <input type="text" id="productCode" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="description">DESCRIPTION</label>
+                        <input type="text" id="description" readonly>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="section-title">TRANSACTION</h3>
+                    <div class="cancel-form-group">
+                        <label for="transaction">TRANSACTION NO.</label>
+                        <input type="text" id="transaction" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="price">PRICE</label>
+                        <input type="text" id="price" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="qtyDiscount">QTY & DISCOUNT</label>
+                        <input type="text" id="qtyDiscount" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="total">TOTAL PRICE</label>
+                        <input type="text" id="total" readonly>
+                    </div>
+                </div>
+            </div>
+            <h3 class="section-title">CANCEL ITEM(S)</h3>
+            <div class="grid">
+                <div>
+                    <div class="cancel-form-group">
+                        <label for="voidBy">VOID BY</label>
+                        <input type="text" id="voidBy" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="cancelledBy">CANCELLED BY</label>
+                        <input type="text" id="cancelledBy" value="cashier" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="addToInventory">ADD TO INVENTORY?</label>
+                        <select id="addToInventory">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <div class="cancel-form-group">
+                        <label for="cancelQty">CANCEL QTY</label>
+                        <input type="number" id="cancelQty">
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="cancelReason">REASON(S)</label>
+                        <textarea id="cancelReason" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="cancel-modal-btn">CANCEL ORDER</button>
+        </div>
+    </div>
+</div>
+<!-- Modal Structure -->
+<div id="transactionModal" class="transaction-modal">
+    <div class="transaction-modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Transaction Details</h2>
+        <div id="transactionDetailsContent">
+            <!-- Transaction details will be injected here -->
+        </div>
+    </div>
+</div>
 
     <!-- User Settings Modal -->
 <div id="userSettingsModal" class="modal">
@@ -379,7 +515,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
     // Pass server-generated data to JavaScript
     const serverTimestamp = <?php echo $serverTimestamp; ?>;
     </script>
-    <script src="transaction.js"></script>
+    <script src="transaction.js"> defer</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>

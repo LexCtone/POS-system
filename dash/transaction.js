@@ -20,7 +20,65 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearCartBtn = document.querySelector('button.clear-btn:not(#searchProductBtn)');
     const headerTotalSalesElement = document.getElementById('headerTotalSales');
     const modalTotalSalesElement = document.getElementById('modalTotalSales');
+    const cancelOrderModal = document.getElementById('cancelOrderModal');
     let transactionCounter = 1;
+
+    let currentView = 'item'; // Default view
+
+
+    function toggleSalesView() {
+        // Toggle between 'item' view and 'transaction' view
+        currentView = currentView === 'item' ? 'transaction' : 'item';
+
+        const toggleButton = document.getElementById('toggleView');
+        if (currentView === 'transaction') {
+            document.getElementById('toggleView').innerText = 'Switch to Per Item View';
+        } else {
+            document.getElementById('toggleView').innerText = 'Switch to Transaction View';
+        }
+        // Update table headers based on the current view
+        updateTableHeaders();
+    
+        // Filter and populate the table with sales data
+        filterSales();
+    }
+    
+    
+    // Function to update table headers based on the view
+    function updateTableHeaders() {
+        let tableHeader = document.querySelector('#salesTable thead tr'); // Assuming your table has ID 'salesTable'
+    
+        if (currentView === 'transaction') {
+            // Set headers for the transaction view
+            tableHeader.innerHTML = `
+                <th>#</th>
+                <th>Invoice</th>
+                <th>Date</th>
+                <th>Cashier</th>
+                <th>Total</th>
+                <th>View Details</th>
+                <th>Action</th>`;
+        } else {
+            // Set headers for the item (product) view
+            tableHeader.innerHTML = `
+                <th>#</th>
+                <th>Barcode</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Discount</th>
+                <th>Total</th>
+                <th>Cashier</th>
+                <th>Action</th>`;
+        }
+    }
+    
+    // Event listener for toggle button
+    document.getElementById('toggleView').addEventListener('click', toggleSalesView);
+    
+    // Initial population of the sales table
+    filterSales();
+    
 
     // User Settings Modal
     const userSettingsModal = document.getElementById('userSettingsModal');
@@ -691,48 +749,166 @@ document.addEventListener('DOMContentLoaded', function() {
         settlePaymentBtn.disabled = isTransactionTableEmpty();
     }
 
+
+
     function filterSales() {
         const dateFrom = document.getElementById('dateFrom').value;
         const dateTo = document.getElementById('dateTo').value;
         const cashierId = document.getElementById('cashier').value;
 
-        fetch(`transaction.php?action=fetch_sales&dateFrom=${dateFrom}&dateTo=${dateTo}&cashierId=${cashierId}`)
-            .then(response => response.json())
-            .then(data => {
-                const salesDataBody = document.getElementById('salesData');
-                salesDataBody.innerHTML = '';
+    fetch(`transaction.php?action=fetch_sales&dateFrom=${dateFrom}&dateTo=${dateTo}&cashierId=${cashierId}&view=${currentView}`)
+        .then(response => response.json())
+        .then(data => {
+            const salesDataBody = document.getElementById('salesData');
+            salesDataBody.innerHTML = '';
 
-                if (data.sales && data.sales.length > 0) {
-                    data.sales.forEach((sale, index) => {
-                        const row = `
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td>${sale.invoice}</td>
-                                <td>${sale.barcode}</td>
-                                <td>${sale.description}</td>
-                                <td>₱${parseFloat(sale.price).toFixed(2)}</td>
-                                <td>${sale.quantity}</td>
-                                <td>₱${parseFloat(sale.discount_amount).toFixed(2)}</td>
-                                <td>₱${parseFloat(sale.total).toFixed(2)}</td>
-                                <td>${sale.cashier_name}</td>
-                                <td><button class="void-button" data-invoice="${sale.invoice}">Void</button></td>
-                            </tr>
-                        `;
-                        salesDataBody.insertAdjacentHTML('beforeend', row);
-                    });
-                    updateModalTotalSales(data.totalSales);
+            if (data.sales && data.sales.length > 0) {
+                if (currentView === 'item') {
+                    displayItemView(data.sales, salesDataBody);
                 } else {
-                    salesDataBody.innerHTML = '<tr><td colspan="10">No sales data found</td></tr>'; // Adjust colspan to 10
-                    updateModalTotalSales(0);
-                }                
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while fetching sales data.');
-            });
-    }
+                    displayTransactionView(data.sales, salesDataBody);
+                }
+                updateModalTotalSales(data.totalSales);
+            } else {
+                salesDataBody.innerHTML = `<tr><td colspan="${currentView === 'item' ? '10' : '7'}">No sales data found</td></tr>`;
+                updateModalTotalSales(0);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while fetching sales data.');
+        });
+}
 
     document.querySelector('.filter-controls button').addEventListener('click', filterSales);
+
+    function displayItemView(sales, container) {
+        sales.forEach((sale, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${sale.invoice}</td>
+                    <td>${sale.barcode}</td>
+                    <td>${sale.description}</td>
+                    <td>₱${parseFloat(sale.price).toFixed(2)}</td>
+                    <td>${sale.quantity}</td>
+                    <td>₱${parseFloat(sale.discount_amount).toFixed(2)}</td>
+                    <td>₱${parseFloat(sale.total).toFixed(2)}</td>
+                    <td>${sale.cashier_name}</td>
+                    <td><button class="void-button" data-sale='${JSON.stringify(sale)}'>Void</button></td>
+                </tr>
+            `;
+            container.insertAdjacentHTML('beforeend', row);
+        });
+    
+        // Add event listeners to void buttons
+        document.querySelectorAll('.void-button').forEach(button => {
+            button.addEventListener('click', function() {
+                try {
+                    const saleData = this.getAttribute('data-sale');
+                    if (saleData) {
+                        const sale = JSON.parse(saleData);
+                        openCancelOrderModal(sale);
+                    } else {
+                        console.error('Sale data is undefined');
+                        alert('Error: Sale data is missing. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error parsing sale data:', error);
+                    alert('Error: Unable to process sale data. Please try again.');
+                }
+            });
+        });
+    }
+    
+    function displayTransactionView(transactions, container) {
+        transactions.forEach((transaction, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${transaction.invoice}</td>
+                    <td>${transaction.date}</td>
+                    <td>${transaction.cashier_name}</td>
+                    <td>₱${parseFloat(transaction.total).toFixed(2)}</td>
+                    <td><button class="view-details-button" data-transaction='${JSON.stringify(transaction)}'>View Details</button></td>
+                    <td><button class="cancel-transaction-button" data-transaction='${JSON.stringify(transaction)}'>Cancel Transaction</button></td>
+                </tr>
+            `;
+            container.insertAdjacentHTML('beforeend', row);
+        });
+    
+        // Add event listeners to view details and cancel transaction buttons
+        document.querySelectorAll('.view-details-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const transaction = JSON.parse(this.dataset.transaction);
+                viewTransactionDetails(transaction);
+            });
+        });
+    
+        document.querySelectorAll('.cancel-transaction-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const transaction = JSON.parse(this.dataset.transaction);
+                openCancelTransactionModal(transaction);
+            });
+        });
+    }
+
+    function viewTransactionDetails(transaction) {
+        console.log(transaction);  // Log the items array
+    
+        const transactModal = document.getElementById('transactionModal');
+        const modalContent = document.getElementById('transactionDetailsContent');
+        
+        // Clear previous content
+        modalContent.innerHTML = '';
+    
+        // Populate the modal with transaction details
+        const transactionHtml = `
+            <p><strong>Invoice:</strong> ${transaction.invoice}</p>
+            <p><strong>Date:</strong> ${transaction.date}</p>
+            <p><strong>Cashier:</strong> ${transaction.cashier_name}</p>
+            <p><strong>Total Amount:</strong> ₱${parseFloat(transaction.total).toFixed(2)}</p>
+            <h3>Items:</h3>
+            <ul>
+                ${Array.isArray(transaction.items) && transaction.items.length > 0 ? 
+                    transaction.items.map(item => `
+                    <li>${item.description} - Qty: ${item.quantity}, Price: ₱${parseFloat(item.price).toFixed(2)}</li>
+                    `).join('') 
+                : '<li>No items available</li>'}
+            </ul>
+        `;
+        modalContent.innerHTML = transactionHtml;
+    
+        // Show the modal
+        transactModal.style.display = 'block'; // Ensure the modal is visible
+    
+        // Handle closing the modal
+        const closeButton = document.querySelector('.close-button');
+        closeButton.addEventListener('click', () => {
+            transactModal.style.display = 'none';
+        });
+    
+        // Close modal if the user clicks anywhere outside the modal content
+        window.addEventListener('click', function(event) {
+            if (event.target === transactModal) {
+                transactModal.style.display = 'none';
+            }
+        });
+    }
+    function openCancelTransactionModal(transaction) {
+        // Populate the cancel order modal with transaction details
+        document.getElementById('id').value = transaction.id;
+        document.getElementById('transaction').value = transaction.invoice;
+        document.getElementById('total').value = transaction.total;
+        document.getElementById('voidBy').value = document.getElementById('cashierName').textContent;
+    
+        // You may need to adjust these fields or add new ones specific to transaction cancellation
+        document.getElementById('cancelQty').style.display = 'none'; // Hide quantity field for full transaction cancel
+        document.getElementById('cancelReason').value = '';
+    
+        closeModal(dailySalesModal);
+        openModal(cancelOrderModal);
+    }
 
     // User Settings Modal
     userSettingsBtn.addEventListener('click', function(e) {
@@ -787,4 +963,80 @@ document.addEventListener('DOMContentLoaded', function() {
             passwordError.style.display = 'block';
         });
     });
-});
+    function openCancelOrderModal(sale) {
+        document.getElementById('id').value = sale.id;
+        document.getElementById('productCode').value = sale.barcode;
+        document.getElementById('description').value = sale.description;
+        document.getElementById('transaction').value = sale.invoice;
+        document.getElementById('price').value = sale.price;
+        document.getElementById('qtyDiscount').value = `${sale.quantity} / ${sale.discount_amount}`;
+        document.getElementById('total').value = sale.total;
+        document.getElementById('voidBy').value = document.getElementById('cashierName').textContent;
+    
+        // Set the max attribute of cancelQty input to the original sale quantity
+        document.getElementById('cancelQty').max = sale.quantity;
+        document.getElementById('cancelQty').value = ''; // Clear any previous value
+    
+        // Close the daily sales modal
+        closeModal(dailySalesModal);
+        
+        // Open the cancel order modal
+        openModal(cancelOrderModal);
+    }
+    
+    function handleCancelOrder() {
+        const cancelQty = parseInt(document.getElementById('cancelQty').value);
+        const maxQty = parseInt(document.getElementById('cancelQty').max);
+        const cancelReason = document.getElementById('cancelReason').value;
+        const addToInventory = document.getElementById('addToInventory').value;
+    
+        // Validate inputs
+        if (!cancelQty || cancelQty <= 0) {
+            alert('Please enter a valid cancel quantity.');
+            return;
+        }
+    
+        if (cancelQty > maxQty) {
+            alert(`Cannot cancel more than the original quantity. Maximum allowed: ${maxQty}`);
+            return;
+        }
+    
+        if (!cancelReason.trim()) {
+            alert('Please provide a reason for cancellation.');
+            return;
+        }
+    
+        // Here you would typically send this data to your server to process the cancellation
+        // For now, we'll just simulate a successful cancellation
+        alert('Order cancelled successfully.');
+        
+        // Close the cancel order modal
+        closeModal(cancelOrderModal);
+        
+        // Refresh the sales data
+        filterSales();
+    }
+    
+    // Add these event listeners after your DOMContentLoaded event listener
+    
+    // Event listener for the cancel order button
+    document.querySelector('.cancel-modal-btn').addEventListener('click', handleCancelOrder);
+    
+    // Event listener for the close button in the cancel order modal
+    document.querySelector('#cancelOrderModal .close').addEventListener('click', () => closeModal(cancelOrderModal));
+    
+    // Event listener for clicking outside the cancel order modal to close it
+    cancelOrderModal.addEventListener('click', (event) => {
+        if (event.target === cancelOrderModal) {
+            closeModal(cancelOrderModal);
+        }
+    });
+    
+    // Add an event listener to prevent non-numeric input in the cancelQty field
+    document.getElementById('cancelQty').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (parseInt(this.value) > parseInt(this.max)) {
+            this.value = this.max;
+        }
+    });
+    });
