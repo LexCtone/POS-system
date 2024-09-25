@@ -240,35 +240,25 @@ body {
 }
 
 /* Modal content */
-.modal-content {
+.search-modal-content {
     background-color: #fff;
-    width: 100%;
-    max-width: 1550px;
-    max-height: 100%;
-    margin: auto;
+    width: 90%; /* Reduced width */
+    max-width: 900px; /* Limit the width of the modal */
+    margin: 5% auto; /* Centered horizontally and vertically */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    margin-bottom: 20px; /* Ensure the bottom margin is same as padding */
 }
 
-/* Table container with a scrollable tbody */
-.table-container {
-    flex-grow: 1;
-    overflow-y: auto;
-    margin-top: 20px;
-    margin-bottom: 20px; /* Add margin to the bottom */
-}
 /* Modal Header */
-.modal-content h2 {
+.search-modal-content h2 {
     margin-top: 0;
     font-size: 24px;
     color: #333;
-    text-align: center;
+    text-align: left;
     font-family: Arial, sans-serif;
 }
 
@@ -289,41 +279,58 @@ body {
 }
 
 /* Search Input */
-#searchProductInput {
-    width: 100%;
+#search-barcode {
+    width: 100%; /* Full width */
+    max-width: 300px; /* Limit input width */
     padding: 10px;
-    margin: 15px 0;
-    border: 1px solid #ddd;
+    border: 1px solid #b1b1b1;
     border-radius: 4px;
     font-size: 16px;
+    display: block;
+    margin-bottom: 10px; /* Add some space below the input */
 }
 
 /* Search Table */
 #searchProductTable {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
     font-size: 16px;
     text-align: left;
+    table-layout: fixed; /* Ensure table cells have a fixed width */
 }
 
-#searchProductTable th,
-#searchProductTable td {
-    padding: 12px;
-    border: 1px solid #ddd;
-}
-
+/* Table Headers */
 #searchProductTable th {
+    padding: 12px;
+    border: 1px solid #b2b2b2;
     background-color: #1c75a6;
     color: white;
     font-size: 18px;
     font-weight: bold;
     text-align: center;
+    white-space: nowrap; /* Prevent header text from wrapping */
 }
 
+/* Table Body */
 #searchProductTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
     background-color: #f9f9f9;
+    text-align: center;
+    word-wrap: break-word; /* Ensure the content wraps within the cells */
 }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #searchProductTable {
+        font-size: 14px; /* Reduce font size for smaller screens */
+    }
+    
+    #search-barcode {
+        max-width: 100%; /* Full width on small screens */
+    }
+}
+
 
 /* Settle Payment Modal Styling */
 .settle-payment-modal .modal-content {
