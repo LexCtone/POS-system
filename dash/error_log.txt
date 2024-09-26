@@ -1197,3 +1197,28 @@
 [2024-09-26 00:12:14] [DEBUG] Updated quantity for product ID 1: -1
 [2024-09-26 00:12:14] [DEBUG] Inserted sale record for invoice 20240925222920637
 [2024-09-26 00:12:14] [DEBUG] Transaction committed successfully
+[2024-09-26 08:44:44] Unauthorized access attempt
+[2024-09-26 09:00:23] [DEBUG] Received data: {"invoice":"20240926843875581","sales":[{"product_id":"2","barcode":"200110212312","description":"asd","price":123,"quantity":10,"discount_amount":0,"total":1230},{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279},{"product_id":"3","barcode":"123","description":"asd","price":9876543,"quantity":1,"discount_amount":0,"total":9876543},{"product_id":"4","barcode":"200110212312","description":"asd","price":123,"quantity":1,"discount_amount":0,"total":123},{"product_id":"5","barcode":"200110212312","description":"qwe","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-26 09:00:23] [DEBUG] Updated quantity for product ID 2: -10
+[2024-09-26 09:00:23] [DEBUG] Inserted sale record for invoice 20240926843875581
+[2024-09-26 09:00:23] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-26 09:00:23] [DEBUG] Inserted sale record for invoice 20240926843875581
+[2024-09-26 09:00:23] [DEBUG] Updated quantity for product ID 3: -1
+[2024-09-26 09:00:23] [DEBUG] Inserted sale record for invoice 20240926843875581
+[2024-09-26 09:00:23] [DEBUG] Updated quantity for product ID 4: -1
+[2024-09-26 09:00:23] [DEBUG] Inserted sale record for invoice 20240926843875581
+[2024-09-26 09:00:23] [DEBUG] Updated quantity for product ID 5: -1
+[2024-09-26 09:00:23] [DEBUG] Inserted sale record for invoice 20240926843875581
+[2024-09-26 09:00:23] [DEBUG] Transaction committed successfully
+[2024-09-26 09:01:16] [DEBUG] Received data: {"invoice":"20240926024804395","sales":[{"product_id":"4","barcode":"200110212312","description":"asd","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-26 09:01:16] [DEBUG] Updated quantity for product ID 4: -1
+[2024-09-26 09:01:16] [DEBUG] Inserted sale record for invoice 20240926024804395
+[2024-09-26 09:01:16] [DEBUG] Transaction committed successfully
+[2024-09-26 09:03:51] [DEBUG] Received data: {"invoice":"20240926077372713","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":13.95,"total":265.05}]}
+[2024-09-26 09:03:51] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-26 09:03:51] [DEBUG] Inserted sale record for invoice 20240926077372713
+[2024-09-26 09:03:51] [DEBUG] Transaction committed successfully
+[2024-09-26 09:32:01] [DEBUG] Received data: {"invoice":"20240926908051088","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-26 09:32:01] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-26 09:32:01] [DEBUG] Inserted sale record for invoice 20240926908051088
+[2024-09-26 09:32:01] [DEBUG] Transaction committed successfully

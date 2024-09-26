@@ -179,8 +179,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
             </div>
             <div class="transaction-item">
                 <label>Transaction Date:</label>
-                <span id="transactionDate"></span>
-            </div>
+                <span id="transactionDateDisplay"></span>
+                </div>
             <div class="transaction-item">
                 <label>Cashier:</label>
                 <span id="cashierName"><?php echo htmlspecialchars($user['username']); ?></span>
@@ -388,12 +388,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
     </div>
 
 
-<!-- Cancel Order Modal -->
-<div id="cancelOrderModal" class="cancel-modal">
+<!-- per item Cancel Order Modal -->
+<div id="cancelOrderModal" class=" modal cancel-modal">
     <div class="cancel-modal-content">
         <div class="cancel-modal-header">
             <h2>CANCEL ORDER DETAILS</h2>
-            <span class="close">&times;</span>
+            <span class="close-button">&times;</span>
         </div>
         <div class="cancel-modal-body">
             <div class="grid">
@@ -404,7 +404,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
                         <input type="text" id="id" readonly>
                     </div>
                     <div class="cancel-form-group">
-                        <label for="productCode">PRODUCT CODE</label>
+                        <label for="productCode">BARCODE</label>
                         <input type="text" id="productCode" readonly>
                     </div>
                     <div class="cancel-form-group">
@@ -466,8 +466,49 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
         </div>
     </div>
 </div>
+
+<!-- Per Transaction Void Modal -->
+<div id="cancelTransactionModal" class=" modal cancel-modal">
+    <div class="cancel-modal-content">
+        <div class="cancel-modal-header">
+            <h2>CANCEL TRANSACTION</h2>
+            <span class="close-button">&times;</span>
+        </div>
+        <div class="cancel-modal-body">
+            <div class="grid">
+                <div>
+                    <h3 class="section-title">TRANSACTION DETAILS</h3>
+                    <div class="cancel-form-group">
+                        <label for="transactionId">TRANSACTION ID</label>
+                        <input type="text" id="transactionId" value="TRX-000000" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="transactionTotal">TOTAL AMOUNT</label>
+                        <input type="text" id="transactionTotal" value="₱0.00" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="transactionDate">DATE</label>
+                        <input type="text" id="transactionDate" value="<?php echo date('Y-m-d H:i:s'); ?>" readonly>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="section-title">CANCELLATION DETAILS</h3>
+                    <div class="cancel-form-group">
+                        <label for="transactionVoidBy">VOID BY</label>
+                        <input type="text" id="transactionVoidBy" value="<?php echo htmlspecialchars($_SESSION['username']); ?>" readonly>
+                    </div>
+                    <div class="cancel-form-group">
+                        <label for="transactionCancelReason">REASON(S)</label>
+                        <textarea id="transactionCancelReason" rows="4" placeholder="Enter reason for cancellation"></textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="cancel-modal-btn" id="cancelTransactionBtn">CANCEL TRANSACTION</button>
+        </div>
+    </div>
+</div>
 <!-- Modal Structure -->
-<div id="transactionModal" class="transaction-modal">
+<div id="transactionModal" class=" modal transaction-modal">
     <div class="transaction-modal-content">
         <span class="close-button">&times;</span>
         <h2>Transaction Details</h2>

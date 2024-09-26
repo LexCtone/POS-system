@@ -20,10 +20,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearCartBtn = document.querySelector('button.clear-btn:not(#searchProductBtn)');
     const headerTotalSalesElement = document.getElementById('headerTotalSales');
     const modalTotalSalesElement = document.getElementById('modalTotalSales');
-    const cancelOrderModal = document.getElementById('cancelOrderModal');
+    const transactionDateDisplayElement = document.getElementById('transactionDateDisplay');
     let transactionCounter = 1;
 
     let currentView = 'item'; // Default view
+
+    document.querySelectorAll('.close-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            if (modal) {
+                closeModal(modal.id);
+            }
+        });
+    });
+
+    document.querySelectorAll('#cancelOrderModal .close, #cancelTransactionModal .close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            closeModal(event.target.closest('.modal'));
+        });
+    });
+    
+    [cancelOrderModal, cancelTransactionModal].forEach(modal => {
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal(modal);
+            }
+        });
+    });
 
 
     function toggleSalesView() {
@@ -111,13 +135,51 @@ document.addEventListener('DOMContentLoaded', function() {
     updateDateTime();
     setInterval(updateDateTime, 1000);
 
+    function updateTransactionDateDisplay() {
+        const now = new Date();
+        const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric'
+        };
+        const formattedDate = now.toLocaleDateString('en-US', options);
+        transactionDateDisplayElement.textContent = formattedDate;
+    }
+
+    // Initial update
+    updateTransactionDateDisplay();
+
+    // Update once per day at midnight
+    function scheduleNextUpdate() {
+        const now = new Date();
+        const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        const timeUntilMidnight = tomorrow - now;
+        setTimeout(() => {
+            updateTransactionDateDisplay();
+            scheduleNextUpdate();
+        }, timeUntilMidnight);
+    }
+
+    scheduleNextUpdate();
+
     function openModal(modal) {
         if (modal) modal.style.display = 'block';
     }
 
-    function closeModal(modal) {
-        if (modal) modal.style.display = 'none';
+function closeModal(modal) {
+    if (typeof modal === 'string') {
+        // If modal is a string (ID), get the element
+        modal = document.getElementById(modal);
     }
+    
+    if (modal instanceof HTMLElement) {
+        // If modal is an HTML element, hide it
+        modal.style.display = 'none';
+    } else {
+        console.warn(`Invalid modal:`, modal);
+    }
+}
 
     function handleCloseButtonClick(event) {
         const modal = event.target.closest('.modal');
@@ -719,15 +781,6 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Cart cleared');
     }
     
-    function closeModal(modal) {
-        console.log('Closing modal:', modal);
-        if (modal) {
-            modal.style.display = 'none';
-            console.log('Modal closed');
-        } else {
-            console.log('Modal not found');
-        }
-    }
 
     function clearCart() {
         tableBody.innerHTML = '';
@@ -820,7 +873,94 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    function openCancelOrderModal(sale) {
+        // Populate the modal fields
+        document.getElementById('id').value = sale.id;
+        document.getElementById('productCode').value = sale.barcode;
+        document.getElementById('description').value = sale.description;
+        document.getElementById('transaction').value = sale.invoice;
+        document.getElementById('price').value = sale.price;
+        document.getElementById('qtyDiscount').value = `${sale.quantity} / ${sale.discount_amount}`;
+        document.getElementById('total').value = sale.total;
+        document.getElementById('voidBy').value = document.getElementById('cashierName').textContent;
     
+        const cancelQtyInput = document.getElementById('cancelQty');
+        const quantity = parseInt(sale.quantity);
+        
+        if (quantity === 1) {
+            cancelQtyInput.value = '1';
+            cancelQtyInput.readOnly = true;
+        } else {
+            cancelQtyInput.value = '';
+            cancelQtyInput.readOnly = false;
+            cancelQtyInput.max = quantity;
+            cancelQtyInput.placeholder = `Enter quantity (max ${quantity})`;
+        }
+    
+        // Close the daily sales modal
+        document.getElementById('dailySalesModal').style.display = 'none';
+        
+        // Open the cancel order modal
+        document.getElementById('cancelOrderModal').style.display = 'block';
+    }
+    
+    // Add an event listener to validate the cancel quantity input
+    document.getElementById('cancelQty').addEventListener('input', function() {
+        const maxQty = parseInt(this.max);
+        let enteredQty = parseInt(this.value);
+    
+        if (isNaN(enteredQty) || enteredQty < 1) {
+            this.value = '';
+        } else if (enteredQty > maxQty) {
+            this.value = maxQty;
+        }
+    });
+    
+    function handleCancelOrder() {
+        const cancelQty = parseInt(document.getElementById('cancelQty').value);
+        const maxQty = parseInt(document.getElementById('cancelQty').max);
+        const cancelReason = document.getElementById('cancelReason').value;
+        const addToInventory = document.getElementById('addToInventory').value;
+    
+        if (!cancelQty || cancelQty < 1 || cancelQty > maxQty) {
+            alert(`Please enter a valid cancel quantity between 1 and ${maxQty}.`);
+            return;
+        }
+    
+        if (!cancelReason.trim()) {
+            alert('Please provide a reason for cancellation.');
+            return;
+        }
+    
+        // Simulating an API call
+        setTimeout(() => {
+            try {
+                // In a real application, you would send this data to the server
+                console.log('Cancelling order:', {
+                    id: document.getElementById('id').value,
+                    productCode: document.getElementById('productCode').value,
+                    description: document.getElementById('description').value,
+                    transaction: document.getElementById('transaction').value,
+                    cancelQty,
+                    cancelReason,
+                    addToInventory,
+                    voidBy: document.getElementById('voidBy').value
+                });
+    
+                alert(`Order cancelled successfully. Quantity: ${cancelQty}, Reason: ${cancelReason}, Add to Inventory: ${addToInventory}`);
+                closeModal('cancelOrderModal');
+                filterSales(); // Refresh the sales data
+            } catch (error) {
+                console.error('Error cancelling order:', error);
+                alert('An error occurred while cancelling the order. Please try again.');
+            }
+        }, 1000);
+    }
+    
+    // Make sure to add this event listener
+    document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
+
     function displayTransactionView(transactions, container) {
         transactions.forEach((transaction, index) => {
             const row = `
@@ -896,147 +1036,231 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     function openCancelTransactionModal(transaction) {
-        // Populate the cancel order modal with transaction details
-        document.getElementById('id').value = transaction.id;
-        document.getElementById('transaction').value = transaction.invoice;
-        document.getElementById('total').value = transaction.total;
-        document.getElementById('voidBy').value = document.getElementById('cashierName').textContent;
-    
-        // You may need to adjust these fields or add new ones specific to transaction cancellation
-        document.getElementById('cancelQty').style.display = 'none'; // Hide quantity field for full transaction cancel
-        document.getElementById('cancelReason').value = '';
-    
-        closeModal(dailySalesModal);
-        openModal(cancelOrderModal);
-    }
-
-    // User Settings Modal
-    userSettingsBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        userSettingsModal.style.display = 'block';
-    });
-
-    userSettingsCloseBtn.addEventListener('click', function() {
-        userSettingsModal.style.display = 'none';
-    });
-
-    changePasswordForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const currentPassword = document.getElementById('currentPassword').value;
-        const newPassword = document.getElementById('newPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
-        if (newPassword !== confirmPassword) {
-            passwordError.textContent = 'New passwords do not match';
-            passwordError.style.display = 'block';
-            return;
-        }
-
-        if (newPassword.length < 8) {
-            passwordError.textContent = 'New password must be at least 8 characters long';
-            passwordError.style.display = 'block';
-            return;
-        }
-
-        // Send password change request to server
-        fetch('change_password.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `currentPassword=${encodeURIComponent(currentPassword)}&newPassword=${encodeURIComponent(newPassword)}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Password changed successfully');
-                userSettingsModal.style.display = 'none';
-                changePasswordForm.reset();
+        const safeSetValue = (id, value) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.value = value;
             } else {
-                passwordError.textContent = data.message;
-                passwordError.style.display = 'block';
+                console.warn(`Element with id "${id}" not found`);
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            passwordError.textContent = 'An error occurred. Please try again.';
-            passwordError.style.display = 'block';
-        });
-    });
-    function openCancelOrderModal(sale) {
-        document.getElementById('id').value = sale.id;
-        document.getElementById('productCode').value = sale.barcode;
-        document.getElementById('description').value = sale.description;
-        document.getElementById('transaction').value = sale.invoice;
-        document.getElementById('price').value = sale.price;
-        document.getElementById('qtyDiscount').value = `${sale.quantity} / ${sale.discount_amount}`;
-        document.getElementById('total').value = sale.total;
-        document.getElementById('voidBy').value = document.getElementById('cashierName').textContent;
+        };
     
-        // Set the max attribute of cancelQty input to the original sale quantity
-        document.getElementById('cancelQty').max = sale.quantity;
-        document.getElementById('cancelQty').value = ''; // Clear any previous value
-    
-        // Close the daily sales modal
-        closeModal(dailySalesModal);
+            // Set transaction details
+            safeSetValue('transactionId', transaction.invoice || 'TRX-000000');
+            safeSetValue('transactionTotal', `₱${parseFloat(transaction.total).toFixed(2)}`);
+
+            // Set current date and time
+            const now = new Date();
+            safeSetValue('transactionDate', now.toISOString().slice(0, 19).replace('T', ' '));
+
+            // Set void by (assuming it's already set in the HTML)
+            // If you need to set it dynamically, uncomment the next line
+            // safeSetValue('transactionVoidBy', getCurrentUserName());
+
+            // Clear previous reason
+            safeSetValue('transactionCancelReason', '');
+
+            // Show the modal
+            const cancelTransactionModal = document.getElementById('cancelTransactionModal');
+            if (cancelTransactionModal) {
+                cancelTransactionModal.style.display = 'block';
+            } else {
+                console.error('Cancel Transaction Modal not found');
+            }
+
+                    // Close the daily sales modal
+        document.getElementById('dailySalesModal').style.display = 'none';
         
         // Open the cancel order modal
-        openModal(cancelOrderModal);
+        document.getElementById('cancelTransactionModal').style.display = 'block';
+        }
+
+    function handleCancelTransaction() {
+    const transactionId = document.getElementById('transactionId').value;
+    const transactionTotal = document.getElementById('transactionTotal').value;
+    const transactionDate = document.getElementById('transactionDate').value;
+    const voidBy = document.getElementById('transactionVoidBy').value;
+    const cancelReason = document.getElementById('transactionCancelReason').value;
+
+    if (!cancelReason.trim()) {
+        alert('Please provide a reason for cancellation.');
+        return;
     }
-    
-    function handleCancelOrder() {
-        const cancelQty = parseInt(document.getElementById('cancelQty').value);
-        const maxQty = parseInt(document.getElementById('cancelQty').max);
-        const cancelReason = document.getElementById('cancelReason').value;
-        const addToInventory = document.getElementById('addToInventory').value;
-    
-        // Validate inputs
-        if (!cancelQty || cancelQty <= 0) {
-            alert('Please enter a valid cancel quantity.');
-            return;
-        }
-    
-        if (cancelQty > maxQty) {
-            alert(`Cannot cancel more than the original quantity. Maximum allowed: ${maxQty}`);
-            return;
-        }
-    
-        if (!cancelReason.trim()) {
-            alert('Please provide a reason for cancellation.');
-            return;
-        }
-    
-        // Here you would typically send this data to your server to process the cancellation
-        // For now, we'll just simulate a successful cancellation
-        alert('Order cancelled successfully.');
-        
-        // Close the cancel order modal
-        closeModal(cancelOrderModal);
-        
-        // Refresh the sales data
-        filterSales();
+
+    if (!confirm(`Are you sure you want to cancel transaction ${transactionId}?`)) {
+        return;
     }
-    
-    // Add these event listeners after your DOMContentLoaded event listener
-    
-    // Event listener for the cancel order button
-    document.querySelector('.cancel-modal-btn').addEventListener('click', handleCancelOrder);
-    
-    // Event listener for the close button in the cancel order modal
-    document.querySelector('#cancelOrderModal .close').addEventListener('click', () => closeModal(cancelOrderModal));
-    
-    // Event listener for clicking outside the cancel order modal to close it
-    cancelOrderModal.addEventListener('click', (event) => {
-        if (event.target === cancelOrderModal) {
-            closeModal(cancelOrderModal);
+
+    // Simulating an API call
+    setTimeout(() => {
+        try {
+            // In a real application, you would send this data to the server
+            console.log('Cancelling transaction:', {
+                transactionId,
+                transactionTotal,
+                transactionDate,
+                voidBy,
+                cancelReason
+            });
+
+            // Simulated API call
+            // fetch('/api/cancel-transaction', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({
+            //         transactionId,
+            //         transactionTotal,
+            //         transactionDate,
+            //         voidBy,
+            //         cancelReason
+            //     })
+            // }).then(response => response.json())
+            //   .then(data => {
+            //     if (data.success) {
+            //         alert(`Transaction ${transactionId} cancelled successfully.`);
+            //         closeModal('cancelTransactionModal');
+            //         filterSales(); // Refresh the sales data
+            //     } else {
+            //         throw new Error(data.message || 'Cancellation failed');
+            //     }
+            //   });
+
+            // For demonstration, we'll just show a success message
+            alert(`Transaction ${transactionId} cancelled successfully.`);
+            closeModal('cancelTransactionModal');
+            filterSales(); // Refresh the sales data
+        } catch (error) {
+            console.error('Error cancelling transaction:', error);
+            alert('An error occurred while cancelling the transaction. Please try again.');
         }
+    }, 1000);
+}
+
+function handleCancelOrder() {
+    const cancelQty = parseInt(document.getElementById('cancelQty').value);
+    const maxQty = parseInt(document.getElementById('cancelQty').max);
+    const cancelReason = document.getElementById('cancelReason').value;
+    const addToInventory = document.getElementById('addToInventory').value;
+
+    if (!cancelQty || cancelQty < 1 || cancelQty > maxQty) {
+        alert(`Please enter a valid cancel quantity between 1 and ${maxQty}.`);
+        return;
+    }
+
+    if (!cancelReason.trim()) {
+        alert('Please provide a reason for cancellation.');
+        return;
+    }
+
+    setTimeout(() => {
+        alert(`Order cancelled successfully. Quantity: ${cancelQty}, Reason: ${cancelReason}, Add to Inventory: ${addToInventory}`);
+        closeModal('cancelOrderModal');
+        filterSales(); // Refresh the sales data
+    }, 1000);
+}
+
+// Add these event listeners after your DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+    const cancelOrderModal = document.getElementById('cancelOrderModal');
+    const cancelTransactionModal = document.getElementById('cancelTransactionModal');
+
+    // Event listener for the cancel order button (per-item void)
+    document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
+
+    // Event listener for the cancel transaction button (per-transaction void)
+    document.querySelector('#cancelTransactionModal .cancel-modal-btn').addEventListener('click', handleCancelTransaction);
+
+    // Event listener for the close buttons in both modals
+    document.querySelectorAll('#cancelOrderModal .close, #cancelTransactionModal .close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            closeModal(event.target.closest('.modal'));
+        });
     });
-    
-    // Add an event listener to prevent non-numeric input in the cancelQty field
+
+    // Event listener for clicking outside both modals to close them
+    [cancelOrderModal, cancelTransactionModal].forEach(modal => {
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal(modal);
+            }
+        });
+    });
+
+    // Add an event listener to prevent non-numeric input in the cancelQty field (for per-item void)
     document.getElementById('cancelQty').addEventListener('input', function(e) {
         this.value = this.value.replace(/[^0-9]/g, '');
-        if (parseInt(this.value) > parseInt(this.max)) {
-            this.value = this.max;
+        const maxQty = parseInt(this.max);
+        const enteredQty = parseInt(this.value);
+        if (enteredQty > maxQty) {
+            this.value = maxQty;
+        } else if (enteredQty < 1 || isNaN(enteredQty)) {
+            this.value = '';
         }
     });
-    });
+
+    function closeModal(modal) {
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+
+
+
+
+        // User Settings Modal
+        userSettingsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            userSettingsModal.style.display = 'block';
+        });
+    
+        userSettingsCloseBtn.addEventListener('click', function() {
+            userSettingsModal.style.display = 'none';
+        });
+    
+        changePasswordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+    
+            if (newPassword !== confirmPassword) {
+                passwordError.textContent = 'New passwords do not match';
+                passwordError.style.display = 'block';
+                return;
+            }
+    
+            if (newPassword.length < 8) {
+                passwordError.textContent = 'New password must be at least 8 characters long';
+                passwordError.style.display = 'block';
+                return;
+            }
+    
+            // Send password change request to server
+            fetch('change_password.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `currentPassword=${encodeURIComponent(currentPassword)}&newPassword=${encodeURIComponent(newPassword)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Password changed successfully');
+                    userSettingsModal.style.display = 'none';
+                    changePasswordForm.reset();
+                } else {
+                    passwordError.textContent = data.message;
+                    passwordError.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                passwordError.textContent = 'An error occurred. Please try again.';
+                passwordError.style.display = 'block';
+            });
+        });
+});
+});
