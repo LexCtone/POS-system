@@ -1222,3 +1222,41 @@
 [2024-09-26 09:32:01] [DEBUG] Updated quantity for product ID 1: -1
 [2024-09-26 09:32:01] [DEBUG] Inserted sale record for invoice 20240926908051088
 [2024-09-26 09:32:01] [DEBUG] Transaction committed successfully
+[2024-09-26 22:03:47] [DEBUG] Received data: {"invoice":"20240926102267059","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-26 22:03:47] [DEBUG] Updated quantity for product ID 1: -1
+[2024-09-26 22:03:47] [DEBUG] Inserted sale record for invoice 20240926102267059
+[2024-09-26 22:03:47] [DEBUG] Transaction committed successfully
+[2024-09-26 22:41:21] [DEBUG] Received data: {"invoice":"20240926143586994","sales":[{"product_id":"1","barcode":"6935280818516","description":"keyboard","price":279,"quantity":20,"discount_amount":0,"total":5580}]}
+[2024-09-26 22:41:21] [DEBUG] Updated quantity for product ID 1: -20
+[2024-09-26 22:41:21] [DEBUG] Inserted sale record for invoice 20240926143586994
+[2024-09-26 22:41:21] [DEBUG] Transaction committed successfully
+[2024-09-26 22:42:01] [DEBUG] Received data: {"invoice":"20240926282564317","sales":[{"product_id":"2","barcode":"200110212312","description":"asd","price":123,"quantity":29,"discount_amount":0,"total":3567}]}
+[2024-09-26 22:42:01] [DEBUG] Updated quantity for product ID 2: -29
+[2024-09-26 22:42:01] [DEBUG] Inserted sale record for invoice 20240926282564317
+[2024-09-26 22:42:01] [DEBUG] Transaction committed successfully
+[2024-09-26 23:11:49] [DEBUG] Received data: {"invoice":"20240926071686337","sales":[{"product_id":"1","barcode":"200110212312","description":"VOID SAMPLE","price":279,"quantity":10,"discount_amount":0,"total":2790}]}
+[2024-09-26 23:11:49] [DEBUG] Updated quantity for product ID 1: -10
+[2024-09-26 23:11:49] [DEBUG] Inserted sale record for invoice 20240926071686337
+[2024-09-26 23:11:49] [DEBUG] Transaction committed successfully
+[2024-09-26 23:16:39] [DEBUG] Received data: {"invoice":"20240926303582477","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":50,"discount_amount":0,"total":6150}]}
+[2024-09-26 23:16:39] [DEBUG] Updated quantity for product ID 2: -50
+[2024-09-26 23:16:39] [DEBUG] Inserted sale record for invoice 20240926303582477
+[2024-09-26 23:16:39] [DEBUG] Transaction committed successfully
+[2024-09-26 23:20:28] [DEBUG] Received data: {"invoice":"20240926400701109","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123},{"product_id":"3","barcode":"200110212312","description":"Heavy Duty Hammer","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-26 23:20:28] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-26 23:20:28] [DEBUG] Inserted sale record for invoice 20240926400701109
+[2024-09-26 23:20:28] [DEBUG] Updated quantity for product ID 3: -1
+[2024-09-26 23:20:28] [DEBUG] Inserted sale record for invoice 20240926400701109
+[2024-09-26 23:20:28] [DEBUG] Transaction committed successfully
+[2024-09-27 00:19:22] [DEBUG] Received data: {"invoice":"20240926153648627","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123},{"product_id":"3","barcode":"200110212312","description":"Heavy Duty Hammer","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-27 00:19:25] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-27 00:19:25] [DEBUG] Inserted sale record for invoice 20240926153648627
+[2024-09-27 00:19:25] [DEBUG] Updated quantity for product ID 3: -1
+[2024-09-27 00:19:25] [DEBUG] Inserted sale record for invoice 20240926153648627
+[2024-09-27 00:19:25] [DEBUG] Transaction committed successfully
+[2024-09-27 00:21:06] [DEBUG] Received data: {"invoice":"20240926195493321","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":50,"discount_amount":0,"total":6150},{"product_id":"3","barcode":"200110212312","description":"Heavy Duty Hammer","price":279,"quantity":50,"discount_amount":0,"total":13950}]}
+[2024-09-27 00:21:06] [DEBUG] Updated quantity for product ID 2: -50
+[2024-09-27 00:21:06] [DEBUG] Inserted sale record for invoice 20240926195493321
+[2024-09-27 00:21:06] [DEBUG] Updated quantity for product ID 3: -50
+[2024-09-27 00:21:06] [DEBUG] Inserted sale record for invoice 20240926195493321
+[2024-09-27 00:21:06] [DEBUG] Transaction committed successfully

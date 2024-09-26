@@ -773,14 +773,12 @@ function closeModal(modal) {
     }
     
     
-    
     function clearCart() {
         console.log('Clearing cart');
         tableBody.innerHTML = '';
         updateTotalSales();
         console.log('Cart cleared');
     }
-    
 
     function clearCart() {
         tableBody.innerHTML = '';
@@ -836,7 +834,14 @@ function closeModal(modal) {
     document.querySelector('.filter-controls button').addEventListener('click', filterSales);
 
     function displayItemView(sales, container) {
-        sales.forEach((sale, index) => {
+        // Clear the container before adding new rows (optional)
+        container.innerHTML = ''; 
+    
+        // Filter out voided sales
+        const filteredSales = sales.filter(sale => sale.status !== 'voided'); 
+    
+        // Iterate over filtered sales and create rows
+        filteredSales.forEach((sale, index) => {
             const row = `
                 <tr>
                     <td>${index + 1}</td>
@@ -917,46 +922,71 @@ function closeModal(modal) {
         }
     });
     
-    function handleCancelOrder() {
+    function handleCancelOrder(event) {
+        event.preventDefault(); // Prevent default form submission or button behavior
+        
+        // Gather input values from the form
         const cancelQty = parseInt(document.getElementById('cancelQty').value);
         const maxQty = parseInt(document.getElementById('cancelQty').max);
-        const cancelReason = document.getElementById('cancelReason').value;
-        const addToInventory = document.getElementById('addToInventory').value;
-    
+        const cancelReason = document.getElementById('cancelReason').value.trim();
+        const addToInventory = document.getElementById('addToInventory').value === 'Yes'; // Convert "Yes" to true, "No" to false
+        const saleId = document.getElementById('id').value; // Sale ID for the transaction
+        const productId = document.getElementById('productCode').value; // Product ID to void
+        const voidBy = document.getElementById('voidBy').value; // Person voiding the item
+        
+        // Validate input fields
         if (!cancelQty || cancelQty < 1 || cancelQty > maxQty) {
             alert(`Please enter a valid cancel quantity between 1 and ${maxQty}.`);
             return;
         }
-    
-        if (!cancelReason.trim()) {
-            alert('Please provide a reason for cancellation.');
+        
+        if (!cancelReason) {
+            alert('Please provide a reason for the cancellation.');
             return;
         }
-    
-        // Simulating an API call
-        setTimeout(() => {
-            try {
-                // In a real application, you would send this data to the server
-                console.log('Cancelling order:', {
-                    id: document.getElementById('id').value,
-                    productCode: document.getElementById('productCode').value,
-                    description: document.getElementById('description').value,
-                    transaction: document.getElementById('transaction').value,
-                    cancelQty,
-                    cancelReason,
-                    addToInventory,
-                    voidBy: document.getElementById('voidBy').value
-                });
-    
-                alert(`Order cancelled successfully. Quantity: ${cancelQty}, Reason: ${cancelReason}, Add to Inventory: ${addToInventory}`);
-                closeModal('cancelOrderModal');
-                filterSales(); // Refresh the sales data
-            } catch (error) {
-                console.error('Error cancelling order:', error);
-                alert('An error occurred while cancelling the order. Please try again.');
+        
+        if (!productId || !saleId) {
+            alert('Missing Sale ID or Product ID.');
+            return;
+        }
+        
+        // Prepare the data to be sent to the server
+        const requestData = {
+            saleId: saleId,
+            productId: productId,
+            cancelQty: cancelQty,
+            voidBy: voidBy,
+            cancelledBy: voidBy, // Assuming the person voiding is the same as the one canceling
+            cancelReason: cancelReason,
+            addToInventory: addToInventory // This will be true for "Yes" and false for "No"
+        };
+        
+        console.log('Request Data:', requestData); // Debugging: Ensure the request data is correct
+        
+        // Make the API call to void the item
+        fetch('void_item.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Item voided successfully.');
+                closeModal('cancelOrderModal'); // Close the modal after success
+                filterSales(); // Optionally refresh the sales data
+            } else {
+                throw new Error(data.message);
             }
-        }, 1000);
+        })
+        .catch(error => {
+            console.error('Error voiding item:', error);
+            alert('An error occurred while voiding the item. Please try again.');
+        });
     }
+    
     
     // Make sure to add this event listener
     document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
@@ -1075,89 +1105,65 @@ function closeModal(modal) {
         document.getElementById('cancelTransactionModal').style.display = 'block';
         }
 
-    function handleCancelTransaction() {
-    const transactionId = document.getElementById('transactionId').value;
-    const transactionTotal = document.getElementById('transactionTotal').value;
-    const transactionDate = document.getElementById('transactionDate').value;
-    const voidBy = document.getElementById('transactionVoidBy').value;
-    const cancelReason = document.getElementById('transactionCancelReason').value;
-
-    if (!cancelReason.trim()) {
-        alert('Please provide a reason for cancellation.');
-        return;
-    }
-
-    if (!confirm(`Are you sure you want to cancel transaction ${transactionId}?`)) {
-        return;
-    }
-
-    // Simulating an API call
-    setTimeout(() => {
-        try {
-            // In a real application, you would send this data to the server
-            console.log('Cancelling transaction:', {
-                transactionId,
-                transactionTotal,
-                transactionDate,
-                voidBy,
-                cancelReason
+        function handleCancelTransaction() {
+            const invoice = document.getElementById('transactionId').value; // Use invoice instead of sale_id
+            const transactionTotal = parseFloat(document.getElementById('transactionTotal').value.replace('₱', ''));
+            const voidBy = document.getElementById('transactionVoidBy').value;
+            const cancelReason = document.getElementById('transactionCancelReason').value;
+        
+            // Validate required fields
+            if (!cancelReason.trim()) {
+                alert('Please provide a reason for cancellation.');
+                return;
+            }
+        
+            if (!invoice || !transactionTotal) {
+                alert('Invoice and total amount are required.');
+                return;
+            }
+        
+            // Confirm cancellation
+            if (!confirm(`Are you sure you want to cancel transaction ${invoice}?`)) {
+                return;
+            }
+        
+            // Prepare data to send to the server
+            const requestData = {
+                invoice: invoice, // Now using invoice instead of sale_id
+                totalAmount: transactionTotal,
+                voidBy: voidBy,
+                cancelReason: cancelReason
+            };
+        
+            // Make the API call to void the transaction
+            fetch('void_transaction.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Transaction ${invoice} cancelled successfully.`);
+                    closeModal('cancelTransactionModal'); // Close the modal if open
+                    filterSales(); // Refresh the sales data to exclude the cancelled transaction
+                } else {
+                    throw new Error(data.message || 'Cancellation failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error cancelling transaction:', error);
+                alert('An error occurred while cancelling the transaction. Please try again.');
             });
-
-            // Simulated API call
-            // fetch('/api/cancel-transaction', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({
-            //         transactionId,
-            //         transactionTotal,
-            //         transactionDate,
-            //         voidBy,
-            //         cancelReason
-            //     })
-            // }).then(response => response.json())
-            //   .then(data => {
-            //     if (data.success) {
-            //         alert(`Transaction ${transactionId} cancelled successfully.`);
-            //         closeModal('cancelTransactionModal');
-            //         filterSales(); // Refresh the sales data
-            //     } else {
-            //         throw new Error(data.message || 'Cancellation failed');
-            //     }
-            //   });
-
-            // For demonstration, we'll just show a success message
-            alert(`Transaction ${transactionId} cancelled successfully.`);
-            closeModal('cancelTransactionModal');
-            filterSales(); // Refresh the sales data
-        } catch (error) {
-            console.error('Error cancelling transaction:', error);
-            alert('An error occurred while cancelling the transaction. Please try again.');
         }
-    }, 1000);
-}
-
-function handleCancelOrder() {
-    const cancelQty = parseInt(document.getElementById('cancelQty').value);
-    const maxQty = parseInt(document.getElementById('cancelQty').max);
-    const cancelReason = document.getElementById('cancelReason').value;
-    const addToInventory = document.getElementById('addToInventory').value;
-
-    if (!cancelQty || cancelQty < 1 || cancelQty > maxQty) {
-        alert(`Please enter a valid cancel quantity between 1 and ${maxQty}.`);
-        return;
-    }
-
-    if (!cancelReason.trim()) {
-        alert('Please provide a reason for cancellation.');
-        return;
-    }
-
-    setTimeout(() => {
-        alert(`Order cancelled successfully. Quantity: ${cancelQty}, Reason: ${cancelReason}, Add to Inventory: ${addToInventory}`);
-        closeModal('cancelOrderModal');
-        filterSales(); // Refresh the sales data
-    }, 1000);
-}
+        
+        
+        // Add event listener
+        document.querySelector('#cancelTransactionModal .cancel-modal-btn').addEventListener('click', handleCancelTransaction);
+        
+    
 
 // Add these event listeners after your DOMContentLoaded event listener
 document.addEventListener('DOMContentLoaded', function() {

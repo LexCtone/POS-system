@@ -36,15 +36,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
     if ($view === 'transaction') {
         // Query for transaction summary
         $sql = "SELECT s.invoice, MIN(s.sale_date) as date, a.username as cashier_name, SUM(s.total) as total
-                FROM sales s
-                JOIN accounts a ON s.cashier_name = a.username
-                WHERE 1=1";
+        FROM sales s
+        JOIN accounts a ON s.cashier_name = a.username
+        WHERE s.status != 'voided'";
+
     } else {
         // Query for item-level details
         $sql = "SELECT s.id, s.invoice, s.barcode, s.description, s.price, s.quantity, s.discount_amount, s.total, a.username as cashier_name, s.sale_date
-                FROM sales s
-                JOIN accounts a ON s.cashier_name = a.username
-                WHERE 1=1";
+        FROM sales s
+        JOIN accounts a ON s.cashier_name = a.username
+        WHERE s.status != 'voided'";
+
     }
 
     // Add filters for date range and cashier
@@ -507,6 +509,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
         </div>
     </div>
 </div>
+
 <!-- Modal Structure -->
 <div id="transactionModal" class=" modal transaction-modal">
     <div class="transaction-modal-content">
