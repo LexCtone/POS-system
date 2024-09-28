@@ -970,20 +970,36 @@ window.addEventListener('click', function(event) {
     });
     
     function handleCancelOrder(event) {
-        event.preventDefault(); // Prevent default form submission or button behavior
+        event.preventDefault();
         
+        // Helper function to safely get element values
+        function getElementValue(id) {
+            const element = document.getElementById(id);
+            if (!element) {
+                console.error(`Element with id '${id}' not found`);
+                return null;
+            }
+            return element.value;
+        }
+    
         // Gather input values from the form
-        const cancelQty = parseInt(document.getElementById('cancelQty').value);
-        const maxQty = parseInt(document.getElementById('cancelQty').max);
-        const cancelReason = document.getElementById('cancelReason').value.trim();
-        const addToInventory = document.getElementById('addToInventory').value === 'Yes'; // Convert "Yes" to true, "No" to false
-        const saleId = document.getElementById('id').value; // Sale ID for the transaction
-        const productId = document.getElementById('productCode').value; // Product ID to void
-        const voidBy = document.getElementById('voidBy').value; // Person voiding the item
-        
+        const saleId = getElementValue('id');
+        const productCode = getElementValue('productCode'); // Changed from 'productId' to 'productCode'
+        const cancelQtyElement = document.getElementById('cancelQty');
+        const cancelQty = cancelQtyElement ? parseInt(cancelQtyElement.value) : null;
+        const maxQty = cancelQtyElement ? parseInt(cancelQtyElement.getAttribute('max')) : null;
+        const cancelReason = getElementValue('cancelReason');
+        const addToInventoryElement = document.getElementById('addToInventory');
+        const addToInventory = addToInventoryElement ? addToInventoryElement.value === 'yes' : false;
+        const voidBy = getElementValue('voidBy');
+        const cancelledBy = getElementValue('cancelledBy'); // Changed to get 'cancelledBy' separately
+    
+        // Log gathered values for debugging
+        console.log('Gathered form data:', { saleId, productCode, cancelQty, maxQty, cancelReason, addToInventory, voidBy, cancelledBy });
+    
         // Validate input fields
-        if (!cancelQty || cancelQty < 1 || cancelQty > maxQty) {
-            alert(`Please enter a valid cancel quantity between 1 and ${maxQty}.`);
+        if (!cancelQty || cancelQty < 1 || (maxQty !== null && cancelQty > maxQty)) {
+            alert(`Please enter a valid cancel quantity${maxQty !== null ? ` between 1 and ${maxQty}` : ''}.`);
             return;
         }
         
@@ -992,20 +1008,20 @@ window.addEventListener('click', function(event) {
             return;
         }
         
-        if (!productId || !saleId) {
-            alert('Missing Sale ID or Product ID.');
+        if (!saleId || !productCode) {
+            alert('Missing Sale ID or Product Code.');
             return;
         }
         
         // Prepare the data to be sent to the server
         const requestData = {
-            saleId: saleId,
-            productId: productId,
+            saleId: parseInt(saleId),
+            productCode: productCode,
             cancelQty: cancelQty,
             voidBy: voidBy,
-            cancelledBy: voidBy, // Assuming the person voiding is the same as the one canceling
+            cancelledBy: cancelledBy,
             cancelReason: cancelReason,
-            addToInventory: addToInventory // This will be true for "Yes" and false for "No"
+            addToInventory: addToInventory
         };
         
         console.log('Request Data:', requestData); // Debugging: Ensure the request data is correct
@@ -1022,10 +1038,12 @@ window.addEventListener('click', function(event) {
         .then(data => {
             if (data.success) {
                 alert('Item voided successfully.');
-                closeModal('cancelOrderModal'); // Close the modal after success
-                filterSales(); // Optionally refresh the sales data
+                closeModal('cancelOrderModal');
+                if (typeof filterSales === 'function') {
+                    filterSales(); // Refresh the sales data if the function exists
+                }
             } else {
-                throw new Error(data.message);
+                throw new Error(data.message || 'Failed to void item');
             }
         })
         .catch(error => {
@@ -1033,7 +1051,6 @@ window.addEventListener('click', function(event) {
             alert('An error occurred while voiding the item. Please try again.');
         });
     }
-    
     
     // Make sure to add this event listener
     document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
@@ -1212,52 +1229,52 @@ window.addEventListener('click', function(event) {
         
     
 
-// Add these event listeners after your DOMContentLoaded event listener
-document.addEventListener('DOMContentLoaded', function() {
-    const cancelOrderModal = document.getElementById('cancelOrderModal');
-    const cancelTransactionModal = document.getElementById('cancelTransactionModal');
+        // Add these event listeners after your DOMContentLoaded event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelOrderModal = document.getElementById('cancelOrderModal');
+            const cancelTransactionModal = document.getElementById('cancelTransactionModal');
 
-    // Event listener for the cancel order button (per-item void)
-    document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
+            // Event listener for the cancel order button (per-item void)
+            document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
 
-    // Event listener for the cancel transaction button (per-transaction void)
-    document.querySelector('#cancelTransactionModal .cancel-modal-btn').addEventListener('click', handleCancelTransaction);
+            // Event listener for the cancel transaction button (per-transaction void)
+            document.querySelector('#cancelTransactionModal .cancel-modal-btn').addEventListener('click', handleCancelTransaction);
 
-    // Event listener for the close buttons in both modals
-    document.querySelectorAll('#cancelOrderModal .close, #cancelTransactionModal .close').forEach(closeBtn => {
-        closeBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            closeModal(event.target.closest('.modal'));
-        });
-    });
+            // Event listener for the close buttons in both modals
+            document.querySelectorAll('#cancelOrderModal .close, #cancelTransactionModal .close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    closeModal(event.target.closest('.modal'));
+                });
+            });
 
-    // Event listener for clicking outside both modals to close them
-    [cancelOrderModal, cancelTransactionModal].forEach(modal => {
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal(modal);
+            // Event listener for clicking outside both modals to close them
+            [cancelOrderModal, cancelTransactionModal].forEach(modal => {
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) {
+                        closeModal(modal);
+                    }
+                });
+            });
+
+            // Add an event listener to prevent non-numeric input in the cancelQty field (for per-item void)
+            document.getElementById('cancelQty').addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                const maxQty = parseInt(this.max);
+                const enteredQty = parseInt(this.value);
+                if (enteredQty > maxQty) {
+                    this.value = maxQty;
+                } else if (enteredQty < 1 || isNaN(enteredQty)) {
+                    this.value = '';
+                }
+            });
+
+            function closeModal(modal) {
+                if (modal) {
+                    modal.style.display = 'none';
+                }
             }
-        });
-    });
-
-    // Add an event listener to prevent non-numeric input in the cancelQty field (for per-item void)
-    document.getElementById('cancelQty').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9]/g, '');
-        const maxQty = parseInt(this.max);
-        const enteredQty = parseInt(this.value);
-        if (enteredQty > maxQty) {
-            this.value = maxQty;
-        } else if (enteredQty < 1 || isNaN(enteredQty)) {
-            this.value = '';
-        }
-    });
-
-    function closeModal(modal) {
-        if (modal) {
-            modal.style.display = 'none';
-        }
-    }
-    
+            
         changePasswordForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const currentPassword = document.getElementById('currentPassword').value;

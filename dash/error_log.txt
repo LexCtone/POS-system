@@ -18,3 +18,83 @@
 [2024-09-28 08:12:30] [DEBUG] Updated quantity for product ID 2: -1
 [2024-09-28 08:12:30] [DEBUG] Inserted sale record for invoice 20240928943383923
 [2024-09-28 08:12:30] [DEBUG] Transaction committed successfully
+[2024-09-28 08:14:53] [DEBUG] Received data: {"invoice":"20240928080993371","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 08:14:53] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 08:14:53] [DEBUG] Inserted sale record for invoice 20240928080993371
+[2024-09-28 08:14:53] [DEBUG] Transaction committed successfully
+[2024-09-28 15:17:42] [DEBUG] Received data: {"invoice":"20240928365416957","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":99,"discount_amount":0,"total":12177}]}
+[2024-09-28 15:17:42] [DEBUG] Updated quantity for product ID 2: -99
+[2024-09-28 15:17:42] [DEBUG] Inserted sale record for invoice 20240928365416957
+[2024-09-28 15:17:42] [DEBUG] Transaction committed successfully
+[2024-09-28 15:18:20] [DEBUG] Received data: {"invoice":"20240928463755284","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":99,"discount_amount":0,"total":12177}]}
+[2024-09-28 15:18:20] [DEBUG] Updated quantity for product ID 2: -99
+[2024-09-28 15:18:20] [DEBUG] Inserted sale record for invoice 20240928463755284
+[2024-09-28 15:18:20] [DEBUG] Transaction committed successfully
+[2024-09-28 15:19:40] [DEBUG] Received data: {"invoice":"20240928501419559","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 15:19:40] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 15:19:40] [DEBUG] Inserted sale record for invoice 20240928501419559
+[2024-09-28 15:19:40] [DEBUG] Transaction committed successfully
+[2024-09-28 15:21:39] [DEBUG] Received data: {"invoice":"20240928581226705","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":8,"discount_amount":0,"total":984}]}
+[2024-09-28 15:21:39] [DEBUG] Updated quantity for product ID 2: -8
+[2024-09-28 15:21:39] [DEBUG] Inserted sale record for invoice 20240928581226705
+[2024-09-28 15:21:39] [DEBUG] Transaction committed successfully
+[2024-09-28 15:30:56] [DEBUG] Received data: {"invoice":"20240928245982970","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 15:30:56] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 15:30:56] [DEBUG] Inserted sale record for invoice 20240928245982970
+[2024-09-28 15:30:56] [DEBUG] Transaction committed successfully
+[2024-09-28 15:31:50] [DEBUG] Received data: {"invoice":"20240928256675175","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 15:31:50] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 15:31:50] [DEBUG] Inserted sale record for invoice 20240928256675175
+[2024-09-28 15:31:50] [DEBUG] Transaction committed successfully
+[2024-09-28 16:41:37] [DEBUG] Received data: {"invoice":"20240928489576156","sales":[{"product_id":"3","barcode":"200110212312","description":"Heavy Duty Hammer","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-28 16:41:37] [DEBUG] Updated quantity for product ID 3: -1
+[2024-09-28 16:41:37] [DEBUG] Inserted sale record for invoice 20240928489576156
+[2024-09-28 16:41:37] [DEBUG] Transaction committed successfully
+[2024-09-28 18:13:45] [DEBUG] Received data: {"invoice":"20240928003126928","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 18:13:45] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 18:13:45] [DEBUG] Inserted sale record for invoice 20240928003126928
+[2024-09-28 18:13:45] [DEBUG] Transaction committed successfully
+[2024-09-28 19:02:00] [DEBUG] Received data: {"invoice":"20240928026648855","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123},{"product_id":"3","barcode":"200110212312","description":"Heavy Duty Hammer","price":279,"quantity":1,"discount_amount":0,"total":279},{"product_id":"4","barcode":"4800194185196","description":"sample","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-28 19:02:00] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 19:02:00] [DEBUG] Inserted sale record for invoice 20240928026648855
+[2024-09-28 19:02:00] [DEBUG] Updated quantity for product ID 3: -1
+[2024-09-28 19:02:00] [DEBUG] Inserted sale record for invoice 20240928026648855
+[2024-09-28 19:02:00] [DEBUG] Updated quantity for product ID 4: -1
+[2024-09-28 19:02:00] [DEBUG] Inserted sale record for invoice 20240928026648855
+[2024-09-28 19:02:00] [DEBUG] Transaction committed successfully
+[2024-09-28 19:02:52] [DEBUG] Received data: {"invoice":"20240928921234316","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 19:02:52] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 19:02:52] [DEBUG] Inserted sale record for invoice 20240928921234316
+[2024-09-28 19:02:52] [DEBUG] Transaction committed successfully
+[2024-09-28 19:03:42] [DEBUG] Received data: {"invoice":"20240928009785474","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 19:03:42] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 19:03:42] [DEBUG] Inserted sale record for invoice 20240928009785474
+[2024-09-28 19:03:42] [DEBUG] Transaction committed successfully
+[2024-09-28 19:04:42] [DEBUG] Received data: {"invoice":"20240928023593552","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 19:04:42] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 19:04:42] [DEBUG] Inserted sale record for invoice 20240928023593552
+[2024-09-28 19:04:42] [DEBUG] Transaction committed successfully
+[2024-09-28 19:07:16] [DEBUG] Received data: {"invoice":"20240928083513696","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123},{"product_id":"3","barcode":"200110212312","description":"Heavy Duty Hammer","price":279,"quantity":1,"discount_amount":0,"total":279},{"product_id":"4","barcode":"4800194185196","description":"sample","price":279,"quantity":1,"discount_amount":0,"total":279}]}
+[2024-09-28 19:07:16] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 19:07:16] [DEBUG] Inserted sale record for invoice 20240928083513696
+[2024-09-28 19:07:16] [DEBUG] Updated quantity for product ID 3: -1
+[2024-09-28 19:07:16] [DEBUG] Inserted sale record for invoice 20240928083513696
+[2024-09-28 19:07:16] [DEBUG] Updated quantity for product ID 4: -1
+[2024-09-28 19:07:16] [DEBUG] Inserted sale record for invoice 20240928083513696
+[2024-09-28 19:07:16] [DEBUG] Transaction committed successfully
+[2024-09-28 19:20:48] [DEBUG] Received data: {"invoice":"20240928024380586","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 19:20:48] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 19:20:48] [DEBUG] Inserted sale record for invoice 20240928024380586
+[2024-09-28 19:20:48] [DEBUG] Transaction committed successfully
+[2024-09-28 19:21:32] [DEBUG] Received data: {"invoice":"20240928082635070","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 19:21:32] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 19:21:32] [DEBUG] Inserted sale record for invoice 20240928082635070
+[2024-09-28 19:21:32] [DEBUG] Transaction committed successfully
+[2024-09-28 19:29:20] [DEBUG] Received data: {"invoice":"20240928206087215","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 19:29:20] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 19:29:20] [DEBUG] Inserted sale record for invoice 20240928206087215
+[2024-09-28 19:29:20] [DEBUG] Transaction committed successfully
+[2024-09-28 19:31:19] [DEBUG] Received data: {"invoice":"20240928562108444","sales":[{"product_id":"2","barcode":"731126101165","description":"VOID FACELESS","price":123,"quantity":1,"discount_amount":0,"total":123}]}
+[2024-09-28 19:31:19] [DEBUG] Updated quantity for product ID 2: -1
+[2024-09-28 19:31:19] [DEBUG] Inserted sale record for invoice 20240928562108444
+[2024-09-28 19:31:19] [DEBUG] Transaction committed successfully
