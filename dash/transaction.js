@@ -829,55 +829,59 @@ window.addEventListener('click', function(event) {
                             window.print();
                             window.onafterprint = function() {
                                 window.close();
-                            }
-                        }
+                                // Clear transaction table and close modal after printing
+                                window.opener.clearTransactionTable();
+                                window.opener.closeModal('settlePaymentModal');
+                            };
+                        };
                     </script>
                 </body>
             </html>
         `);
         receiptWindow.document.close();
     }
+    
 
-        // Function to clear the transaction table
-    function clearTransactionTable() {
-        const tableBody = document.querySelector('.transaction-table tbody');
-        tableBody.innerHTML = ''; // Clears all rows in the transaction table
-        updateTotalSales(); // Ensure the total sales are reset to zero
-        resetTransaction(); // Optional: reset transaction-related variables
+       // Function to clear the transaction table
+function clearTransactionTable() {
+    const tableBody = document.querySelector('.transaction-table tbody');
+    tableBody.innerHTML = ''; // Clears all rows in the transaction table
+    updateTotalSales(); // Ensure the total sales are reset to zero
+    resetTransaction(); // Optional: reset transaction-related variables
+}
+
+// Function to reset transaction-related data (if needed)
+function resetTransaction() {
+    transactionCounter = 1; // Reset the transaction counter
+    lastTransactionData = null; // Clear the last transaction data
+    document.getElementById('headerTotalSales').textContent = '₱0.00'; // Reset total sales display
+}
+
+// Example of closeModal function (assuming you have something like this)
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none'; // Hide the modal
     }
-
-    // Function to reset transaction-related data (if needed)
-    function resetTransaction() {
-        transactionCounter = 1; // Reset the transaction counter
-        lastTransactionData = null; // Clear the last transaction data
-        document.getElementById('headerTotalSales').textContent = '₱0.00'; // Reset total sales display
+}
+   // Add event listener for print button
+document.addEventListener('DOMContentLoaded', function() {
+    const printReceiptBtn = document.getElementById('printReceiptBtn');
+    if (printReceiptBtn) {
+        printReceiptBtn.addEventListener('click', function() {
+            if (lastTransactionData) {
+                generateReceipt(
+                    lastTransactionData.transactionData,
+                    lastTransactionData.totalAmount,
+                    lastTransactionData.paymentAmount,
+                    lastTransactionData.change
+                );
+            } else {
+                alert('No recent transaction data available.');
+            }
+        });
     }
-
-    // Example of closeModal function (assuming you have something like this)
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.style.display = 'none'; // Hide the modal
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const printReceiptBtn = document.getElementById('printReceiptBtn');
-        if (printReceiptBtn) {
-            printReceiptBtn.addEventListener('click', function() {
-                if (lastTransactionData) {
-                    generateReceipt(
-                        lastTransactionData.transactionData,
-                        lastTransactionData.totalAmount,
-                        lastTransactionData.paymentAmount,
-                        lastTransactionData.change
-                    );
-                } else {
-                    alert('No recent transaction data available.');
-                }
-            });
-        }
-    });
+});
     console.log(lastTransactionData);
 
     
