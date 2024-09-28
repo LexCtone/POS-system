@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const transactionDateDisplayElement = document.getElementById('transactionDateDisplay');
     let transactionCounter = 1;
 
+    let lastTransactionData = null; // Declare this at the start of your script
+    let AUTO_PRINT_RECEIPT = true; // or true, based on your requirement
+
+
     let currentView = 'item'; // Default view
 
     document.querySelectorAll('.close-button').forEach(button => {
@@ -663,7 +667,8 @@ window.addEventListener('click', function(event) {
     };
 
     function gatherSaleData() {
-        const rows = document.querySelectorAll('.transaction-table tbody tr');
+        const tableBody = document.querySelector('.transaction-table tbody');
+        const rows = tableBody.querySelectorAll('tr');
         const sales = [];
         
         rows.forEach(row => {
@@ -671,8 +676,7 @@ window.addEventListener('click', function(event) {
             const barcode = row.dataset.barcode;
             const description = row.cells[1].textContent.trim();
             const price = parseFloat(row.cells[2].textContent.replace('₱', '').trim());
-            const quantityInput = row.querySelector('.quantity-input');
-            const quantity = quantityInput ? parseInt(quantityInput.value.trim()) : 0;
+            const quantity = parseInt(row.querySelector('.quantity-input').value.trim());
             const discountAmount = parseFloat(row.cells[4].textContent.replace('₱', '').trim());
             const total = parseFloat(row.cells[5].textContent.replace('₱', '').trim());
     
@@ -690,135 +694,192 @@ window.addEventListener('click', function(event) {
         return sales;
     }
 
-    async function saveTransaction(totalAmount, paymentAmount, change) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const printReceiptBtn = document.getElementById('printReceiptBtn');
+        if (printReceiptBtn) {
+            printReceiptBtn.addEventListener('click', function() {
+                if (lastTransactionData) {
+                    generateReceipt(
+                        lastTransactionData.transactionData,
+                        lastTransactionData.totalAmount,
+                        lastTransactionData.paymentAmount,
+                        lastTransactionData.change
+                    );
+                } else {
+                    alert('No recent transaction data available.');
+                }
+            });
+        }
+    });
+
+        async function saveTransaction(totalAmount, paymentAmount, change) {
         const sales = gatherSaleData();
         const transactionData = {
             invoice: document.getElementById('transactionNo').textContent,
             sales: sales
         };
     
-        try {
-            const response = await fetch('update_quantities.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(transactionData)
-            });
+        // Simulating an API call to save the transaction
+        setTimeout(() => {
+            console.log('Transaction saved successfully!');
+            
+            lastTransactionData = {
+                transactionData,
+                totalAmount,
+                paymentAmount,
+                change
+            };
     
-            const result = await response.json();
-    
-            if (result.success) {
-                alert('Transaction saved successfully!');
-                clearCart();
-                closeModal(settlePaymentModal);
-    
-                // Generate a new transaction number
-                const newTransactionNo = generateTransactionNo();
-                transactionCounter = 1;
-    
-                // Prompt to print receipt
-                const printReceipt = confirm('Do you want to print the receipt?');
-                if (printReceipt) {
-                    // Generate and print the receipt
+            if (AUTO_PRINT_RECEIPT) {
+                generateReceipt(transactionData, totalAmount, paymentAmount, change);
+            } else {
+                if (confirm('Do you want to view the receipt?')) {
                     generateReceipt(transactionData, totalAmount, paymentAmount, change);
                 }
-    
-            } else {
-                alert('Error saving transaction: ' + (result.message || 'Unknown error'));
             }
-        } catch (error) {
-            alert('An error occurred while saving the transaction: ' + error.message);
-        }
+    
+            const printReceiptBtn = document.getElementById('printReceiptBtn');
+            if (printReceiptBtn) {
+                printReceiptBtn.style.display = 'inline-block';
+            }
+        }, 1000); // Simulating a 1-second delay for the API call
     }
     
     function generateReceipt(transactionData, totalAmount, paymentAmount, change) {
-        // Store Information
         const storeInfo = `
-            <h2>STORE NAME</h2>
-            <p>Store Address</p>
-            <p>Contact Info (Phone/Email)</p>
+            <h2 style="text-align: center; margin-bottom: 10px;">ST. Vincent Hardware</h2>
+            <p style="text-align: center; margin: 5px 0;">Morong Rizal</p>
+            <p style="text-align: center; margin: 5px 0;">Contact Info (09083114333/bong@gmail.com)</p>
         `;
     
-        // Transaction Information
         const transactionInfo = `
-            <p>Receipt #: ${transactionData.invoice}</p>
-            <p>Date: ${new Date().toLocaleDateString()} Time: ${new Date().toLocaleTimeString()}</p>
-            <p>Cashier: John Doe</p>
+            <p style="margin: 5px 0;"><strong>Receipt #:</strong> ${transactionData.invoice}</p>
+            <p style="margin: 5px 0;"><strong>Date:</strong> ${new Date().toLocaleDateString()} <strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
+            <p style="margin: 5px 0;"><strong>Cashier:</strong> ${document.getElementById('cashierName').textContent}</p>
         `;
     
-        // Itemized List of Products
-        let itemsList = `<table style="width: 100%;">
-            <tr>
-                <th>Item Description</th>
-                <th>Qty</th>
-                <th>Unit Price</th>
-                <th>Total</th>
-            </tr>`;
+        let itemsList = `
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <tr style="border-bottom: 1px solid #000;">
+                    <th style="text-align: left; padding: 5px;">Item Description</th>
+                    <th style="text-align: right; padding: 5px;">Qty</th>
+                    <th style="text-align: right; padding: 5px;">Unit Price</th>
+                    <th style="text-align: right; padding: 5px;">Total</th>
+                </tr>
+        `;
     
         transactionData.sales.forEach((item) => {
             itemsList += `
                 <tr>
-                    <td>${item.description}</td>
-                    <td>${item.quantity}</td>
-                    <td>₱${item.price.toFixed(2)}</td>
-                    <td>₱${item.total.toFixed(2)}</td>
+                    <td style="text-align: left; padding: 5px;">${item.description}</td>
+                    <td style="text-align: right; padding: 5px;">${item.quantity}</td>
+                    <td style="text-align: right; padding: 5px;">₱${item.price.toFixed(2)}</td>
+                    <td style="text-align: right; padding: 5px;">₱${item.total.toFixed(2)}</td>
                 </tr>
             `;
         });
     
         itemsList += `</table>`;
     
-        // Subtotal, Discounts, Taxes, Total, and Change
         const receiptSummary = `
-            <p>Subtotal: ₱${totalAmount.toFixed(2)}</p>
-            <p>Tax (12%): ₱${(totalAmount * 0.12).toFixed(2)}</p>
-            <p>Total: ₱${(totalAmount * 1.12).toFixed(2)}</p>
-            <p>Amount Tendered: ₱${paymentAmount.toFixed(2)}</p>
-            <p>Change: ₱${change.toFixed(2)}</p>
+            <div style="margin-top: 10px; border-top: 1px solid #000; padding-top: 10px;">
+                <p style="margin: 5px 0; text-align: right;"><strong>Subtotal:</strong> ₱${totalAmount.toFixed(2)}</p>
+                <p style="margin: 5px 0; text-align: right;"><strong>Tax (12%):</strong> ₱${(totalAmount * 0.12).toFixed(2)}</p>
+                <p style="margin: 5px 0; text-align: right;"><strong>Total:</strong> ₱${(totalAmount * 1.12).toFixed(2)}</p>
+                <p style="margin: 5px 0; text-align: right;"><strong>Amount Tendered:</strong> ₱${paymentAmount.toFixed(2)}</p>
+                <p style="margin: 5px 0; text-align: right;"><strong>Change:</strong> ₱${change.toFixed(2)}</p>
+            </div>
         `;
     
-        // Footer
         const footer = `
-            <p>Thank you for shopping with us!</p>
-            <p>Visit us again or check our website!</p>
+            <div style="margin-top: 20px; text-align: center;">
+                <p style="margin: 5px 0;">Thank you for shopping with us!</p>
+                <p style="margin: 5px 0;">Visit us again or check our website!</p>
+            </div>
         `;
     
-        // Combine all sections
         const receiptContent = `
-            <div style="text-align: center;">
+            <div style="font-family: Arial, sans-serif; font-size: 12px; max-width: 300px; margin: 0 auto;">
                 ${storeInfo}
-                <hr>
+                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
                 ${transactionInfo}
-                <hr>
+                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
                 ${itemsList}
-                <hr>
                 ${receiptSummary}
-                <hr>
+                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
                 ${footer}
             </div>
         `;
     
-        // Create an iframe for printing (more reliable for some browsers)
-        const printFrame = document.createElement('iframe');
-        printFrame.style.position = 'absolute';
-        printFrame.style.width = '0';
-        printFrame.style.height = '0';
-        printFrame.style.border = 'none';
-        document.body.appendChild(printFrame);
-    
-        const printDocument = printFrame.contentDocument || printFrame.contentWindow.document;
-        printDocument.open();
-        printDocument.write(`<html><head><title>Receipt</title></head><body>${receiptContent}</body></html>`);
-        printDocument.close();
-    
-        printFrame.contentWindow.focus();
-        printFrame.contentWindow.print();
-    
-        // Remove the iframe after printing
-        document.body.removeChild(printFrame);
+        const receiptWindow = window.open('', '_blank');
+        receiptWindow.document.write(`
+            <html>
+                <head>
+                    <title>Receipt</title>
+                    <style>
+                        @media print {
+                            body { width: 300px; margin: 0 auto; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${receiptContent}
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            window.onafterprint = function() {
+                                window.close();
+                            }
+                        }
+                    </script>
+                </body>
+            </html>
+        `);
+        receiptWindow.document.close();
     }
-    
+
+        // Function to clear the transaction table
+    function clearTransactionTable() {
+        const tableBody = document.querySelector('.transaction-table tbody');
+        tableBody.innerHTML = ''; // Clears all rows in the transaction table
+        updateTotalSales(); // Ensure the total sales are reset to zero
+        resetTransaction(); // Optional: reset transaction-related variables
+    }
+
+    // Function to reset transaction-related data (if needed)
+    function resetTransaction() {
+        transactionCounter = 1; // Reset the transaction counter
+        lastTransactionData = null; // Clear the last transaction data
+        document.getElementById('headerTotalSales').textContent = '₱0.00'; // Reset total sales display
+    }
+
+    // Example of closeModal function (assuming you have something like this)
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none'; // Hide the modal
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const printReceiptBtn = document.getElementById('printReceiptBtn');
+        if (printReceiptBtn) {
+            printReceiptBtn.addEventListener('click', function() {
+                if (lastTransactionData) {
+                    generateReceipt(
+                        lastTransactionData.transactionData,
+                        lastTransactionData.totalAmount,
+                        lastTransactionData.paymentAmount,
+                        lastTransactionData.change
+                    );
+                } else {
+                    alert('No recent transaction data available.');
+                }
+            });
+        }
+    });
+    console.log(lastTransactionData);
+
     
     function clearCart() {
         console.log('Clearing cart');
