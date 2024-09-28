@@ -579,6 +579,53 @@ function closeModal(modal) {
         fetchProducts(searchValue);
     });
 
+    // Universal modal open function
+function openModal(modal) {
+    if (modal) modal.style.display = 'block';
+}
+
+// Universal modal close function
+function closeModal(modal) {
+    if (typeof modal === 'string') {
+        modal = document.getElementById(modal);  // Get modal by ID if it's a string
+    }
+    if (modal instanceof HTMLElement) {
+        modal.style.display = 'none';  // Hide modal
+    }
+}
+
+// Function to open the User Settings Modal
+function openUserSettingsModal() {
+    const userSettingsModal = document.getElementById('userSettingsModal');  // Get the modal element
+    openModal(userSettingsModal);  // Use the universal openModal function
+}
+
+// Function to close the User Settings Modal
+function closeUserSettingsModal() {
+    const userSettingsModal = document.getElementById('userSettingsModal');  // Get the modal element
+    closeModal(userSettingsModal);  // Use the universal closeModal function
+}
+
+// Add an event listener to the User Settings button (opens the modal)
+document.getElementById('userSettingsBtn').addEventListener('click', function(e) {
+    e.preventDefault();  // Prevent default action (if it's a link or form)
+    openUserSettingsModal();  // Open the modal when the button is clicked
+});
+
+// Add an event listener to the close button inside the modal
+document.querySelector('.close-button').addEventListener('click', function() {
+    closeUserSettingsModal();  // Close the modal when the close button is clicked
+});
+
+// Optional: Close modal when clicking outside the modal content
+window.addEventListener('click', function(event) {
+    const userSettingsModal = document.getElementById('userSettingsModal');
+    if (event.target === userSettingsModal) {
+        closeUserSettingsModal();  // Close the modal if the outside of the modal is clicked
+    }
+});
+
+
     function openSettlePaymentModal() {
         const totalAmount = headerTotalSalesElement.textContent;
         document.getElementById('total-amount').textContent = totalAmount;
@@ -1210,20 +1257,6 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.style.display = 'none';
         }
     }
-
-
-
-
-
-        // User Settings Modal
-        userSettingsBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            userSettingsModal.style.display = 'block';
-        });
-    
-        userSettingsCloseBtn.addEventListener('click', function() {
-            userSettingsModal.style.display = 'none';
-        });
     
         changePasswordForm.addEventListener('submit', function(e) {
             e.preventDefault();

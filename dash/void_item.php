@@ -14,7 +14,7 @@ try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Ensure that the stored procedure exists (you can move this block to your database migration script)
+    // Ensure that the stored procedure exists
     $create_procedure = "
     CREATE PROCEDURE IF NOT EXISTS void_item(
         IN p_sale_id INT,
@@ -57,7 +57,7 @@ try {
             SET stock_quantity = stock_quantity + p_void_quantity
             WHERE id = p_product_id;
         END IF;
-
+            
         -- Mark the sale as voided if quantity is zero
         IF (v_current_quantity - p_void_quantity) = 0 THEN
             UPDATE sales
@@ -81,8 +81,11 @@ try {
         }
     }
 
-    // Convert addToInventory to boolean (Yes = true, No = false)
+    // Convert addToInventory to boolean
     $addToInventory = strtolower($data['addToInventory']) === 'yes';
+
+    // Log the values being sent to the stored procedure
+    error_log("Voiding Product: ID = {$data['productId']}, Quantity = {$data['cancelQty']}, Add to Inventory = " . ($addToInventory ? 'true' : 'false'));
 
     // Prepare the stored procedure call
     $stmt = $conn->prepare("
@@ -104,7 +107,7 @@ try {
     $stmt->bindParam(':void_by', $data['voidBy'], PDO::PARAM_STR);
     $stmt->bindParam(':cancelled_by', $data['cancelledBy'], PDO::PARAM_STR);
     $stmt->bindParam(':reason', $data['cancelReason'], PDO::PARAM_STR);
-    $stmt->bindParam(':add_to_inventory', $addToInventory, PDO::PARAM_BOOL);  // This will pass true as 1 and false as 0
+    $stmt->bindParam(':add_to_inventory', $addToInventory, PDO::PARAM_BOOL);
 
     // Execute the stored procedure
     $stmt->execute();

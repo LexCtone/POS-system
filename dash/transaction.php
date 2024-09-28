@@ -225,7 +225,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
             <li><a href="transaction.php"><i class='fa fa-plus'></i> New Transaction</a></li>
             <li><a href="#" id="addDiscountBtn"><i class='fa fa-percent'></i> Add Discount</a></li>
             <li><a href="#" id="dailySalesBtn"><i class='fa fa-chart-line'></i> Daily Sales</a></li>
-            <li><a href="#"><i class='fa fa-cogs'></i> User Settings</a></li>
+            <li><a href="#" id="userSettingsBtn"><i class='fa fa-cogs'></i> User Settings</a></li>
             <li><a href="..\login.php"><i class='fa fa-sign-out'></i> Logout</a></li>
         </ul>
     </div>
