@@ -115,29 +115,29 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
             </div>
             <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
             <div class="form">
-                <form id="filterForm" method="GET">
-                    <div class="form-group">
-                        <label for="startDate" class="date-label">Filter by</label>
-                        <input type="date" id="startDate" name="startDate" class="date-input" value="<?php echo $startDate; ?>">
-                        <input type="date" id="endDate" name="endDate" class="date-input" value="<?php echo $endDate; ?>">
-                        <select id="cashier" class="vendor" name="cashier">
-                            <option value="all">All Cashiers</option>
-                            <?php
-                            // Fetch all unique cashier names from the sales table
-                            $cashierStmt = $conn->prepare("SELECT DISTINCT cashier_name FROM sales WHERE status != 'voided' ORDER BY cashier_name");
-                            $cashierStmt->execute();
-                            $cashierResult = $cashierStmt->get_result();
-                            while ($row = $cashierResult->fetch_assoc()) {
-                                $selected = ($cashierName == $row['cashier_name']) ? 'selected' : '';
-                                echo "<option value='" . htmlspecialchars($row['cashier_name']) . "' $selected>" . htmlspecialchars($row['cashier_name']) . "</option>";
-                            }
-                            $cashierStmt->close();
-                            ?>
-                        </select>
-                        <button type="submit" class="load-data-button">
-                            <i class="fa fa-refresh"></i>
-                            <span class="load-data-text">Load Data</span>
-                        </button>
+            <form id="filterForm" method="GET">
+            <div class="form-group">
+                <label for="startDate" class="date-label">Filter by</label>
+                <input type="date" id="startDate" name="startDate" class="date-input" value="<?php echo $startDate; ?>">
+                <input type="date" id="endDate" name="endDate" class="date-input" value="<?php echo $endDate; ?>">
+                <select id="cashier" class="vendor" name="cashier">
+                    <option value="all">All Cashiers</option>
+                    <?php
+                    // Fetch all usernames with the cashier role from the accounts table
+                    $cashierStmt = $conn->prepare("SELECT username FROM accounts WHERE role = 'cashier' ORDER BY username");
+                    $cashierStmt->execute();
+                    $cashierResult = $cashierStmt->get_result();
+                    while ($row = $cashierResult->fetch_assoc()) {
+                        $selected = ($cashierName == $row['username']) ? 'selected' : '';
+                        echo "<option value='" . htmlspecialchars($row['username']) . "' $selected>" . htmlspecialchars($row['username']) . "</option>";
+                    }
+                    $cashierStmt->close();
+                    ?>
+                </select>
+                <button type="submit" class="load-data-button">
+                    <i class="fa fa-refresh"></i>
+                    <span class="load-data-text">Load Data</span>
+                </button>
                 </form>
                 <div class="print-preview-button" onclick="window.print()">
                         <i class="fa-solid fa-print"></i>
