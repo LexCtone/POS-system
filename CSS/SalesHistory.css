@@ -189,3 +189,14 @@ body {
   background-color: #f2f2f2;
 }
 
+.total-sales {
+  background-color: black;
+  color: white;
+  border: 2px solid white;
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 250px;
+  margin-left: 20px;
+  font-size: 15px;
+}

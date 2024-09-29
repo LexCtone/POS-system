@@ -520,3 +520,53 @@
 
 [2024-09-30 00:53:37] Executed sale insert for barcode: 731126101165
 [2024-09-30 00:53:37] Executed product update for barcode: 731126101165
+[2024-09-30 01:33:42] Received data: Array
+(
+    [invoice] => 20240929418749860
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 731126101165
+                    [description] => VOID FACELESS
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-09-30 01:33:42] Executed sale insert for barcode: 731126101165
+[2024-09-30 01:33:42] Executed product update for barcode: 731126101165
+[2024-09-30 01:44:58] Received data: Array
+(
+    [invoice] => 20240929484693020
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 4
+                    [barcode] => 4800194185196
+                    [description] => sample
+                    [price] => 279
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 558
+                )
+
+        )
+
+    [totalAmount] => 558
+    [paymentAmount] => 558
+    [change] => 0
+)
+
+[2024-09-30 01:44:58] Executed sale insert for barcode: 4800194185196
+[2024-09-30 01:44:58] Executed product update for barcode: 4800194185196
