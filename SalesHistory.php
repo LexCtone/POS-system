@@ -52,6 +52,12 @@
           $conn->close();
           ?>
         </select>
+        </select>
+        <select id="status" class="status" name="status">
+          <option value="" selected>All Status</option>
+          <option value="Active">Active</option>
+          <option value="Voided">Voided</option>
+        </select>
         <button class="load-data-button">
           <i class="fa fa-refresh"></i>
           <span class="load-data-text">Load Data</span>

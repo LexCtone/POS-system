@@ -1,22 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Get all necessary DOM elements
   const loadDataButton = document.querySelector('.load-data-button');
   const printPreviewButton = document.querySelector('.print-preview-button');
   const startDateInput = document.getElementById('startDate');
   const endDateInput = document.getElementById('endDate');
   const vendorSelect = document.getElementById('vendor');
+  const statusSelect = document.getElementById('status');
 
+  // Add event listeners
   loadDataButton.addEventListener('click', loadData);
   printPreviewButton.addEventListener('click', printPreview);
+
+  // Set default date range (last 30 days)
+  const today = new Date();
+  const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+  startDateInput.value = formatDate(thirtyDaysAgo);
+  endDateInput.value = formatDate(today);
+
+  // Load initial data
+  loadData();
 });
 
 function loadData() {
   const startDate = document.getElementById('startDate').value;
   const endDate = document.getElementById('endDate').value;
   const soldBy = document.getElementById('vendor').value;
+  const status = document.getElementById('status').value;
 
   const loadingMessage = showLoadingMessage();
 
-  fetch(`fetch_sales_history.php?startDate=${startDate}&endDate=${endDate}&soldBy=${soldBy}`)
+  fetch(`fetch_sales_history.php?startDate=${startDate}&endDate=${endDate}&soldBy=${soldBy}&status=${status}`)
     .then(response => response.json())
     .then(data => {
       updateTable(data.sales);
@@ -42,6 +55,7 @@ function showLoadingMessage() {
   loadingMessage.style.background = 'rgba(0, 0, 0, 0.7)';
   loadingMessage.style.color = 'white';
   loadingMessage.style.borderRadius = '5px';
+  loadingMessage.style.zIndex = '9999';
   document.body.appendChild(loadingMessage);
   return loadingMessage;
 }
@@ -55,6 +69,15 @@ function updateTable(sales) {
   const tableBody = document.querySelector('table tbody');
   tableBody.innerHTML = '';
 
+  if (sales.length === 0) {
+    const row = tableBody.insertRow();
+    const cell = row.insertCell();
+    cell.colSpan = 11;
+    cell.textContent = 'No data available for the selected criteria.';
+    cell.style.textAlign = 'center';
+    return;
+  }
+
   sales.forEach((sale, index) => {
     const row = tableBody.insertRow();
     row.innerHTML = `
@@ -66,7 +89,7 @@ function updateTable(sales) {
       <td>${sale.quantity}</td>
       <td>₱${parseFloat(sale.discount_amount).toFixed(2)}</td>
       <td>₱${parseFloat(sale.total).toFixed(2)}</td>
-      <td>${sale.sale_date}</td>
+      <td>${formatDateTime(sale.sale_date)}</td>
       <td>${sale.cashier_name}</td>
       <td>${sale.status}</td>
     `;
@@ -76,8 +99,20 @@ function updateTable(sales) {
   });
 }
 
-function updateSalesInfo(totalActiveSales) {
+function updateSalesInfo(totalActiveSales, totalVoidedSales, voidedTransactionsCount) {
   document.getElementById('totalActiveSales').textContent = parseFloat(totalActiveSales).toFixed(2);
+  
+  // Add these elements to your HTML if they don't exist
+  const totalVoidedSalesElement = document.getElementById('totalVoidedSales');
+  const voidedTransactionsCountElement = document.getElementById('voidedTransactionsCount');
+  
+  if (totalVoidedSalesElement) {
+    totalVoidedSalesElement.textContent = parseFloat(totalVoidedSales).toFixed(2);
+  }
+  
+  if (voidedTransactionsCountElement) {
+    voidedTransactionsCountElement.textContent = voidedTransactionsCount;
+  }
 }
 
 function printPreview() {
@@ -108,8 +143,14 @@ function printPreview() {
       <title>Sales History Print Preview</title>
       <style>
         ${styles}
-        .voided-transaction {
-          background-color: #ffcccc;
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .voided-transaction { background-color: #ffcccc; }
+        @media print {
+          .no-print { display: none; }
+          body { -webkit-print-color-adjust: exact; }
         }
       </style>
     </head>
@@ -117,14 +158,10 @@ function printPreview() {
       <h1>Sales History</h1>
       ${salesInfo}
       ${tableContent}
-      <script>
-        window.onload = function() {
-          window.print();
-          window.onafterprint = function() {
-            window.close();
-          }
-        }
-      </script>
+      <div class="no-print">
+        <button onclick="window.print()">Print</button>
+        <button onclick="window.close()">Close</button>
+      </div>
     </body>
     </html>
   `;
@@ -132,4 +169,24 @@ function printPreview() {
   printWindow.document.open();
   printWindow.document.write(printContent);
   printWindow.document.close();
+}
+
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function formatDateTime(dateTimeString) {
+  const date = new Date(dateTimeString);
+  return date.toLocaleString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  });
 }

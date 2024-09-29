@@ -4,6 +4,7 @@ include 'connect.php';
 $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : '';
 $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
 $soldBy = isset($_GET['soldBy']) ? $_GET['soldBy'] : '';
+$status = isset($_GET['status']) ? $_GET['status'] : '';
 
 $query = "SELECT * FROM sales WHERE 1=1";
 $params = [];
@@ -21,6 +22,11 @@ if (!empty($endDate)) {
 if (!empty($soldBy)) {
     $query .= " AND cashier_name = ?";
     $params[] = $soldBy;
+}
+
+if (!empty($status)) {
+    $query .= " AND status = ?";
+    $params[] = $status;
 }
 
 $query .= " ORDER BY sale_date DESC";
