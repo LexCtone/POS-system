@@ -216,4 +216,6 @@ body {
   width: 80%;
   height: 80%;
 }
-
+.legend-item-hidden {
+  text-decoration: line-through;
+}

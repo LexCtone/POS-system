@@ -15,7 +15,7 @@ try {
     if ($procedureExistsStmt->num_rows == 0) {
         // Create the procedure if it does not exist
         $create_procedure = "
-        CREATE PROCEDURE IF NOT EXISTS void_item(
+        CREATE PROCEDURE void_item(
             IN p_sale_id INT,
             IN p_product_code VARCHAR(50),
             IN p_void_quantity INT,
@@ -56,7 +56,6 @@ try {
                 total = (quantity - p_void_quantity) * v_unit_price  
             WHERE id = p_sale_id;
 
-            -- Add back to inventory if requested
             -- Add back to inventory if requested
             IF p_add_to_inventory THEN
                 UPDATE products

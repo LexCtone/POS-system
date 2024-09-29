@@ -17,7 +17,7 @@ $sortOrder = in_array($sortOrder, ['ASC', 'DESC']) ? $sortOrder : 'DESC';
 $sql = "SELECT barcode, description, SUM(quantity) AS total_qty, SUM(total) AS total_sales,
                MIN(sale_date) AS first_sale_date, MAX(sale_date) AS last_sale_date
         FROM sales 
-        WHERE 1=1";
+        WHERE status != 'voided'";  // Add this condition to exclude voided items
 
 if ($startDate && $endDate) {
     $sql .= " AND sale_date BETWEEN ? AND ?";

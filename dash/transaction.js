@@ -23,10 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const transactionDateDisplayElement = document.getElementById('transactionDateDisplay');
     let transactionCounter = 1;
 
-    let lastTransactionData = null; // Declare this at the start of your script
-    let AUTO_PRINT_RECEIPT = true; // or true, based on your requirement
-
-
     let currentView = 'item'; // Default view
 
     document.querySelectorAll('.close-button').forEach(button => {
@@ -53,43 +49,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-
     function toggleSalesView() {
-        // Toggle between 'item' view and 'transaction' view
         currentView = currentView === 'item' ? 'transaction' : 'item';
-
         const toggleButton = document.getElementById('toggleView');
-        if (currentView === 'transaction') {
-            document.getElementById('toggleView').innerText = 'Switch to Per Item View';
-        } else {
-            document.getElementById('toggleView').innerText = 'Switch to Transaction View';
-        }
-        // Update table headers based on the current view
+        toggleButton.innerText = currentView === 'transaction' ? 'Switch to Per Item View' : 'Switch to Transaction View';
         updateTableHeaders();
-    
-        // Filter and populate the table with sales data
         filterSales();
     }
     
-    
-    // Function to update table headers based on the view
     function updateTableHeaders() {
-        let tableHeader = document.querySelector('#salesTable thead tr'); // Assuming your table has ID 'salesTable'
-    
+        let tableHeader = document.querySelector('#salesTable thead tr');
         if (currentView === 'transaction') {
-            // Set headers for the transaction view
             tableHeader.innerHTML = `
                 <th>#</th>
-                <th>Invoice</th>
+                <th>Invoice No.</th>
                 <th>Date</th>
                 <th>Cashier</th>
                 <th>Total</th>
                 <th>View Details</th>
                 <th>Action</th>`;
         } else {
-            // Set headers for the item (product) view
             tableHeader.innerHTML = `
                 <th>#</th>
+                <th>Invoice No.</th>
                 <th>Barcode</th>
                 <th>Description</th>
                 <th>Price</th>
@@ -101,14 +83,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Event listener for toggle button
     document.getElementById('toggleView').addEventListener('click', toggleSalesView);
     
-    // Initial population of the sales table
     filterSales();
     
-
-    // User Settings Modal
     const userSettingsModal = document.getElementById('userSettingsModal');
     const userSettingsBtn = document.querySelector('.sidebar .menu li:nth-child(5) a');
     const userSettingsCloseBtn = userSettingsModal.querySelector('.close-button');
@@ -141,20 +119,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateTransactionDateDisplay() {
         const now = new Date();
-        const options = { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric'
-        };
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = now.toLocaleDateString('en-US', options);
         transactionDateDisplayElement.textContent = formattedDate;
     }
 
-    // Initial update
     updateTransactionDateDisplay();
 
-    // Update once per day at midnight
     function scheduleNextUpdate() {
         const now = new Date();
         const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
@@ -171,19 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (modal) modal.style.display = 'block';
     }
 
-function closeModal(modal) {
-    if (typeof modal === 'string') {
-        // If modal is a string (ID), get the element
-        modal = document.getElementById(modal);
+    function closeModal(modal) {
+        if (typeof modal === 'string') {
+            modal = document.getElementById(modal);
+        }
+        
+        if (modal instanceof HTMLElement) {
+            modal.style.display = 'none';
+        } else {
+            console.warn(`Invalid modal:`, modal);
+        }
     }
-    
-    if (modal instanceof HTMLElement) {
-        // If modal is an HTML element, hide it
-        modal.style.display = 'none';
-    } else {
-        console.warn(`Invalid modal:`, modal);
-    }
-}
 
     function handleCloseButtonClick(event) {
         const modal = event.target.closest('.modal');
@@ -415,20 +384,11 @@ function closeModal(modal) {
 
     function calculateDiscount(price, quantity) {
         const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;
-        const discountAmountInput = document.getElementById('discountAmount');
-        const totalPriceInput = document.getElementById('totalPrice');
-
-        if (discountPercent < 0 || discountPercent > 100) {
-            discountAmountInput.value = 'Invalid %';
-            totalPriceInput.value = (price * quantity).toFixed(2);
-            return;
-        }
-
         const discountAmount = (price * quantity * discountPercent) / 100;
         const discountedTotal = (price * quantity) - discountAmount;
 
-        discountAmountInput.value = discountAmount.toFixed(2);
-        totalPriceInput.value = discountedTotal.toFixed(2);
+        document.getElementById('discountAmount').value = discountAmount.toFixed(2);
+        document.getElementById('totalPrice').value = discountedTotal.toFixed(2);
     }
 
     function applyDiscount(row) {
@@ -480,14 +440,12 @@ function closeModal(modal) {
         const rows = tableBody.querySelectorAll('tr');
         let totalBeforeDiscount = 0;
     
-        // Calculate total before discount
         rows.forEach(row => {
             const totalCell = row.querySelector('.total-cell');
             const rowTotal = parseFloat(totalCell.textContent.replace('₱', ''));
             totalBeforeDiscount += rowTotal;
         });
     
-        // Apply discount proportionally to each row
         rows.forEach(row => {
             const totalCell = row.querySelector('.total-cell');
             const discountAmountCell = row.querySelector('.discount-amount-cell');
@@ -507,7 +465,6 @@ function closeModal(modal) {
         closeModal(perPurchaseDiscountModal);
     }
 
-    // Add event listeners for the new discount modal
     document.getElementById('perPurchaseDiscountPercent').addEventListener('input', calculatePerPurchaseDiscount);
     document.getElementById('applyPerPurchaseDiscount').addEventListener('click', applyPerPurchaseDiscount);
 
@@ -583,52 +540,31 @@ function closeModal(modal) {
         fetchProducts(searchValue);
     });
 
-    // Universal modal open function
-function openModal(modal) {
-    if (modal) modal.style.display = 'block';
-}
-
-// Universal modal close function
-function closeModal(modal) {
-    if (typeof modal === 'string') {
-        modal = document.getElementById(modal);  // Get modal by ID if it's a string
+    function openUserSettingsModal() {
+        const userSettingsModal = document.getElementById('userSettingsModal');
+        openModal(userSettingsModal);
     }
-    if (modal instanceof HTMLElement) {
-        modal.style.display = 'none';  // Hide modal
+
+    function closeUserSettingsModal() {
+        const userSettingsModal = document.getElementById('userSettingsModal');
+        closeModal(userSettingsModal);
     }
-}
 
-// Function to open the User Settings Modal
-function openUserSettingsModal() {
-    const userSettingsModal = document.getElementById('userSettingsModal');  // Get the modal element
-    openModal(userSettingsModal);  // Use the universal openModal function
-}
+    document.getElementById('userSettingsBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        openUserSettingsModal();
+    });
 
-// Function to close the User Settings Modal
-function closeUserSettingsModal() {
-    const userSettingsModal = document.getElementById('userSettingsModal');  // Get the modal element
-    closeModal(userSettingsModal);  // Use the universal closeModal function
-}
+    document.querySelector('.close-button').addEventListener('click', function() {
+        closeUserSettingsModal();
+    });
 
-// Add an event listener to the User Settings button (opens the modal)
-document.getElementById('userSettingsBtn').addEventListener('click', function(e) {
-    e.preventDefault();  // Prevent default action (if it's a link or form)
-    openUserSettingsModal();  // Open the modal when the button is clicked
-});
-
-// Add an event listener to the close button inside the modal
-document.querySelector('.close-button').addEventListener('click', function() {
-    closeUserSettingsModal();  // Close the modal when the close button is clicked
-});
-
-// Optional: Close modal when clicking outside the modal content
-window.addEventListener('click', function(event) {
-    const userSettingsModal = document.getElementById('userSettingsModal');
-    if (event.target === userSettingsModal) {
-        closeUserSettingsModal();  // Close the modal if the outside of the modal is clicked
-    }
-});
-
+    window.addEventListener('click', function(event) {
+        const userSettingsModal = document.getElementById('userSettingsModal');
+        if (event.target === userSettingsModal) {
+            closeUserSettingsModal();
+        }
+    });
 
     function openSettlePaymentModal() {
         const totalAmount = headerTotalSalesElement.textContent;
@@ -693,209 +629,63 @@ window.addEventListener('click', function(event) {
     
         return sales;
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const printReceiptBtn = document.getElementById('printReceiptBtn');
-        if (printReceiptBtn) {
-            printReceiptBtn.addEventListener('click', function() {
-                if (lastTransactionData) {
-                    generateReceipt(
-                        lastTransactionData.transactionData,
-                        lastTransactionData.totalAmount,
-                        lastTransactionData.paymentAmount,
-                        lastTransactionData.change
-                    );
-                } else {
-                    alert('No recent transaction data available.');
-                }
-            });
-        }
-    });
-
-        async function saveTransaction(totalAmount, paymentAmount, change) {
+    
+    async function saveTransaction(totalAmount, paymentAmount, change) {
         const sales = gatherSaleData();
         const transactionData = {
             invoice: document.getElementById('transactionNo').textContent,
-            sales: sales
+            sales: sales,
+            totalAmount: totalAmount,
+            paymentAmount: paymentAmount,
+            change: change
         };
     
-        // Simulating an API call to save the transaction
-        setTimeout(() => {
-            console.log('Transaction saved successfully!');
-            
-            lastTransactionData = {
-                transactionData,
-                totalAmount,
-                paymentAmount,
-                change
-            };
+        try {
+            const response = await fetch('save_sales.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(transactionData),
+            });
     
-            if (AUTO_PRINT_RECEIPT) {
-                generateReceipt(transactionData, totalAmount, paymentAmount, change);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            const result = await response.json();
+    
+            if (result.success) {
+                console.log('Transaction saved successfully!');
+                alert('Transaction completed successfully!');
+                
+                clearTransactionTable();
+                closeModal('settle_payment');
+                generateTransactionNo();
             } else {
-                if (confirm('Do you want to view the receipt?')) {
-                    generateReceipt(transactionData, totalAmount, paymentAmount, change);
-                }
+                throw new Error(result.message || 'Failed to save transaction');
             }
-    
-            const printReceiptBtn = document.getElementById('printReceiptBtn');
-            if (printReceiptBtn) {
-                printReceiptBtn.style.display = 'inline-block';
-            }
-        }, 1000); // Simulating a 1-second delay for the API call
+        } catch (error) {
+            console.error('Error saving transaction:', error);
+            alert('An error occurred while saving the transaction. Please try again.');
+        }
     }
-    
-    function generateReceipt(transactionData, totalAmount, paymentAmount, change) {
-        const storeInfo = `
-            <h2 style="text-align: center; margin-bottom: 10px;">ST. Vincent Hardware</h2>
-            <p style="text-align: center; margin: 5px 0;">Morong Rizal</p>
-            <p style="text-align: center; margin: 5px 0;">Contact Info (09083114333/bong@gmail.com)</p>
-        `;
-    
-        const transactionInfo = `
-            <p style="margin: 5px 0;"><strong>Receipt #:</strong> ${transactionData.invoice}</p>
-            <p style="margin: 5px 0;"><strong>Date:</strong> ${new Date().toLocaleDateString()} <strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
-            <p style="margin: 5px 0;"><strong>Cashier:</strong> ${document.getElementById('cashierName').textContent}</p>
-        `;
-    
-        let itemsList = `
-            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                <tr style="border-bottom: 1px solid #000;">
-                    <th style="text-align: left; padding: 5px;">Item Description</th>
-                    <th style="text-align: right; padding: 5px;">Qty</th>
-                    <th style="text-align: right; padding: 5px;">Unit Price</th>
-                    <th style="text-align: right; padding: 5px;">Total</th>
-                </tr>
-        `;
-    
-        transactionData.sales.forEach((item) => {
-            itemsList += `
-                <tr>
-                    <td style="text-align: left; padding: 5px;">${item.description}</td>
-                    <td style="text-align: right; padding: 5px;">${item.quantity}</td>
-                    <td style="text-align: right; padding: 5px;">₱${item.price.toFixed(2)}</td>
-                    <td style="text-align: right; padding: 5px;">₱${item.total.toFixed(2)}</td>
-                </tr>
-            `;
-        });
-    
-        itemsList += `</table>`;
-    
-        const receiptSummary = `
-            <div style="margin-top: 10px; border-top: 1px solid #000; padding-top: 10px;">
-                <p style="margin: 5px 0; text-align: right;"><strong>Subtotal:</strong> ₱${totalAmount.toFixed(2)}</p>
-                <p style="margin: 5px 0; text-align: right;"><strong>Tax (12%):</strong> ₱${(totalAmount * 0.12).toFixed(2)}</p>
-                <p style="margin: 5px 0; text-align: right;"><strong>Total:</strong> ₱${(totalAmount * 1.12).toFixed(2)}</p>
-                <p style="margin: 5px 0; text-align: right;"><strong>Amount Tendered:</strong> ₱${paymentAmount.toFixed(2)}</p>
-                <p style="margin: 5px 0; text-align: right;"><strong>Change:</strong> ₱${change.toFixed(2)}</p>
-            </div>
-        `;
-    
-        const footer = `
-            <div style="margin-top: 20px; text-align: center;">
-                <p style="margin: 5px 0;">Thank you for shopping with us!</p>
-                <p style="margin: 5px 0;">Visit us again or check our website!</p>
-            </div>
-        `;
-    
-        const receiptContent = `
-            <div style="font-family: Arial, sans-serif; font-size: 12px; max-width: 300px; margin: 0 auto;">
-                ${storeInfo}
-                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
-                ${transactionInfo}
-                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
-                ${itemsList}
-                ${receiptSummary}
-                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
-                ${footer}
-            </div>
-        `;
-    
-        const receiptWindow = window.open('', '_blank');
-        receiptWindow.document.write(`
-            <html>
-                <head>
-                    <title>Receipt</title>
-                    <style>
-                        @media print {
-                            body { width: 300px; margin: 0 auto; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${receiptContent}
-                    <script>
-                        window.onload = function() {
-                            window.print();
-                            window.onafterprint = function() {
-                                window.close();
-                                // Clear transaction table and close modal after printing
-                                window.opener.clearTransactionTable();
-                                window.opener.closeModal('settlePaymentModal');
-                            };
-                        };
-                    </script>
-                </body>
-            </html>
-        `);
-        receiptWindow.document.close();
-    }
-    
 
-       // Function to clear the transaction table
-function clearTransactionTable() {
-    const tableBody = document.querySelector('.transaction-table tbody');
-    tableBody.innerHTML = ''; // Clears all rows in the transaction table
-    updateTotalSales(); // Ensure the total sales are reset to zero
-    resetTransaction(); // Optional: reset transaction-related variables
-}
-
-// Function to reset transaction-related data (if needed)
-function resetTransaction() {
-    transactionCounter = 1; // Reset the transaction counter
-    lastTransactionData = null; // Clear the last transaction data
-    document.getElementById('headerTotalSales').textContent = '₱0.00'; // Reset total sales display
-}
-
-// Example of closeModal function (assuming you have something like this)
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'none'; // Hide the modal
-    }
-}
-   // Add event listener for print button
-document.addEventListener('DOMContentLoaded', function() {
-    const printReceiptBtn = document.getElementById('printReceiptBtn');
-    if (printReceiptBtn) {
-        printReceiptBtn.addEventListener('click', function() {
-            if (lastTransactionData) {
-                generateReceipt(
-                    lastTransactionData.transactionData,
-                    lastTransactionData.totalAmount,
-                    lastTransactionData.paymentAmount,
-                    lastTransactionData.change
-                );
-            } else {
-                alert('No recent transaction data available.');
-            }
-        });
-    }
-});
-    console.log(lastTransactionData);
-
-    
-    function clearCart() {
-        console.log('Clearing cart');
+    function clearTransactionTable() {
+        const tableBody = document.querySelector('.transaction-table tbody');
         tableBody.innerHTML = '';
         updateTotalSales();
-        console.log('Cart cleared');
+        resetTransaction();
+    }
+
+    function resetTransaction() {
+        transactionCounter = 1;
+        document.getElementById('headerTotalSales').textContent = '₱0.00';
     }
 
     function clearCart() {
         tableBody.innerHTML = '';
         updateTotalSales();
-        // transactionCounter is now reset in saveTransaction
     }
 
     clearCartBtn.addEventListener('click', () => {
@@ -912,47 +702,41 @@ document.addEventListener('DOMContentLoaded', function() {
         settlePaymentBtn.disabled = isTransactionTableEmpty();
     }
 
-
-
     function filterSales() {
         const dateFrom = document.getElementById('dateFrom').value;
         const dateTo = document.getElementById('dateTo').value;
         const cashierId = document.getElementById('cashier').value;
 
-    fetch(`transaction.php?action=fetch_sales&dateFrom=${dateFrom}&dateTo=${dateTo}&cashierId=${cashierId}&view=${currentView}`)
-        .then(response => response.json())
-        .then(data => {
-            const salesDataBody = document.getElementById('salesData');
-            salesDataBody.innerHTML = '';
+        fetch(`transaction.php?action=fetch_sales&dateFrom=${dateFrom}&dateTo=${dateTo}&cashierId=${cashierId}&view=${currentView}`)
+            .then(response => response.json())
+            .then(data => {
+                const salesDataBody = document.getElementById('salesData');
+                salesDataBody.innerHTML = '';
 
-            if (data.sales && data.sales.length > 0) {
-                if (currentView === 'item') {
-                    displayItemView(data.sales, salesDataBody);
+                if (data.sales && data.sales.length > 0) {
+                    if (currentView === 'item') {
+                        displayItemView(data.sales, salesDataBody);
+                    } else {
+                        displayTransactionView(data.sales, salesDataBody);
+                    }
+                    updateModalTotalSales(data.totalSales);
                 } else {
-                    displayTransactionView(data.sales, salesDataBody);
+                    salesDataBody.innerHTML = `<tr><td colspan="${currentView === 'item' ? '10' : '7'}">No sales data found</td></tr>`;
+                    updateModalTotalSales(0);
                 }
-                updateModalTotalSales(data.totalSales);
-            } else {
-                salesDataBody.innerHTML = `<tr><td colspan="${currentView === 'item' ? '10' : '7'}">No sales data found</td></tr>`;
-                updateModalTotalSales(0);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while fetching sales data.');
-        });
-}
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while fetching sales data.');
+            });
+    }
 
     document.querySelector('.filter-controls button').addEventListener('click', filterSales);
 
     function displayItemView(sales, container) {
-        // Clear the container before adding new rows (optional)
-        container.innerHTML = ''; 
+        container.innerHTML = '';
+        const filteredSales = sales.filter(sale => sale.status !== 'voided');
     
-        // Filter out voided sales
-        const filteredSales = sales.filter(sale => sale.status !== 'voided'); 
-    
-        // Iterate over filtered sales and create rows
         filteredSales.forEach((sale, index) => {
             const row = `
                 <tr>
@@ -964,14 +748,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${sale.quantity}</td>
                     <td>₱${parseFloat(sale.discount_amount).toFixed(2)}</td>
                     <td>₱${parseFloat(sale.total).toFixed(2)}</td>
-                    <td>${sale.cashier_name}</td>
+                    <td>${sale.cashier_name || 'N/A'}</td>
                     <td><button class="void-button" data-sale='${JSON.stringify(sale)}'>Void</button></td>
                 </tr>
             `;
             container.insertAdjacentHTML('beforeend', row);
         });
     
-        // Add event listeners to void buttons
         document.querySelectorAll('.void-button').forEach(button => {
             button.addEventListener('click', function() {
                 try {
@@ -992,7 +775,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function openCancelOrderModal(sale) {
-        // Populate the modal fields
         document.getElementById('id').value = sale.id;
         document.getElementById('productCode').value = sale.barcode;
         document.getElementById('description').value = sale.description;
@@ -1015,14 +797,10 @@ document.addEventListener('DOMContentLoaded', function() {
             cancelQtyInput.placeholder = `Enter quantity (max ${quantity})`;
         }
     
-        // Close the daily sales modal
-        document.getElementById('dailySalesModal').style.display = 'none';
-        
-        // Open the cancel order modal
-        document.getElementById('cancelOrderModal').style.display = 'block';
+        closeModal('dailySalesModal');
+        openModal(document.getElementById('cancelOrderModal'));
     }
     
-    // Add an event listener to validate the cancel quantity input
     document.getElementById('cancelQty').addEventListener('input', function() {
         const maxQty = parseInt(this.max);
         let enteredQty = parseInt(this.value);
@@ -1037,7 +815,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleCancelOrder(event) {
         event.preventDefault();
         
-        // Helper function to safely get element values
         function getElementValue(id) {
             const element = document.getElementById(id);
             if (!element) {
@@ -1047,9 +824,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return element.value;
         }
     
-        // Gather input values from the form
         const saleId = getElementValue('id');
-        const productCode = getElementValue('productCode'); // Changed from 'productId' to 'productCode'
+        const productCode = getElementValue('productCode');
         const cancelQtyElement = document.getElementById('cancelQty');
         const cancelQty = cancelQtyElement ? parseInt(cancelQtyElement.value) : null;
         const maxQty = cancelQtyElement ? parseInt(cancelQtyElement.getAttribute('max')) : null;
@@ -1057,12 +833,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const addToInventoryElement = document.getElementById('addToInventory');
         const addToInventory = addToInventoryElement ? addToInventoryElement.value === 'yes' : false;
         const voidBy = getElementValue('voidBy');
-        const cancelledBy = getElementValue('cancelledBy'); // Changed to get 'cancelledBy' separately
+        
+        // Get the cashier's name instead of their title
+        const cashierNameElement = document.getElementById('cashierName');
+        const cancelledBy = cashierNameElement ? cashierNameElement.textContent.trim() : 'Unknown Cashier';
     
-        // Log gathered values for debugging
         console.log('Gathered form data:', { saleId, productCode, cancelQty, maxQty, cancelReason, addToInventory, voidBy, cancelledBy });
     
-        // Validate input fields
         if (!cancelQty || cancelQty < 1 || (maxQty !== null && cancelQty > maxQty)) {
             alert(`Please enter a valid cancel quantity${maxQty !== null ? ` between 1 and ${maxQty}` : ''}.`);
             return;
@@ -1078,20 +855,17 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Prepare the data to be sent to the server
         const requestData = {
             saleId: parseInt(saleId),
             productCode: productCode,
             cancelQty: cancelQty,
             voidBy: voidBy,
-            cancelledBy: cancelledBy,
+            cancelledBy: cancelledBy, // This now contains the cashier's name
             cancelReason: cancelReason,
             addToInventory: addToInventory
         };
-        
-        console.log('Request Data:', requestData); // Debugging: Ensure the request data is correct
-        
-        // Make the API call to void the item
+    
+        // Send the request to the server
         fetch('void_item.php', {
             method: 'POST',
             headers: {
@@ -1105,7 +879,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Item voided successfully.');
                 closeModal('cancelOrderModal');
                 if (typeof filterSales === 'function') {
-                    filterSales(); // Refresh the sales data if the function exists
+                    filterSales();
                 }
             } else {
                 throw new Error(data.message || 'Failed to void item');
@@ -1117,7 +891,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Make sure to add this event listener
     document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
 
     function displayTransactionView(transactions, container) {
@@ -1136,7 +909,6 @@ document.addEventListener('DOMContentLoaded', function() {
             container.insertAdjacentHTML('beforeend', row);
         });
     
-        // Add event listeners to view details and cancel transaction buttons
         document.querySelectorAll('.view-details-button').forEach(button => {
             button.addEventListener('click', function() {
                 const transaction = JSON.parse(this.dataset.transaction);
@@ -1153,15 +925,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function viewTransactionDetails(transaction) {
-        console.log(transaction);  // Log the items array
+        console.log(transaction);
     
         const transactModal = document.getElementById('transactionModal');
         const modalContent = document.getElementById('transactionDetailsContent');
         
-        // Clear previous content
         modalContent.innerHTML = '';
     
-        // Populate the modal with transaction details
         const transactionHtml = `
             <p><strong>Invoice:</strong> ${transaction.invoice}</p>
             <p><strong>Date:</strong> ${transaction.date}</p>
@@ -1178,22 +948,20 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         modalContent.innerHTML = transactionHtml;
     
-        // Show the modal
-        transactModal.style.display = 'block'; // Ensure the modal is visible
+        transactModal.style.display = 'block';
     
-        // Handle closing the modal
         const closeButton = document.querySelector('.close-button');
         closeButton.addEventListener('click', () => {
             transactModal.style.display = 'none';
         });
     
-        // Close modal if the user clicks anywhere outside the modal content
         window.addEventListener('click', function(event) {
             if (event.target === transactModal) {
                 transactModal.style.display = 'none';
             }
         });
     }
+
     function openCancelTransactionModal(transaction) {
         const safeSetValue = (id, value) => {
             const element = document.getElementById(id);
@@ -1204,141 +972,117 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
     
-            // Set transaction details
-            safeSetValue('transactionId', transaction.invoice || 'TRX-000000');
-            safeSetValue('transactionTotal', `₱${parseFloat(transaction.total).toFixed(2)}`);
-
-            // Set current date and time
-            const now = new Date();
-            safeSetValue('transactionDate', now.toISOString().slice(0, 19).replace('T', ' '));
-
-            // Set void by (assuming it's already set in the HTML)
-            // If you need to set it dynamically, uncomment the next line
-            // safeSetValue('transactionVoidBy', getCurrentUserName());
-
-            // Clear previous reason
-            safeSetValue('transactionCancelReason', '');
-
-            // Show the modal
-            const cancelTransactionModal = document.getElementById('cancelTransactionModal');
-            if (cancelTransactionModal) {
-                cancelTransactionModal.style.display = 'block';
-            } else {
-                console.error('Cancel Transaction Modal not found');
-            }
-
-                    // Close the daily sales modal
-        document.getElementById('dailySalesModal').style.display = 'none';
-        
-        // Open the cancel order modal
-        document.getElementById('cancelTransactionModal').style.display = 'block';
-        }
-
-        function handleCancelTransaction() {
-            const invoice = document.getElementById('transactionId').value; // Use invoice instead of sale_id
-            const transactionTotal = parseFloat(document.getElementById('transactionTotal').value.replace('₱', ''));
-            const voidBy = document.getElementById('transactionVoidBy').value;
-            const cancelReason = document.getElementById('transactionCancelReason').value;
-        
-            // Validate required fields
-            if (!cancelReason.trim()) {
-                alert('Please provide a reason for cancellation.');
-                return;
-            }
-        
-            if (!invoice || !transactionTotal) {
-                alert('Invoice and total amount are required.');
-                return;
-            }
-        
-            // Confirm cancellation
-            if (!confirm(`Are you sure you want to cancel transaction ${invoice}?`)) {
-                return;
-            }
-        
-            // Prepare data to send to the server
-            const requestData = {
-                invoice: invoice, // Now using invoice instead of sale_id
-                totalAmount: transactionTotal,
-                voidBy: voidBy,
-                cancelReason: cancelReason
-            };
-        
-            // Make the API call to void the transaction
-            fetch('void_transaction.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(`Transaction ${invoice} cancelled successfully.`);
-                    closeModal('cancelTransactionModal'); // Close the modal if open
-                    filterSales(); // Refresh the sales data to exclude the cancelled transaction
-                } else {
-                    throw new Error(data.message || 'Cancellation failed');
-                }
-            })
-            .catch(error => {
-                console.error('Error cancelling transaction:', error);
-                alert('An error occurred while cancelling the transaction. Please try again.');
-            });
-        }
-        
-        
-        // Add event listener
-        document.querySelector('#cancelTransactionModal .cancel-modal-btn').addEventListener('click', handleCancelTransaction);
-        
+        safeSetValue('transactionId', transaction.invoice || 'TRX-000000');
+        safeSetValue('transactionTotal', `₱${parseFloat(transaction.total).toFixed(2)}`);
     
-
-        // Add these event listeners after your DOMContentLoaded event listener
-        document.addEventListener('DOMContentLoaded', function() {
-            const cancelOrderModal = document.getElementById('cancelOrderModal');
-            const cancelTransactionModal = document.getElementById('cancelTransactionModal');
-
-            // Event listener for the cancel order button (per-item void)
-            document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
-
-            // Event listener for the cancel transaction button (per-transaction void)
-            document.querySelector('#cancelTransactionModal .cancel-modal-btn').addEventListener('click', handleCancelTransaction);
-
-            // Event listener for the close buttons in both modals
-            document.querySelectorAll('#cancelOrderModal .close, #cancelTransactionModal .close').forEach(closeBtn => {
-                closeBtn.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    closeModal(event.target.closest('.modal'));
-                });
-            });
-
-            // Event listener for clicking outside both modals to close them
-            [cancelOrderModal, cancelTransactionModal].forEach(modal => {
-                modal.addEventListener('click', (event) => {
-                    if (event.target === modal) {
-                        closeModal(modal);
-                    }
-                });
-            });
-
-            // Add an event listener to prevent non-numeric input in the cancelQty field (for per-item void)
-            document.getElementById('cancelQty').addEventListener('input', function(e) {
-                this.value = this.value.replace(/[^0-9]/g, '');
-                const maxQty = parseInt(this.max);
-                const enteredQty = parseInt(this.value);
-                if (enteredQty > maxQty) {
-                    this.value = maxQty;
-                } else if (enteredQty < 1 || isNaN(enteredQty)) {
-                    this.value = '';
-                }
-            });
-
-            function closeModal(modal) {
-                if (modal) {
-                    modal.style.display = 'none';
-                }
+        const now = new Date();
+        safeSetValue('transactionDate', now.toISOString().slice(0, 19).replace('T', ' '));
+    
+        safeSetValue('transactionCancelReason', '');
+    
+        closeModal('dailySalesModal');
+        openModal(document.getElementById('cancelTransactionModal'));
+    }
+    
+    function handleCancelTransaction() {
+        const invoice = document.getElementById('transactionId').value;
+        const transactionTotal = parseFloat(document.getElementById('transactionTotal').value.replace('₱', ''));
+        const voidBy = document.getElementById('transactionVoidBy').value;
+        const cancelReason = document.getElementById('transactionCancelReason').value;
+    
+        if (!cancelReason.trim()) {
+            alert('Please provide a reason for cancellation.');
+            return;
+        }
+    
+        if (!invoice || !transactionTotal) {
+            alert('Invoice and total amount are required.');
+            return;
+        }
+    
+        if (!confirm(`Are you sure you want to cancel transaction ${invoice}?`)) {
+            return;
+        }
+    
+        const requestData = {
+            invoice: invoice,
+            totalAmount: transactionTotal,
+            voidBy: voidBy,
+            cancelReason: cancelReason
+        };
+    
+        fetch('void_transaction.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`Transaction ${invoice} cancelled successfully.`);
+                closeModal('cancelTransactionModal');
+                filterSales();
+            } else {
+                throw new Error(data.message || 'Cancellation failed');
             }
+        })
+        .catch(error => {
+            console.error('Error cancelling transaction:', error);
+            alert('An error occurred while cancelling the transaction. Please try again.');
+        });
+    }
+
+    function updateSalesDisplay(invoice) {
+        // Find the row with the cancelled invoice
+        const row = document.querySelector(`tr[data-invoice="${invoice}"]`);
+        if (row) {
+            // Update the quantity and total columns
+            const quantityCell = row.querySelector('.quantity-cell');
+            const totalCell = row.querySelector('.total-cell');
+            if (quantityCell) quantityCell.textContent = '0';
+            if (totalCell) totalCell.textContent = '₱0.00';
+            
+            // Optionally, add a visual indicator that the transaction is voided
+            row.classList.add('voided-transaction');
+        }
+    }
+    
+    document.querySelector('#cancelTransactionModal .cancel-modal-btn').addEventListener('click', handleCancelTransaction);
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const cancelOrderModal = document.getElementById('cancelOrderModal');
+        const cancelTransactionModal = document.getElementById('cancelTransactionModal');
+
+        document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
+        document.querySelector('#cancelTransactionModal .cancel-modal-btn').addEventListener('click', handleCancelTransaction);
+
+        document.querySelectorAll('#cancelOrderModal .close, #cancelTransactionModal .close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                closeModal(event.target.closest('.modal'));
+            });
+        });
+
+        [cancelOrderModal, cancelTransactionModal].forEach(modal => {
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal(modal);
+                }
+            });
+        });
+
+        document.getElementById('cancelQty').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            const maxQty = parseInt(this.max);
+            const enteredQty = parseInt(this.value);
+            if (enteredQty > maxQty) {
+                this.value = maxQty;
+            } else if (enteredQty < 1 || isNaN(enteredQty)) {
+                this.value = '';
+            }
+        });
             
         changePasswordForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1358,7 +1102,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
     
-            // Send password change request to server
             fetch('change_password.php', {
                 method: 'POST',
                 headers: {
@@ -1383,5 +1126,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 passwordError.style.display = 'block';
             });
         });
-});
+    });
 });

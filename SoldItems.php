@@ -13,7 +13,7 @@ $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
 $cashierName = isset($_GET['cashier']) ? $_GET['cashier'] : 'all';
 
 // Prepare the base query
-$query = "SELECT barcode, description, price, quantity, discount_amount, total, cashier_name, sale_date FROM sales";
+$query = "SELECT barcode, description, price, quantity, discount_amount, total, cashier_name, sale_date FROM sales WHERE status != 'voided'";
 
 // Add filters
 $conditions = [];
@@ -34,7 +34,7 @@ if ($cashierName != 'all') {
 }
 
 if (!empty($conditions)) {
-    $query .= " WHERE " . implode(' AND ', $conditions);
+    $query .= " AND " . implode(' AND ', $conditions);
 }
 
 // Add ordering
@@ -71,6 +71,14 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .no-records {
+      text-align: center;
+      font-style: italic;
+      color: #888;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -116,7 +124,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                             <option value="all">All Cashiers</option>
                             <?php
                             // Fetch all unique cashier names from the sales table
-                            $cashierStmt = $conn->prepare("SELECT DISTINCT cashier_name FROM sales ORDER BY cashier_name");
+                            $cashierStmt = $conn->prepare("SELECT DISTINCT cashier_name FROM sales WHERE status != 'voided' ORDER BY cashier_name");
                             $cashierStmt->execute();
                             $cashierResult = $cashierStmt->get_result();
                             while ($row = $cashierResult->fetch_assoc()) {
@@ -162,20 +170,24 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
             <?php
             $totalSales = 0;
             $rowNumber = 1;
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $rowNumber . "</td>";
-                echo "<td>" . htmlspecialchars($row['barcode']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['description']) . "</td>";
-                echo "<td>₱" . number_format($row['price'], 2) . "</td>";
-                echo "<td>" . $row['quantity'] . "</td>";
-                echo "<td>₱" . number_format($row['discount_amount'], 2) . "</td>";
-                echo "<td>₱" . number_format($row['total'], 2) . "</td>";
-                echo "<td>" . htmlspecialchars($row['cashier_name']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['sale_date']) . "</td>";
-                echo "</tr>";
-                $totalSales += $row['total'];
-                $rowNumber++;
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $rowNumber . "</td>";
+                    echo "<td>" . htmlspecialchars($row['barcode']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['description']) . "</td>";
+                    echo "<td>₱" . number_format($row['price'], 2) . "</td>";
+                    echo "<td>" . $row['quantity'] . "</td>";
+                    echo "<td>₱" . number_format($row['discount_amount'], 2) . "</td>";
+                    echo "<td>₱" . number_format($row['total'], 2) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['cashier_name']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['sale_date']) . "</td>";
+                    echo "</tr>";
+                    $totalSales += $row['total'];
+                    $rowNumber++;
+                }
+            } else {
+                echo "<tr><td colspan='9' class='no-records'>No records found</td></tr>";
             }
             ?>
           </tbody>
@@ -201,22 +213,26 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                 success: function(response) {
                     let tableBody = '';
                     let rowNumber = 1;
-                    response.data.forEach(function(row) {
-                        tableBody += `<tr>
-                            <td>${rowNumber}</td>
-                            <td>${escapeHtml(row.barcode)}</td>
-                            <td>${escapeHtml(row.description)}</td>
-                            <td>₱${parseFloat(row.price).toFixed(2)}</td>
-                            <td>${row.quantity}</td>
-                            <td>₱${parseFloat(row.discount_amount).toFixed(2)}</td>
-                            <td>₱${parseFloat(row.total).toFixed(2)}</td>
-                            <td>${escapeHtml(row.cashier_name)}</td>
-                            <td>${escapeHtml(row.sale_date)}</td>
-                        </tr>`;
-                        rowNumber++;
-                    });
+                    if (response.data.length > 0) {
+                        response.data.forEach(function(row) {
+                            tableBody += `<tr>
+                                <td>${rowNumber}</td>
+                                <td>${escapeHtml(row.barcode)}</td>
+                                <td>${escapeHtml(row.description)}</td>
+                                <td>₱${parseFloat(row.price).toFixed(2)}</td>
+                                <td>${row.quantity}</td>
+                                <td>₱${parseFloat(row.discount_amount).toFixed(2)}</td>
+                                <td>₱${parseFloat(row.total).toFixed(2)}</td>
+                                <td>${escapeHtml(row.cashier_name)}</td>
+                                <td>${escapeHtml(row.sale_date)}</td>
+                            </tr>`;
+                            rowNumber++;
+                        });
+                    } else {
+                        tableBody = '<tr><td colspan="9" class="no-records">No records found</td></tr>';
+                    }
                     $('#salesTableBody').html(tableBody);
-                    updateTotalSales();
+                    $('#totalSales').text(parseFloat(response.totalSales).toFixed(2));
                 },
                 error: function() {
                     alert('An error occurred while loading the data.');

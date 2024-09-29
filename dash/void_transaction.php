@@ -33,6 +33,11 @@ BEGIN
     SET status = 'voided'
     WHERE invoice = p_invoice;
 
+    -- Set quantity to 0 in sales table
+    UPDATE sales
+    SET quantity = 0
+    WHERE invoice = p_invoice;
+
     -- Restore product quantities back to inventory using barcode
     UPDATE products p
     JOIN sales s ON p.barcode = s.barcode

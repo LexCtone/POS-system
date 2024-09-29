@@ -57,63 +57,26 @@
         <i class="fa-solid fa-print"></i>
         <span class="print-preview-text">Print Preview</span>
     </div>
-  </div>
-
+    <div>
+  <label for="toggleView">View:</label>
+  <button id="toggleView">Switch to Transaction View</button>
 </div>
-      <div class="content">
-        <!-- Left Column: Table -->
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Transaction #</th>
-                <th>PCode</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Qty</th>
-                <th>Total</th>
-                <th>Date</th>
-                <th>Void by</th>
-                <th>Cancelled by</th>
-                <th>Reason</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1123123123</td>
-                <td>P0001</td>
-                <td>Heavy Duty Hammer</td>
-                <td>21</td>
-                <td>12</td>
-                <td>12</td>
-                <td>02/22/2022 12:00:00AM</td>
-                <td>Admin</td>
-                <td>Cashier</td>
-                <td>Reason</td>
-                <td>panget bumili</td>
-                <td>yes</td>
-              </tr>
-              <tr>
-                <td>1123123123</td>
-                <td>P0001</td>
-                <td>Heavy Duty Hammer</td>
-                <td>21</td>
-                <td>12</td>
-                <td>12</td>
-                <td>02/22/2022 12:00:00AM</td>
-                <td>Admin</td>
-                <td>Cashier</td>
-                <td>Reason</td>
-                <td>panget bumili</td>
-                <td>yes</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
   </div>
+</div>
+<div class="content">
+  <div class="table-container">
+    <table id="recordsTable">
+      <thead>
+        <tr id="tableHeader">
+          <!-- Table headers will be dynamically updated -->
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Table rows will be dynamically updated -->
+      </tbody>
+    </table>
+  </div>
+</div>
+<script type="text/javascript" src="JAVASCRIPT/CancelledOrder.js" defer></script>
 </body>
 </html>
