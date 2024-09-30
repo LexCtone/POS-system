@@ -1,3 +1,31 @@
+<?php
+// Connect to the database
+include('connect.php');
+
+// Query for daily sales
+$query_daily_sales = "SELECT SUM(total) as daily_sales FROM sales WHERE DATE(sale_date) = CURDATE()";
+$result_daily_sales = $conn->query($query_daily_sales);
+$daily_sales = 0;
+if ($result_daily_sales && $row = $result_daily_sales->fetch_assoc()) {
+    $daily_sales = $row['daily_sales'] ? $row['daily_sales'] : 0;
+}
+
+// Query for stock on hand
+$query_stock_on_hand = "SELECT SUM(Quantity) as stock_on_hand FROM products";
+$result_stock_on_hand = $conn->query($query_stock_on_hand);
+$stock_on_hand = 0;
+if ($result_stock_on_hand && $row = $result_stock_on_hand->fetch_assoc()) {
+    $stock_on_hand = $row['stock_on_hand'] ? $row['stock_on_hand'] : 0;
+}
+
+// Query for critical items
+$query_critical_items = "SELECT COUNT(*) as critical_items FROM products WHERE Quantity < 10";
+$result_critical_items = $conn->query($query_critical_items);
+$critical_items = 0;
+if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
+    $critical_items = $row['critical_items'] ? $row['critical_items'] : 0;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,11 +56,16 @@
   </div>
   
   <div class="container">
-    <div class="orange" id="box1">10,500,00 <br> DAILY SALES</div>
-    <div class="yellow" id="box2">5,782 <br> STOCK ON HAND</div>
-    <div class="green" id="box3">3<br> CRITICAL ITEMS</div>
+    <div class="orange" id="box1">
+        <?= number_format($daily_sales, 2) ?><br> DAILY SALES
+    </div>
+    <div class="yellow" id="box2">
+        <?= number_format($stock_on_hand) ?><br> STOCK ON HAND
+    </div>
+    <div class="green" id="box3">
+        <?= number_format($critical_items) ?><br> CRITICAL ITEMS
+    </div>
   </div>
-
   <div class="pie-chart">
     <div class="slice" style="--percentage: 30;"></div>
     <div class="slice" style="--percentage: 20;"></div>

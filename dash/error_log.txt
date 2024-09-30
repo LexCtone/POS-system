@@ -570,3 +570,78 @@
 
 [2024-09-30 01:44:58] Executed sale insert for barcode: 4800194185196
 [2024-09-30 01:44:58] Executed product update for barcode: 4800194185196
+[2024-09-30 09:55:25] Received data: Array
+(
+    [invoice] => 20240930429264111
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 3
+                    [barcode] => 200110212312
+                    [description] => Heavy Duty Hammer
+                    [price] => 279
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 279
+                )
+
+        )
+
+    [totalAmount] => 279
+    [paymentAmount] => 279
+    [change] => 0
+)
+
+[2024-09-30 09:55:25] Executed sale insert for barcode: 200110212312
+[2024-09-30 09:55:25] Executed product update for barcode: 200110212312
+[2024-09-30 09:55:41] Received data: Array
+(
+    [invoice] => 20240930926007497
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 731126101165
+                    [description] => VOID FACELESS
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-09-30 09:55:41] Executed sale insert for barcode: 731126101165
+[2024-09-30 09:55:41] Executed product update for barcode: 731126101165
+[2024-09-30 10:13:25] Received data: Array
+(
+    [invoice] => 20240930991318364
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 731126101165
+                    [description] => VOID FACELESS
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-09-30 10:13:25] Executed sale insert for barcode: 731126101165
+[2024-09-30 10:13:25] Executed product update for barcode: 731126101165
