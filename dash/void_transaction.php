@@ -7,48 +7,58 @@ error_reporting(E_ALL);
 header("Content-Type: application/json");
 
 // Include the connect.php file for database connection (using MySQLi)
-include '../connect.php'; 
+include '../connect.php';
 
 try {
-    // Check if the stored procedure exists and create it if not
+    // Check if the stored procedure exists and drop it if it does
     $procedureExistsStmt = $conn->query("SHOW PROCEDURE STATUS WHERE Name = 'void_transaction'");
-    if ($procedureExistsStmt->num_rows == 0) {
-        // Create the procedure if it does not exist
-        $create_procedure = "
-CREATE PROCEDURE void_transaction(
-    IN p_invoice VARCHAR(50),
-    IN p_total_amount DECIMAL(10, 2),
-    IN p_void_by VARCHAR(50),
-    IN p_reason TEXT
-)
-BEGIN
-    START TRANSACTION;
+    if ($procedureExistsStmt->num_rows > 0) {
+        $conn->query("DROP PROCEDURE IF EXISTS void_transaction");
+    }
 
-    -- Insert into transaction_voids table using the invoice
-    INSERT INTO transaction_voids (invoice, total_amount, void_by, reason)
-    VALUES (p_invoice, p_total_amount, p_void_by, p_reason);
+    // Create the updated procedure
+    $create_procedure = "
+    CREATE PROCEDURE void_transaction(
+        IN p_invoice VARCHAR(50),
+        IN p_total_amount DECIMAL(10, 2),
+        IN p_void_by VARCHAR(50),
+        IN p_reason TEXT
+    )
+    BEGIN
+        DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+            ROLLBACK;
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'An error occurred during the transaction';
+        END;
 
-    -- Update the sales status to 'voided' using invoice
-    UPDATE sales
-    SET status = 'voided'
-    WHERE invoice = p_invoice;
+        START TRANSACTION;
 
-    -- Set quantity to 0 in sales table
-    UPDATE sales
-    SET quantity = 0
-    WHERE invoice = p_invoice;
+        -- Insert into transaction_voids table using the invoice
+        INSERT INTO transaction_voids (invoice, total_amount, void_by, reason)
+        VALUES (p_invoice, p_total_amount, p_void_by, p_reason);
 
-    -- Restore product quantities back to inventory using barcode
-    UPDATE products p
-    JOIN sales s ON p.barcode = s.barcode
-    SET p.Quantity = p.Quantity + s.quantity
-    WHERE s.invoice = p_invoice;
+        -- Restore product quantities back to inventory using barcode
+        UPDATE products p
+        JOIN sales s ON p.barcode = s.barcode
+        SET p.Quantity = p.Quantity + s.quantity
+        WHERE s.invoice = p_invoice;
 
-    COMMIT;
-END
-";
+        -- Update the sales status to 'voided' using invoice
+        UPDATE sales
+        SET status = 'voided'
+        WHERE invoice = p_invoice;
 
-        $conn->query($create_procedure);
+        -- Set quantity to 0 in sales table
+        UPDATE sales
+        SET quantity = 0
+        WHERE invoice = p_invoice;
+
+        COMMIT;
+    END
+    ";
+
+    if (!$conn->query($create_procedure)) {
+        throw new Exception("Failed to create stored procedure: " . $conn->error);
     }
 
     // Get POST data
