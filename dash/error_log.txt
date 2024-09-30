@@ -1123,3 +1123,128 @@
 
 [2024-09-30 21:08:20] Executed sale insert for barcode: 731126101165
 [2024-09-30 21:08:20] Executed product update for barcode: 731126101165
+[2024-09-30 23:36:12] Received data: Array
+(
+    [invoice] => 20240930966330677
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 200110212312
+                    [description] => Heavy Duty Hammer
+                    [price] => 279
+                    [quantity] => 50
+                    [discount_amount] => 0
+                    [total] => 13950
+                )
+
+        )
+
+    [totalAmount] => 13950
+    [paymentAmount] => 13950
+    [change] => 0
+)
+
+[2024-09-30 23:36:12] Executed sale insert for barcode: 200110212312
+[2024-09-30 23:36:12] Executed product update for barcode: 200110212312
+[2024-09-30 23:45:03] Received data: Array
+(
+    [invoice] => 20240930691300465
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 200110212312
+                    [description] => Heavy Duty Hammer
+                    [price] => 279
+                    [quantity] => 50
+                    [discount_amount] => 0
+                    [total] => 13950
+                )
+
+        )
+
+    [totalAmount] => 13950
+    [paymentAmount] => 13950
+    [change] => 0
+)
+
+[2024-09-30 23:45:03] Executed sale insert for barcode: 200110212312
+[2024-09-30 23:45:03] Executed product update for barcode: 200110212312
+[2024-09-30 23:59:37] Received data: Array
+(
+    [invoice] => 20240930563408599
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 200110212312
+                    [description] => Heavy Duty Hammer
+                    [price] => 279
+                    [quantity] => 50
+                    [discount_amount] => 0
+                    [total] => 13950
+                )
+
+        )
+
+    [totalAmount] => 13950
+    [paymentAmount] => 13950
+    [change] => 0
+)
+
+[2024-09-30 23:59:37] Executed sale insert for barcode: 200110212312
+[2024-09-30 23:59:37] Executed product update for barcode: 200110212312
+[2024-10-01 00:08:09] Received data: Array
+(
+    [invoice] => 20240930045098943
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 200110212312
+                    [description] => Heavy Duty Hammer
+                    [price] => 279
+                    [quantity] => 50
+                    [discount_amount] => 0
+                    [total] => 13950
+                )
+
+        )
+
+    [totalAmount] => 13950
+    [paymentAmount] => 13950
+    [change] => 0
+)
+
+[2024-10-01 00:08:09] Executed sale insert for barcode: 200110212312
+[2024-10-01 00:08:09] Executed product update for barcode: 200110212312
+[2024-10-01 00:11:14] Received data: Array
+(
+    [invoice] => 20240930090758633
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 200110212312
+                    [description] => Heavy Duty Hammer
+                    [price] => 279
+                    [quantity] => 50
+                    [discount_amount] => 0
+                    [total] => 13950
+                )
+
+        )
+
+    [totalAmount] => 13950
+    [paymentAmount] => 13950
+    [change] => 0
+)
+
+[2024-10-01 00:11:14] Executed sale insert for barcode: 200110212312
+[2024-10-01 00:11:14] Executed product update for barcode: 200110212312
