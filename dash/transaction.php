@@ -357,13 +357,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
                 </select>
                 <button>Filter</button>
             </div>
+            <div class="toggle-container">
+            <label for="toggleView">View:</label>
+            <button id="toggleView">Switch to Transaction View</button>
+                </div>    
             <div class="total-sales">
                 <span id="modalTotalSales">₱0.00</span>
             </div>
-        </div>
-        <div class="toggle-container">
-            <label for="toggleView">View:</label>
-            <button id="toggleView">Switch to Transaction View</button>
+                </div>
+
+                <label for="toggleView">(Search function para sa pag search ng invoice)</label>
+
                     <!-- Table with scrollable tbody -->
         <table class="scrollable-table" id="salesTable">
             <thead>

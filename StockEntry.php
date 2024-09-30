@@ -125,7 +125,7 @@ if (!$result) {
 <div class="save-container">
     <button type="button" id="save-button">Save</button>
   </div>
-<script src="StockEntry.js"></script>
+<script src="JAVASCRIPT\StockEntry.js"></script>
 </body>
 
 <!-- Modal for Selecting Products -->

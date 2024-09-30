@@ -39,19 +39,26 @@ body {
 }
 
 .container input[type="submit"] {
-  background-color: #4caf50;
+  background-color: #1c75a6;
   color: #fff;
   cursor: pointer;
+  width: 353px;
 }
 
 .container input[type="submit"]:hover {
-  background-color: #45a049;
+  background-color: #134c6b;
 }
 
 .error {
-  background-color: #f2dede;
-  color: #a94442;
+  background-color: #f8d7da;
+  color: #721c24;
   padding: 10px;
-  border-radius: 3px;
   margin-bottom: 15px;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+}
+
+
+.submit{
+ margin-top: 15px;
 }

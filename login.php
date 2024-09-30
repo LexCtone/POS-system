@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = trim($_POST['password']);
     $selected_role = trim($_POST['role']);
 
-    $query = 'SELECT * FROM accounts WHERE username = ? AND role = ?';
+    // Modified query to include status check
+    $query = 'SELECT * FROM accounts WHERE username = ? AND role = ? AND status = 1';
     $stmt = $conn->prepare($query);
     $stmt->bind_param('ss', $username, $selected_role);
     $stmt->execute();
@@ -32,7 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
-            $_SESSION['username'] = $user['username']; // Add this line
+            $_SESSION['username'] = $user['username'];
+            session_regenerate_id(true);
 
             // Redirect based on the role
             if ($selected_role === 'admin') {
@@ -45,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error_message = 'Invalid credentials. Please try again.';
         }
     } else {
-        $error_message = 'Invalid credentials. Please try again.';
+        $error_message = 'Invalid credentials or account is inactive. Please try again or contact an administrator.';
     }
 
     $stmt->close();
@@ -54,19 +56,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>St Vincent Hardware Login</title>
     <link rel="stylesheet" href="CSS/login.css">
 </head>
 <body id="loginBody">
-    <?php if (!empty($error_message)) { ?>
-        <div class="error">
-            <p>Error: <?= htmlspecialchars($error_message) ?></p>
-        </div>
-    <?php } ?>
     <div class="container">
         <img src="logo.jpg" alt="LOGO">
+        <?php if (!empty($error_message)) { ?>
+            <div class="error">
+                <p><?= htmlspecialchars($error_message) ?></p>
+            </div>
+        <?php } ?>
         <form action="login.php" method="POST">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
             <input type="text" name="username" placeholder="Username" required><br>
@@ -76,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="admin">Admin</option>
                 <option value="cashier">Cashier</option>
             </select><br>
-            <input type="submit" value="Login">
+            <input class="submit" type="submit" value="Login">
         </form>
     </div>
 </body>
