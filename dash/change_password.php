@@ -2,6 +2,12 @@
 session_start();
 include '../connect.php';
 
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'cashier') {
@@ -9,10 +15,16 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'cashier') {
     exit();
 }
 
+// Debugging log to ensure the request is hitting the backend
+error_log("Password change request received for user ID: {$_SESSION['user_id']}");
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $currentPassword = $_POST['currentPassword'];
     $newPassword = $_POST['newPassword'];
     $userId = $_SESSION['user_id'];
+
+    // Debugging log to check form data
+    error_log("Form Data - Current Password: $currentPassword, New Password: $newPassword");
 
     // Verify current password
     $stmt = $conn->prepare("SELECT password FROM accounts WHERE id = ?");
@@ -40,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("si", $hashedPassword, $userId);
 
     if ($stmt->execute()) {
-        // Log the user out after a successful password change
         session_destroy(); // End the current session
         echo json_encode(['success' => true, 'message' => 'Password updated successfully. Please log in again.']);
     } else {

@@ -530,7 +530,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
     </div>
 </div>
 
-    <!-- User Settings Modal -->
+<!-- User Settings Modal -->
 <div id="userSettingsModal" class="modal">
     <div class="modal-content">
         <span class="close-button">&times;</span>
@@ -554,6 +554,22 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
             </div>
             <p id="passwordError" class="error-message" style="display: none; color: red;"></p>
             <button type="submit">Change Password</button>
+        </form>
+    </div>
+</div>
+
+<!-- Admin Password Modal -->
+<div id="adminPasswordModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeAdminPasswordModal()">&times;</span>
+        <h2>Enter Admin Password</h2>
+        <form id="adminPasswordForm">
+            <div>
+                <label for="adminPasswordInput">Admin Password:</label>
+                <input type="password" id="adminPasswordInput" required>
+            </div>
+            <p id="adminPasswordError" class="error-message" style="display: none; color: red;"></p>
+            <button type="submit">Submit</button>
         </form>
     </div>
 </div>

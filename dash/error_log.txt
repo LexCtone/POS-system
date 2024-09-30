@@ -1248,3 +1248,66 @@
 
 [2024-10-01 00:11:14] Executed sale insert for barcode: 200110212312
 [2024-10-01 00:11:14] Executed product update for barcode: 200110212312
+[2024-10-01 00:13:40] Received data: Array
+(
+    [invoice] => 20240930278270132
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 200110212312
+                    [description] => Heavy Duty Hammer
+                    [price] => 279
+                    [quantity] => 50
+                    [discount_amount] => 0
+                    [total] => 13950
+                )
+
+        )
+
+    [totalAmount] => 13950
+    [paymentAmount] => 13950
+    [change] => 0
+)
+
+[2024-10-01 00:13:40] Executed sale insert for barcode: 200110212312
+[2024-10-01 00:13:40] Executed product update for barcode: 200110212312
+[2024-10-01 00:19:01] Received data: Array
+(
+    [invoice] => 20240930421775288
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 7
+                    [barcode] => 731126101165
+                    [description] => keyboard
+                    [price] => 123
+                    [quantity] => 50
+                    [discount_amount] => 0
+                    [total] => 6150
+                )
+
+            [1] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 200110212312
+                    [description] => Heavy Duty Hammer
+                    [price] => 279
+                    [quantity] => 25
+                    [discount_amount] => 0
+                    [total] => 6975
+                )
+
+        )
+
+    [totalAmount] => 13125
+    [paymentAmount] => 13125
+    [change] => 0
+)
+
+[2024-10-01 00:19:01] Executed sale insert for barcode: 731126101165
+[2024-10-01 00:19:01] Executed product update for barcode: 731126101165
+[2024-10-01 00:19:01] Executed sale insert for barcode: 200110212312
+[2024-10-01 00:19:01] Executed product update for barcode: 200110212312

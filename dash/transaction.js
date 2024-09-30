@@ -87,12 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     filterSales();
     
-    const userSettingsModal = document.getElementById('userSettingsModal');
-    const userSettingsBtn = document.querySelector('.sidebar .menu li:nth-child(5) a');
-    const userSettingsCloseBtn = userSettingsModal.querySelector('.close-button');
-    const changePasswordForm = document.getElementById('changePasswordForm');
-    const passwordError = document.getElementById('passwordError');
-
     function generateTransactionNo() {
         const now = new Date();
         const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
@@ -565,6 +559,67 @@ document.addEventListener('DOMContentLoaded', function() {
             closeUserSettingsModal();
         }
     });
+
+
+// Handle password change functionality
+document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const passwordError = document.getElementById('passwordError');
+    
+    // Clear any previous error messages
+    passwordError.style.display = 'none';
+    passwordError.textContent = '';
+
+    // Validate if the new password is the same as the current password
+    if (newPassword === currentPassword) {
+        passwordError.textContent = 'New password cannot be the same as the current password. Please set a new password!';
+        passwordError.style.display = 'block';
+        return;
+    }
+
+    // Validate new password and confirmation match
+    if (newPassword !== confirmPassword) {
+        passwordError.textContent = 'New passwords do not match';
+        passwordError.style.display = 'block';
+        return;
+    }
+
+    // Validate password length (minimum 8 characters)
+    if (newPassword.length < 8) {
+        passwordError.textContent = 'New password must be at least 8 characters long';
+        passwordError.style.display = 'block';
+        return;
+    }
+
+    // Send the form data to the server
+    fetch('change_password.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `currentPassword=${encodeURIComponent(currentPassword)}&newPassword=${encodeURIComponent(newPassword)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Password changed successfully. Please log in again.');
+            // Redirect to login page after the user clicks OK on the alert
+            window.location.href = '../login.php';
+        } else {
+            passwordError.textContent = data.message;
+            passwordError.style.display = 'block';
+        }
+    })
+    .catch(error => {
+        passwordError.textContent = 'An error occurred. Please try again.';
+        passwordError.style.display = 'block';
+        console.error('Error:', error);
+    });
+});
 
     function openSettlePaymentModal() {
         const totalAmount = headerTotalSalesElement.textContent;
@@ -1082,49 +1137,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (enteredQty < 1 || isNaN(enteredQty)) {
                 this.value = '';
             }
-        });
-            
-        changePasswordForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-    
-            if (newPassword !== confirmPassword) {
-                passwordError.textContent = 'New passwords do not match';
-                passwordError.style.display = 'block';
-                return;
-            }
-    
-            if (newPassword.length < 8) {
-                passwordError.textContent = 'New password must be at least 8 characters long';
-                passwordError.style.display = 'block';
-                return;
-            }
-    
-            fetch('change_password.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `currentPassword=${encodeURIComponent(currentPassword)}&newPassword=${encodeURIComponent(newPassword)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Password changed successfully');
-                    userSettingsModal.style.display = 'none';
-                    changePasswordForm.reset();
-                } else {
-                    passwordError.textContent = data.message;
-                    passwordError.style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                passwordError.textContent = 'An error occurred. Please try again.';
-                passwordError.style.display = 'block';
-            });
         });
     });
 });
