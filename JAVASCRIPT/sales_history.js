@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Get all necessary DOM elements
   const loadDataButton = document.querySelector('.load-data-button');
   const printPreviewButton = document.querySelector('.print-preview-button');
   const startDateInput = document.getElementById('startDate');
@@ -7,17 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const vendorSelect = document.getElementById('vendor');
   const statusSelect = document.getElementById('status');
 
-  // Add event listeners
   loadDataButton.addEventListener('click', loadData);
   printPreviewButton.addEventListener('click', printPreview);
 
-  // Set default date range (last 30 days)
   const today = new Date();
   const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
   startDateInput.value = formatDate(thirtyDaysAgo);
   endDateInput.value = formatDate(today);
 
-  // Load initial data
   loadData();
 });
 
@@ -30,8 +26,16 @@ function loadData() {
   const loadingMessage = showLoadingMessage();
 
   fetch(`fetch_sales_history.php?startDate=${startDate}&endDate=${endDate}&soldBy=${soldBy}&status=${status}`)
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
+      if (data.error) {
+        throw new Error(data.message || 'An error occurred while fetching data.');
+      }
       updateTable(data.sales);
       updateSalesInfo(data.totalActiveSales, data.totalVoidedSales, data.voidedTransactions.length);
       hideLoadingMessage(loadingMessage);
@@ -39,7 +43,7 @@ function loadData() {
     .catch(error => {
       console.error('Error:', error);
       hideLoadingMessage(loadingMessage);
-      alert('An error occurred while loading data. Please try again.');
+      alert('An error occurred while loading data: ' + error.message);
     });
 }
 
@@ -86,7 +90,7 @@ function updateTable(sales) {
       <td>${sale.barcode}</td>
       <td>${sale.description}</td>
       <td>₱${parseFloat(sale.price).toFixed(2)}</td>
-      <td>${sale.quantity}</td>
+      <td>${sale.status === 'Voided' ? sale.void_quantity : sale.quantity}</td>
       <td>₱${parseFloat(sale.discount_amount).toFixed(2)}</td>
       <td>₱${parseFloat(sale.total).toFixed(2)}</td>
       <td>${formatDateTime(sale.sale_date)}</td>
@@ -102,7 +106,6 @@ function updateTable(sales) {
 function updateSalesInfo(totalActiveSales, totalVoidedSales, voidedTransactionsCount) {
   document.getElementById('totalActiveSales').textContent = parseFloat(totalActiveSales).toFixed(2);
   
-  // Add these elements to your HTML if they don't exist
   const totalVoidedSalesElement = document.getElementById('totalVoidedSales');
   const voidedTransactionsCountElement = document.getElementById('voidedTransactionsCount');
   

@@ -169,15 +169,25 @@ body {
 
 /* Left Column: Table */
 .table-container {
-  width: 100%; /* Reduce width slightly */
-  margin-right: 5px; /* Reduce the space between the two columns */
+  width: 100%;
+  margin-right: 5px;
   border: 1px solid #000;
   box-sizing: border-box;
+  max-height: 735px; /* Adjust this value as needed */
+  overflow-y: auto;
+  margin-top: 10px;
 }
 
 .table-container table {
   width: 100%;
   border-collapse: collapse;
+}
+
+.table-container thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #1C75A6;
 }
 
 .table-container th, .table-container td {
@@ -191,7 +201,7 @@ body {
   color: white;
 }
 
-.table-container tr:nth-child(even) {
+.table-container tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
@@ -205,4 +215,21 @@ body {
   width: 250px;
   margin-left: 20px;
   font-size: 15px;
+}
+
+/* Ensure the scrollbar doesn't overlap content */
+.table-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
