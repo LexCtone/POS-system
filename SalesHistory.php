@@ -58,14 +58,14 @@
           <option value="Active">Active</option>
           <option value="Voided">Voided</option>
         </select>
-        <button class="load-data-button">
+        <div class="load-data-button">
           <i class="fa fa-refresh"></i>
           <span class="load-data-text">Load Data</span>
-        </button>
-        <button class="print-preview-button">
+        </div>
+        <div class="print-preview-button">
           <i class="fa-solid fa-print"></i>
           <span class="print-preview-text">Print Preview</span>
-        </button>
+        </div>
         <div class="total-sales">
           Total Sales: ₱<span id="totalActiveSales">0.00</span>
         </div>
