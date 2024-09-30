@@ -14,6 +14,7 @@
   <div class="button-container">
     <button onclick="location.href='StockEntry.php'">Stock Entry</button>
     <button onclick="location.href='StockinHistory.php'">Stock in History</button> 
+    <button onclick="location.href='StockAdjustment.php'">Stock Adjustments</button> 
   </div>
 
   <form id="filter-form" method="GET" action="StockinHistory.php">

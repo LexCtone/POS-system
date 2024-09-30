@@ -1,0 +1,124 @@
+body {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+}
+
+.StockHeader {
+  background-color: #1C75A6;
+  color: white;
+  padding: 35px;
+  margin-left: 350px;
+  margin-top: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Style for search button */
+button {
+  border: none;
+  background-color: #1C75A6; /* You can change this color as needed */
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 1300px;
+}
+
+/* Style for search icon inside button */
+button i {
+  font-size: 30px;
+}
+
+.sidebar {
+  position: fixed;
+  width: 350px;
+  height: 100%;
+  background-color: #1c75a6;
+  transition: all 0.5s ease;
+  top: 0;
+  left: 0;
+}
+
+.sidebar header {
+  font-size: 28px;
+  color: white;
+  text-align: center;
+  line-height: 39px;
+  background: #1c75a6;
+  font-family: monospace;
+  user-select: none;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.sidebar header img {
+  width: 120px;
+  height: 120px;
+  margin-top: 25px;
+  margin-left: 10px;
+}
+
+.sidebar ul a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 70px;
+  font-size: 20px;
+  color: white;
+  padding-left: 0px;
+  box-sizing: border-box;
+  text-align: left;
+  text-decoration: none;
+}
+
+.sidebar ul li:hover a {
+  padding-left: 10px;
+  color: black;
+  transition: padding-left 0.1s, color 0.1s;
+}
+
+.sidebar ul a i {
+  margin-right: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.button-container {
+  align-items: left;
+  margin-right: 600px;
+  display: flex;
+  justify-content: center; /* To horizontally center the buttons */
+  margin-top: 35px; /* Add margin as needed */
+}
+
+.button-container button {
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  margin: 0 1px; /* Add margin between buttons */
+  font-size: 20px;
+  border: 1px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(185, 185, 185);
+}
+
+.button-container button:hover {
+  background-color: #bfbfbf; /* Change the background color on hover */
+  color: #000000; /* Change the text color on hover */
+}
+h3 {
+  font-size: 24px;
+  color: #333;
+  margin-top: 20px;
+  text-align: left; /* Align the h3 text to the center */
+  margin-left: 400px;
+ 
+}
