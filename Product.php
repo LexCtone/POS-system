@@ -1,5 +1,7 @@
 <?php
+session_start();
 include 'connect.php'; // Ensure this path is correct and the file exists
+// Start the session to access the admin info
 
 // Fetch brands for dropdown
 $brand_query = "SELECT * FROM brands";
@@ -38,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['barcode'])) {
     }
 }
 
+
+
 // Handle delete request
 if (isset($_GET['deleteid'])) {
     $id_to_delete = $_GET['deleteid'];
@@ -65,18 +69,22 @@ if (isset($_GET['deleteid'])) {
         $vendor_name = $vendor_row ? $vendor_row['vendor'] : 'Unknown';
         $reference_number = $vendor_row ? $vendor_row['reference'] : 'Unknown';
 
-        // Insert the product and vendor details into deleted_products
-        $deleted_product_sql = "INSERT INTO deleted_products (Barcode, reference, Description, Brand, Category, Price, Vendor) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // Get the current admin who is deleting the product
+        $deleted_by = isset($_SESSION['username']) ? $_SESSION['username'] : 'Unknown'; // Or use admin ID
+
+        // Insert the product and vendor details into deleted_products, including 'deleted_by'
+        $deleted_product_sql = "INSERT INTO deleted_products (Barcode, reference, Description, Brand, Category, Price, Vendor, deleted_by) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $deleted_stmt = $conn->prepare($deleted_product_sql);
-        $deleted_stmt->bind_param('sssssss', 
+        $deleted_stmt->bind_param('ssssssss', 
             $product['Barcode'], 
             $reference_number,  // Using reference from stock_in_history
             $product['Description'], 
             $product['Brand'], 
             $product['Category'], 
             $product['Price'], 
-            $vendor_name
+            $vendor_name,
+            $deleted_by // The admin who deleted the product
         );
 
         if (!$deleted_stmt->execute()) {
@@ -120,6 +128,7 @@ if (isset($_GET['deleteid'])) {
     header('Location: Product.php');
     exit();
 }
+
 
 // Fetch and display products
 $sql = "SELECT * FROM products";
