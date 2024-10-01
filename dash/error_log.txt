@@ -1311,3 +1311,53 @@
 [2024-10-01 00:19:01] Executed product update for barcode: 731126101165
 [2024-10-01 00:19:01] Executed sale insert for barcode: 200110212312
 [2024-10-01 00:19:01] Executed product update for barcode: 200110212312
+[2024-10-01 02:11:59] Received data: Array
+(
+    [invoice] => 20240930099382926
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 9
+                    [barcode] => 23132321321321
+                    [description] => testing delete
+                    [price] => 123
+                    [quantity] => 5
+                    [discount_amount] => 0
+                    [total] => 615
+                )
+
+        )
+
+    [totalAmount] => 615
+    [paymentAmount] => 615
+    [change] => 0
+)
+
+[2024-10-01 02:11:59] Executed sale insert for barcode: 23132321321321
+[2024-10-01 02:11:59] Executed product update for barcode: 23132321321321
+[2024-10-01 02:14:32] Received data: Array
+(
+    [invoice] => 20241001520037995
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 10
+                    [barcode] => 200110212312
+                    [description] => testing delete
+                    [price] => 9876543
+                    [quantity] => 5
+                    [discount_amount] => 0
+                    [total] => 49382715
+                )
+
+        )
+
+    [totalAmount] => 49382715
+    [paymentAmount] => 49382715
+    [change] => 0
+)
+
+[2024-10-01 02:14:32] Executed sale insert for barcode: 200110212312
+[2024-10-01 02:14:32] Executed product update for barcode: 200110212312

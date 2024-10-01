@@ -111,7 +111,8 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                 <button class="btn" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
                 <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
                 <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>
-                <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
+                <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>        
+                <button class="btn" onclick="location.href='DeletedProducts.php'">Deleted Products</button>
             </div>
             <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
             <div class="form">
@@ -187,7 +188,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                     $rowNumber++;
                 }
             } else {
-                echo "<tr><td colspan='9' class='no-records'>No records found</td></tr>";
+                echo "<tr><td colspan='9' class='no-records' style='text-align: center;'>No records found</td></tr>";
             }
             ?>
           </tbody>

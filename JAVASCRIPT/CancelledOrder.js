@@ -57,6 +57,18 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateTableContent() {
     fetchData().then(data => {
       tableBody.innerHTML = '';
+      
+      // Check if the fetched data is empty
+      if (data.length === 0) {
+        const noDataRow = document.createElement('tr');
+        noDataRow.innerHTML = `
+          <td colspan="${currentView === 'item' ? 10 : 6}" style="text-align: center;">No cancelled orders found.</td>
+        `;
+        tableBody.appendChild(noDataRow);
+        return;
+      }
+      
+      // Populate table with fetched data if not empty
       data.forEach((item, index) => {
         const row = document.createElement('tr');
         if (currentView === 'item') {
@@ -86,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   }
-
   function toggleView() {
     currentView = currentView === 'item' ? 'transaction' : 'item';
     toggleViewButton.textContent = currentView === 'item' ? 'Switch to Transaction View' : 'Switch to Item View';

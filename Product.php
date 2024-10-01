@@ -42,28 +42,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['barcode'])) {
 if (isset($_GET['deleteid'])) {
     $id_to_delete = $_GET['deleteid'];
 
-    // Delete the record
+    // Fetch product details from the products table
+    $product_query = "SELECT Barcode, Description, Brand, Category, Price 
+                      FROM products 
+                      WHERE id = ?";
+    $stmt = $conn->prepare($product_query);
+    $stmt->bind_param('i', $id_to_delete);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $product = $result->fetch_assoc();
+
+    if ($product) {
+        // Fetch vendor details and Reference_Number from stock_in_history using the Barcode
+        $vendor_query = "SELECT vendor, reference FROM stock_in_history WHERE Barcode = ? ORDER BY reference DESC LIMIT 1";
+        $vendor_stmt = $conn->prepare($vendor_query);
+        $vendor_stmt->bind_param('s', $product['Barcode']);
+        $vendor_stmt->execute();
+        $vendor_result = $vendor_stmt->get_result();
+        $vendor_row = $vendor_result->fetch_assoc();
+
+        // Set the vendor name and Reference_Number, defaulting to 'Unknown' if not found
+        $vendor_name = $vendor_row ? $vendor_row['vendor'] : 'Unknown';
+        $reference_number = $vendor_row ? $vendor_row['reference'] : 'Unknown';
+
+        // Insert the product and vendor details into deleted_products
+        $deleted_product_sql = "INSERT INTO deleted_products (Barcode, reference, Description, Brand, Category, Price, Vendor) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $deleted_stmt = $conn->prepare($deleted_product_sql);
+        $deleted_stmt->bind_param('sssssss', 
+            $product['Barcode'], 
+            $reference_number,  // Using reference from stock_in_history
+            $product['Description'], 
+            $product['Brand'], 
+            $product['Category'], 
+            $product['Price'], 
+            $vendor_name
+        );
+
+        if (!$deleted_stmt->execute()) {
+            // Handle insert error
+            error_log("Failed to insert deleted product: " . $deleted_stmt->error);
+        }
+        $deleted_stmt->close();
+    } else {
+        error_log("Product not found for deletion ID: $id_to_delete");
+    }
+
+    // Delete the record from products table
     $delete_sql = "DELETE FROM products WHERE id = ?";
     $stmt = $conn->prepare($delete_sql);
     $stmt->bind_param('i', $id_to_delete);
-    $stmt->execute();
+
+    if ($stmt->execute()) {
+        // Rearrange IDs after deletion
+        $reset_sql = "SET @num := 0;";
+        mysqli_query($conn, $reset_sql);
+
+        $update_sql = "UPDATE products SET id = @num := (@num + 1);";
+        mysqli_query($conn, $update_sql);
+
+        // Reset AUTO_INCREMENT to the next available ID
+        $max_id_sql = "SELECT MAX(id) FROM products";
+        $max_id_result = mysqli_query($conn, $max_id_sql);
+        $max_id_row = mysqli_fetch_array($max_id_result);
+        $max_id = $max_id_row[0] + 1;
+
+        $alter_sql = "ALTER TABLE products AUTO_INCREMENT = $max_id";
+        mysqli_query($conn, $alter_sql);
+    } else {
+        // Handle delete error
+        error_log("Failed to delete product: " . $stmt->error);
+    }
+
     $stmt->close();
-
-    // Rearrange IDs after deletion
-    $reset_sql = "SET @num := 0;";
-    mysqli_query($conn, $reset_sql);
-
-    $update_sql = "UPDATE products SET id = @num := (@num + 1);";
-    mysqli_query($conn, $update_sql);
-
-    // Reset AUTO_INCREMENT to the next available ID
-    $max_id_sql = "SELECT MAX(id) FROM products";
-    $max_id_result = mysqli_query($conn, $max_id_sql);
-    $max_id_row = mysqli_fetch_array($max_id_result);
-    $max_id = $max_id_row[0] + 1;
-
-    $alter_sql = "ALTER TABLE products AUTO_INCREMENT = $max_id";
-    mysqli_query($conn, $alter_sql);
 
     // Redirect back to the product list
     header('Location: Product.php');

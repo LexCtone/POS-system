@@ -58,6 +58,7 @@ if (!$result) {
         <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
         <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>
         <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
+        <button class="btn" onclick="location.href='DeletedProducts.php'">Deleted Products</button>
       </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
       <div class="print-preview-button" onclick="window.print()">
@@ -93,7 +94,7 @@ if (!$result) {
                     $counter++;
                 }
             } else {
-                echo "<tr><td colspan='5'>No critical stocks found</td></tr>";
+              echo "<tr><td colspan='5' style='text-align: center;'>No critical stocks found</td></tr>";
             }
             ?>
           </tbody>

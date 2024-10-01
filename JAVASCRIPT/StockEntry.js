@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let rowId = 1; // Global variable to keep track of row IDs
 
   // Generate a random 11-digit number
-  const generateRandomNumber = () => Math.floor(Math.random() * (99999999999 - 10000000000 + 1)) + 10000000000;
+// Generate a random number within the range of a signed 32-bit integer
+const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 100000000 + 1)) + 100000000; // Generates a random 9-digit number
 
   // Event listener for the generate link
   document.getElementById('generateLink').addEventListener('click', function (event) {
