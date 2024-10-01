@@ -1,124 +1,234 @@
 body {
-  background-color: white;
-  margin: 0;
-  padding: 0;
-  font-family: monospace;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
 }
 
 .StockHeader {
-  background-color: #1C75A6;
-  color: white;
-  padding: 35px;
-  margin-left: 350px;
-  margin-top: 0;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* Style for search button */
-button {
-  border: none;
-  background-color: #1C75A6; /* You can change this color as needed */
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 1300px;
-}
-
-/* Style for search icon inside button */
-button i {
-  font-size: 30px;
+    background-color: #1C75A6;
+    color: white;
+    padding: 35px;
+    margin-left: 350px;
+    margin-top: 0;
 }
 
 .sidebar {
-  position: fixed;
-  width: 350px;
-  height: 100%;
-  background-color: #1c75a6;
-  transition: all 0.5s ease;
-  top: 0;
-  left: 0;
+    position: fixed;
+    width: 350px;
+    height: 100%;
+    background-color: #1c75a6;
+    transition: all 0.5s ease;
+    top: 0;
+    left: 0;
 }
 
 .sidebar header {
-  font-size: 28px;
-  color: white;
-  text-align: center;
-  line-height: 39px;
-  background: #1c75a6;
-  font-family: monospace;
-  user-select: none;
-  align-items: center;
-  flex-direction: column;
-  margin-bottom: 40px;
+    font-size: 28px;
+    color: white;
+    text-align: center;
+    line-height: 39px;
+    background: #1c75a6;
+    font-family: monospace;
+    user-select: none;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 40px;
 }
 
 .sidebar header img {
-  width: 120px;
-  height: 120px;
-  margin-top: 25px;
-  margin-left: 10px;
+    width: 120px;
+    height: 120px;
+    margin-top: 25px;
+    margin-left: 10px;
 }
 
 .sidebar ul a {
-  display: block;
-  height: 100%;
-  width: 100%;
-  line-height: 70px;
-  font-size: 20px;
-  color: white;
-  padding-left: 0px;
-  box-sizing: border-box;
-  text-align: left;
-  text-decoration: none;
+    display: block;
+    height: 100%;
+    width: 100%;
+    line-height: 70px;
+    font-size: 20px;
+    color: white;
+    padding-left: 0px;
+    box-sizing: border-box;
+    text-align: left;
+    text-decoration: none;
 }
 
 .sidebar ul li:hover a {
-  padding-left: 10px;
-  color: black;
-  transition: padding-left 0.1s, color 0.1s;
+    padding-left: 10px;
+    color: black;
+    transition: padding-left 0.1s, color 0.1s;
 }
 
 .sidebar ul a i {
-  margin-right: 20px;
+    margin-right: 20px;
 }
 
 .sidebar ul {
-  list-style: none;
+    list-style: none;
 }
 
 .button-container {
-  align-items: left;
-  margin-right: 600px;
-  display: flex;
-  justify-content: center; /* To horizontally center the buttons */
-  margin-top: 35px; /* Add margin as needed */
+    align-items: left;
+    margin-right: 600px;
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
 }
 
 .button-container button {
-  padding: 10px 20px;
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  margin: 0 1px; /* Add margin between buttons */
-  font-size: 20px;
-  border: 1px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(185, 185, 185);
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid rgb(185, 185, 185);
+    border-radius: 2px;
+    cursor: pointer;
+    margin: 0 1px;
+    font-size: 20px;
 }
 
 .button-container button:hover {
-  background-color: #bfbfbf; /* Change the background color on hover */
-  color: #000000; /* Change the text color on hover */
+    background-color: #bfbfbf;
+    color: #000000;
 }
-h3 {
-  font-size: 24px;
-  color: #333;
+
+.content {
+    margin-left: 363px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: 5px;
+}
+
+.modals {
+    margin-top: 20px;
+}
+
+.horizontal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  background-color: #ffffff;
+  margin-top: 10px;
+  border-radius: 4px;
   margin-top: 20px;
-  text-align: left; /* Align the h3 text to the center */
-  margin-left: 400px;
- 
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group input[type="checkbox"] {
+  margin-top: 5px;
+}
+
+.table-container {
+  height: 440px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  box-sizing: border-box; 
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+#product-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#product-table th, 
+#product-table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+#product-table th {
+    background-color: #1C75A6;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#product-table tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+#product-table tr:hover {
+    background-color: #e8f4f8;
+    transition: background-color 0.3s ease;
+}
+
+#product-table td {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.submit-button {
+    background-color: #1C75A6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #165c82;
+}
+
+.no-records {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #666;
+}
+
+@media (max-width: 1200px) {
+    .content {
+        margin-left: 270px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+    }
+    
+    .horizontal-form {
+        grid-template-columns: 1fr;
+    }
 }

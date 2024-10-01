@@ -1411,3 +1411,28 @@
 
 [2024-10-01 04:32:12] Executed sale insert for barcode: 20011021231211
 [2024-10-01 04:32:12] Executed product update for barcode: 20011021231211
+[2024-10-01 19:20:50] Received data: Array
+(
+    [invoice] => 20241001239179144
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 10
+                    [discount_amount] => 0
+                    [total] => 1230
+                )
+
+        )
+
+    [totalAmount] => 1230
+    [paymentAmount] => 1230
+    [change] => 0
+)
+
+[2024-10-01 19:20:50] Executed sale insert for barcode: 200110212312
+[2024-10-01 19:20:50] Executed product update for barcode: 200110212312

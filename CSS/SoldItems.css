@@ -108,6 +108,12 @@ body {
   width: 15%;
 }
 
+.status{
+  padding: 10px;
+  background-color: #1C75A6;
+  color: white;
+}
+
 .vendor {
   width: 10%;
   background-color: #1C75A6;
@@ -155,7 +161,6 @@ body {
   font-family: Arial, sans-serif;
   color: #1E88E5; /* Blue color */
   font-weight: bold;
-  font-size: 16px;
 }
 
 /* Add a hover effect if desired */
@@ -176,8 +181,9 @@ body {
   margin-right: 5px;
   border: 1px solid #000;
   box-sizing: border-box;
-  max-height: 600px; /* Adjust this value as needed */
+  max-height: 735px; /* Adjust this value as needed */
   overflow-y: auto;
+  margin-top: 10px;
 }
 
 .table-container table {

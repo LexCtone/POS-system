@@ -115,152 +115,68 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
                 <button class="btn" onclick="location.href='DeletedProducts.php'">Deleted Products</button>
             </div>
             <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
-            <div class="form">
-            <form id="filterForm" method="GET">
-            <div class="form-group">
-                <label for="startDate" class="date-label">Filter by</label>
-                <input type="date" id="startDate" name="startDate" class="date-input" value="<?php echo $startDate; ?>">
-                <input type="date" id="endDate" name="endDate" class="date-input" value="<?php echo $endDate; ?>">
-                <select id="cashier" class="vendor" name="cashier">
-                    <option value="all">All Cashiers</option>
-                    <?php
-                    // Fetch all usernames with the cashier role from the accounts table
-                    $cashierStmt = $conn->prepare("SELECT username FROM accounts WHERE role = 'cashier' ORDER BY username");
-                    $cashierStmt->execute();
-                    $cashierResult = $cashierStmt->get_result();
-                    while ($row = $cashierResult->fetch_assoc()) {
-                        $selected = ($cashierName == $row['username']) ? 'selected' : '';
-                        echo "<option value='" . htmlspecialchars($row['username']) . "' $selected>" . htmlspecialchars($row['username']) . "</option>";
-                    }
-                    $cashierStmt->close();
-                    ?>
-                </select>
-                <button type="submit" class="load-data-button">
-                    <i class="fa fa-refresh"></i>
-                    <span class="load-data-text">Load Data</span>
-                </button>
-                </form>
-                <div class="print-preview-button" onclick="window.print()">
-                        <i class="fa-solid fa-print"></i>
-                    <span class="print-preview-text">Print Preview</span>
-                </div>
-                <div class="total-sales">
-                    Total Sales: ₱<span id="totalSales">0.00</span>
-                </div>
-            </div>
+            <div class="container">
+    <div class="form">
+      <div class="form-group">
+        <label for="startDate" class="date-label">Filter by</label>
+        <input type="date" id="startDate" name="startDate" class="date-input">
+        <input type="date" id="endDate" name="endDate" class="date-input">
+        <select id="vendor" class="vendor" name="vendor">
+          <option value=""  selected>All Cashier</option>
+          <?php
+          include 'connect.php';
+          $stmt = $conn->prepare("SELECT DISTINCT username FROM accounts WHERE role = 'cashier' ORDER BY username");
+          $stmt->execute();
+          $result = $stmt->get_result();
+          while ($row = $result->fetch_assoc()) {
+            echo "<option value='" . htmlspecialchars($row['username']) . "'>" . htmlspecialchars($row['username']) . "</option>";
+          }
+          $stmt->close();
+          $conn->close();
+          ?>
+        </select>
+        </select>
+        <select id="status" class="status" name="status">
+          <option value="" selected>All Status</option>
+          <option value="Active">Active</option>
+          <option value="Voided">Voided</option>
+        </select>
+        <div class="load-data-button">
+          <i class="fa fa-refresh"></i>
+          <span class="load-data-text">Load Data</span>
         </div>
-    </div>
-    <div class="content">
-      <!-- Left Column: Table -->
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>BARCODE</th>
-              <th>DESCRIPTION</th>
-              <th>PRICE</th>
-              <th>QTY</th>
-              <th>DISCOUNT</th>
-              <th>TOTAL SALES</th>
-              <th>CASHIER</th>
-              <th>DATE</th>
-            </tr>
-          </thead>
-          <tbody id="salesTableBody">
-            <?php
-            $totalSales = 0;
-            $rowNumber = 1;
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $rowNumber . "</td>";
-                    echo "<td>" . htmlspecialchars($row['barcode']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['description']) . "</td>";
-                    echo "<td>₱" . number_format($row['price'], 2) . "</td>";
-                    echo "<td>" . $row['quantity'] . "</td>";
-                    echo "<td>₱" . number_format($row['discount_amount'], 2) . "</td>";
-                    echo "<td>₱" . number_format($row['total'], 2) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['cashier_name']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['sale_date']) . "</td>";
-                    echo "</tr>";
-                    $totalSales += $row['total'];
-                    $rowNumber++;
-                }
-            } else {
-                echo "<tr><td colspan='9' class='no-records' style='text-align: center;'>No records found</td></tr>";
-            }
-            ?>
-          </tbody>
-        </table>
+        <div class="print-preview-button">
+          <i class="fa-solid fa-print"></i>
+          <span class="print-preview-text">Print Preview</span>
+        </div>
+        <div class="total-sales">
+          Total Sales: ₱<span id="totalActiveSales">0.00</span>
+        </div>
+      </div>
+      <div class="content">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Invoice</th>
+                <th>Barcode</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Discount amount</th>
+                <th>Total</th>
+                <th>Date sold</th>
+                <th>Cashier Name</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <script>
-    $(document).ready(function() {
-        // Initialize total sales
-        updateTotalSales();
-
-        $('#filterForm').on('submit', function(e) {
-            e.preventDefault();
-            loadData();
-        });
-
-        function loadData() {
-            $.ajax({
-                url: 'SoldItems.php',
-                method: 'GET',
-                data: $('#filterForm').serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    let tableBody = '';
-                    let rowNumber = 1;
-                    if (response.data.length > 0) {
-                        response.data.forEach(function(row) {
-                            tableBody += `<tr>
-                                <td>${rowNumber}</td>
-                                <td>${escapeHtml(row.barcode)}</td>
-                                <td>${escapeHtml(row.description)}</td>
-                                <td>₱${parseFloat(row.price).toFixed(2)}</td>
-                                <td>${row.quantity}</td>
-                                <td>₱${parseFloat(row.discount_amount).toFixed(2)}</td>
-                                <td>₱${parseFloat(row.total).toFixed(2)}</td>
-                                <td>${escapeHtml(row.cashier_name)}</td>
-                                <td>${escapeHtml(row.sale_date)}</td>
-                            </tr>`;
-                            rowNumber++;
-                        });
-                    } else {
-                        tableBody = '<tr><td colspan="9" class="no-records">No records found</td></tr>';
-                    }
-                    $('#salesTableBody').html(tableBody);
-                    $('#totalSales').text(parseFloat(response.totalSales).toFixed(2));
-                },
-                error: function() {
-                    alert('An error occurred while loading the data.');
-                }
-            });
-        }
-
-        function updateTotalSales() {
-            let total = 0;
-            $('#salesTableBody tr').each(function() {
-                let rowTotal = parseFloat($(this).find('td:eq(6)').text().replace('₱', '').replace(',', ''));
-                if (!isNaN(rowTotal)) {
-                    total += rowTotal;
-                }
-            });
-            $('#totalSales').text(total.toFixed(2));
-        }
-
-        function escapeHtml(unsafe) {
-            return unsafe
-                 .replace(/&/g, "&amp;")
-                 .replace(/</g, "&lt;")
-                 .replace(/>/g, "&gt;")
-                 .replace(/"/g, "&quot;")
-                 .replace(/'/g, "&#039;");
-        }
-    });
-    </script>
+  </div>
 </body>
 </html>
