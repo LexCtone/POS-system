@@ -35,7 +35,7 @@
     <div class="account-box">
       <div class="button-container">
         <button class="btn" onclick="location.href='Records.php'">Top Selling</button>
-        <button class="btn" onclick="location.href='SoldItems.php'">Sold Items</button>
+        <button class="btn" onclick="location.href='SalesHistory.php'">Sales History</button>
         <button class="btn" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
         <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
         <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>

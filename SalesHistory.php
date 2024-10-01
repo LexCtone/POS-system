@@ -20,19 +20,30 @@
       <br>ADMINISTRATOR
     </header>
     <ul>
-              <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
-              <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>
-              <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
-              <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
-              <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
-              <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
-              <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
-              <li><a href="SalesHistory.php"><i class='fa-solid fa-clock-rotate-left' style='font-size:30px'></i>Sales History</a></li>
-              <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
-              <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
-              </ul>
-  </nav>
-  <div class="container">
+        <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
+        <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>
+        <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
+        <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
+        <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
+        <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
+        <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
+        <li><a href="SalesHistory.php"><i class='fa-solid fa-clock-rotate-left' style='font-size:30px'></i>Sales History</a></li>
+        <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
+        <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
+      </ul>
+    </nav>
+     <div class="container">
+      <div class="account-box">
+      <div class="button-container">
+          <button class="btn" onclick="location.href='Records.php'">Top Selling</button>
+          <button class="btn" onclick="location.href='SalesHistory.php'">Sales History</button>
+          <button class="btn" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
+          <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
+          <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>
+          <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
+          <button class="btn" onclick="location.href='DeletedProducts.php'">Deleted Products</button>
+        </div>
+      <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
     <div class="form">
       <div class="form-group">
         <label for="startDate" class="date-label">Filter by</label>
@@ -70,6 +81,7 @@
           Total Sales: ₱<span id="totalActiveSales">0.00</span>
         </div>
       </div>
+    </div>
       <div class="content">
         <div class="table-container">
           <table>
@@ -92,7 +104,6 @@
             </tbody>
           </table>
         </div>
-      </div>
     </div>
   </div>
 </body>
