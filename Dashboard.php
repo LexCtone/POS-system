@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Connect to the database
 include('connect.php');
 
@@ -25,6 +26,20 @@ $critical_items = 0;
 if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
     $critical_items = $row['critical_items'] ? $row['critical_items'] : 0;
 }
+// Fetch the username of the logged-in admin
+$admin_username = "ADMINISTRATOR"; // Default value
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $query_admin = "SELECT username FROM accounts WHERE id = ?";
+    $stmt = $conn->prepare($query_admin);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $admin_username = $row['username'];
+    }
+    $stmt->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +54,7 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
   <div class="sidebar">
     <header>
       <img src="profile.png" alt="profile"/><br>
-      ADMINISTRATOR
+    <?php echo htmlspecialchars($admin_username); ?>
     </header>
               <ul>
               <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>

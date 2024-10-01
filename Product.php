@@ -3,6 +3,20 @@ session_start();
 include 'connect.php'; // Ensure this path is correct and the file exists
 // Start the session to access the admin info
 
+// Fetch the username of the logged-in admin
+$admin_username = "ADMINISTRATOR"; // Default value
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $query_admin = "SELECT username FROM accounts WHERE id = ?";
+    $stmt = $conn->prepare($query_admin);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $admin_username = $row['username'];
+    }
+    $stmt->close();
+}
 // Fetch brands for dropdown
 $brand_query = "SELECT * FROM brands";
 $brand_result = mysqli_query($conn, $brand_query);
@@ -167,8 +181,8 @@ mysqli_close($conn);
     <nav class="sidebar">
         <header>
             <img src="profile.png" alt="profile"/>
-            <br>ADMINISTRATOR
-        </header>
+            <br><?php echo htmlspecialchars($admin_username); ?>
+            </header>
         <ul>
             <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
             <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>
