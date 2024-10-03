@@ -89,7 +89,7 @@ button i {
 
 .button-container {
   align-items: left;
-  margin-right: 600px;
+  margin-right: 615px;
   display: flex;
   justify-content: center; /* To horizontally center the buttons */
   margin-top: 35px; /* Add margin as needed */
@@ -173,82 +173,146 @@ button:hover {
   background-color: #000000;
 }
 
+.content {
+  margin-left: 363px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-right: 5px;
+}
+
 
 /* Container styling */
 .table-container {
   height: 600px; /* Set the height of the table container */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #ddd; /* Optional: border around the container */
-  margin-left: 400px; /* Adjust as needed for your layout */
   box-sizing: border-box; 
-  margin-right: 100px;
+  border-radius: 4px;
   margin-top: 25px;/* Include padding and border in the element’s total width and height */
 }
-
-/* Table styling */
-.table {
-  width: 100%; /* Ensure the table width fits the container */
-  border-collapse: collapse;
-  margin: 0; /* Remove any margin around the table */
+#product-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-/* Table cells styling */
-.table th, 
-.table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+#product-table th, 
+#product-table td {
+  padding: 12px 15px;
+  text-align: center;
 }
 
-.table th {
-  background-color: #1c75a6;
+#product-table th {
+  background-color: #1C75A6;
   color: white;
-  position: -webkit-sticky; /* For Safari */
-  position: sticky; /* For modern browsers */
-  top: 0; /* Stick to the top of the container */
-  z-index: 1; /* Ensure it stays above the other content */
-  padding-bottom: 25px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
-.table td {
-font-size: 15px;
+#product-table tr:nth-child(even) {
+  background-color: #f8f8f8;
 }
 
-/* Last column styling */
-#product-table td:last-child {
-  width: 80px; /* Set an appropriate width */
-  max-width: 80px; /* Constrain the max width */
-  text-align: center; /* Center the button in the cell */
-  overflow: hidden; /* Hide any overflow */
+#product-table tr:hover {
+  background-color: #e8f4f8;
+  transition: background-color 0.3s ease;
 }
 
-/* Set width for the 'Vendor' column */
-.table td:nth-child(8), 
-.table th:nth-child(8) {
-  width: 200px; /* Set a larger width for Vendor */
+#product-table td {
+  border-bottom: 1px solid #e0e0e0;
 }
 
-/* Set width for the 'Stock In By' column */
-.table td:nth-child(7), 
-.table th:nth-child(7) {
-  width: 120px; /* Set a smaller width for Stock In By */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
 }
 
-
-/* Remove any extra space at the bottom */
-.table-container::after {
-  content: '';
-  display: block;
-  height: 1px; /* Ensure there’s no extra space */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-@keyframes slide-down {
-  from {
-    transform: translateY(-20%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #1C75A6;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#adjustmentHistoryTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+#adjustmentHistoryTable th, 
+#adjustmentHistoryTable td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 15px;
+}
+
+#adjustmentHistoryTable th {
+  background-color: #1C75A6;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+#adjustmentHistoryTable tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+#adjustmentHistoryTable tr:hover {
+  background-color: #e8f4f8;
+  transition: background-color 0.3s ease;
 }

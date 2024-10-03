@@ -26,7 +26,6 @@
               <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
               <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
               <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
-              <li><a href="SalesHistory.php"><i class='fa-solid fa-clock-rotate-left' style='font-size:30px'></i>Sales History</a></li>
               <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
               <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
               </ul>
@@ -41,7 +40,7 @@
         <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
         <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>
         <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
-        <button class="btn" onclick="location.href='DeletedProducts.php'">Deleted Products</button>
+        <button class="btn" onclick="location.href='ArchivedProducts.php'">Archived Products</button>
       </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
 

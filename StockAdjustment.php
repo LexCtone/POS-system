@@ -16,10 +16,7 @@ if ($conn->connect_error) {
 }
 
 // Fetch products from the database
-$sql = "SELECT p.id, p.Barcode, p.Description, p.Category, p.Quantity as current_quantity, p.Price, p.last_update, sh.reference, sh.quantity as history_quantity, sh.id as stock_in_id
-        FROM products p
-        LEFT JOIN stock_in_history sh ON p.Barcode = sh.Barcode
-        WHERE sh.id = (SELECT MAX(id) FROM stock_in_history WHERE Barcode = p.Barcode)";
+$sql = "SELECT id, Barcode, Description, Category, Quantity as current_quantity, Price, last_update FROM products";
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -47,6 +44,7 @@ if (!$result) {
         <button onclick="location.href='StockEntry.php'">Stock Entry</button>
         <button onclick="location.href='StockinHistory.php'">Stock in History</button> 
         <button onclick="location.href='StockAdjustment.php'">Stock Adjustments</button> 
+        <button id="showAdjustmentHistoryBtn">Show Adjustment History</button>
     </div>
 
     <nav class="sidebar">
@@ -62,7 +60,6 @@ if (!$result) {
             <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
             <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
             <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
-            <li><a href="SalesHistory.php"><i class='fa-solid fa-clock-rotate-left' style='font-size:30px'></i>Sales History</a></li>
             <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
             <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
         </ul>
@@ -79,7 +76,6 @@ if (!$result) {
                             <th>DESCRIPTION</th>
                             <th>CATEGORY</th>
                             <th>CURRENT QTY</th>
-                            <th>STOCK-IN QTY</th>
                             <th>PRICE</th>
                             <th>LAST UPDATE</th>
                             <th>SELECT PRODUCT</th>
@@ -90,13 +86,12 @@ if (!$result) {
                         if ($result->num_rows > 0) {
                             $rowNumber = 1;
                             while ($row = $result->fetch_assoc()) {
-                                echo "<tr data-product-id='" . $row['id'] . "' data-reference='" . $row['reference'] . "' data-current-quantity='" . $row['current_quantity'] . "' data-history-quantity='" . $row['history_quantity'] . "' data-stock-in-id='" . $row['stock_in_id'] . "'>";
+                                echo "<tr data-product-id='" . $row['id'] . "' data-barcode='" . $row['Barcode'] . "' data-current-quantity='" . $row['current_quantity'] . "'>";
                                 echo "<td>" . $rowNumber . "</td>";
                                 echo "<td>" . htmlspecialchars($row['Barcode']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['Description']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['Category']) . "</td>";
                                 echo "<td class='current-quantity'>" . htmlspecialchars($row['current_quantity']) . "</td>";
-                                echo "<td class='history-quantity'>" . htmlspecialchars($row['history_quantity']) . "</td>";
                                 echo "<td>₱" . number_format($row['Price'], 2) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['last_update']) . "</td>";
                                 echo "<td><input type='radio' name='product_id' value='" . $row['id'] . "' required></td>";
@@ -104,7 +99,7 @@ if (!$result) {
                                 $rowNumber++;
                             }
                         } else {
-                            echo "<tr><td colspan='9' class='no-records'>No records found</td></tr>";
+                            echo "<tr><td colspan='8' class='no-records'>No records found</td></tr>";
                         }
                         ?>
                     </tbody>
@@ -112,129 +107,210 @@ if (!$result) {
             </div>
             <form id="adjustmentForm" class="horizontal-form">
                 <div class="form-group">
+                    <label for="barcode_display">Barcode:</label>
+                    <input type="text" id="barcode_display" readonly>
+                    <input type="hidden" id="barcode" name="barcode">
+                </div>
+                <div class="form-group">
+                    <label for="description_display">Description:</label>
+                    <input type="text" id="description_display" readonly>
+                </div>
+                <div class="form-group">
                     <label for="current_quantity">Current Quantity:</label>
                     <input type="number" id="current_quantity" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="history_quantity">Stock-in Quantity:</label>
-                    <input type="number" id="history_quantity" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="adjustment_quantity">New Stock-in Quantity:</label>
+                    <label for="adjustment_quantity">Adjustment Quantity:</label>
                     <input type="number" name="adjustment_quantity" id="adjustment_quantity" required>
                 </div>
                 <div class="form-group">
                     <label for="adjustment_reason">Reason for Adjustment:</label>
                     <textarea name="adjustment_reason" id="adjustment_reason" required></textarea>
                 </div>
-                <input type="hidden" id="reference" name="reference">
-                <input type="hidden" id="stock_in_id" name="stock_in_id">
+                <input type="hidden" id="product_id" name="product_id">
+                <input type="hidden" name="reference" value="adjustment_reference">
+                </div>
                 <button type="submit" class="submit-button">Submit Adjustment</button>
             </form>
-        </div>
-    </div>
 
-    <script>
-    $(document).ready(function() {
-        $('input[name="product_id"]').on('change', function() {
-            var $selectedRow = $(this).closest('tr');
-            var currentQuantity = $selectedRow.data('current-quantity');
-            var historyQuantity = $selectedRow.data('history-quantity');
-            var reference = $selectedRow.data('reference');
-            var stockInId = $selectedRow.data('stock-in-id');
-            $('#current_quantity').val(currentQuantity);
-            $('#history_quantity').val(historyQuantity);
-            $('#adjustment_quantity').val(historyQuantity);
-            $('#reference').val(reference);
-            $('#stock_in_id').val(stockInId);
-        });
+            <!-- Modal for Adjustment History -->
+            <div id="adjustmentHistoryModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Stock Adjustment History</h3>
+                        <div class="modal-controls">
+                            <label for="showArchivedAdjustments" class="archived-checkbox">
+                                <input type="checkbox" id="showArchivedAdjustments">
+                                Show Archived Adjustments
+                            </label>
+                            <span class="close">&times;</span>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="adjustmentHistoryTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Barcode</th>
+                                    <th>Adjustment Type</th>
+                                    <th>Original Quantity</th>
+                                    <th>Adjustment Quantity</th>
+                                    <th>New Quantity</th>
+                                    <th>Reason</th>
+                                    <th>Adjusted By</th>
+                                    <th>Adjustment Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adjustmentHistoryBody">
+                                <!-- Adjustment history data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-        $('#adjustmentForm').on('submit', function(e) {
-            e.preventDefault();
-            
-            var productId = $('input[name="product_id"]:checked').val();
-            if (!productId) {
-                showMessage('Please select a product.', 'error');
-                return;
-            }
+            <script>
+            $(document).ready(function() {
+                var modal = document.getElementById("adjustmentHistoryModal");
+                var btn = document.getElementById("showAdjustmentHistoryBtn");
+                var span = document.getElementsByClassName("close")[0];
 
-            var historyQuantity = parseInt($('#history_quantity').val());
-            var newQuantity = parseInt($('#adjustment_quantity').val());
-            var adjustmentQuantity = newQuantity - historyQuantity;
+                btn.onclick = function() {
+                    modal.style.display = "block";
+                    loadAdjustmentHistory();
+                }
 
-            var formData = $(this).serialize() + '&product_id=' + productId + '&adjustment_quantity=' + adjustmentQuantity;
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
 
-            $.ajax({
-                url: 'process_adjustment.php',
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 'success') {
-                        showMessage(response.message, 'success');
-                        updateProductQuantities(productId, response.new_current_quantity, response.new_history_quantity);
-                        resetForm();
-                    } else {
-                        showMessage(response.message, 'error');
-                        console.error('Error:', response.message);
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
                     }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    var errorMessage = 'An error occurred. Please try again.';
-                    if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-                        errorMessage = jqXHR.responseJSON.message;
+                }
+
+                $('input[name="product_id"]').on('change', function() {
+                var $selectedRow = $(this).closest('tr');
+                var currentQuantity = $selectedRow.data('current-quantity');
+                var barcode = $selectedRow.data('barcode');
+                var description = $selectedRow.find('td:eq(2)').text(); // Assuming description is in the third column
+                var productId = $(this).val();
+                
+                $('#current_quantity').val(currentQuantity);
+                $('#barcode').val(barcode);
+                $('#barcode_display').val(barcode);
+                $('#description_display').val(description);
+                $('#product_id').val(productId);
+            });
+
+                $('#adjustmentForm').on('submit', function(e) {
+                    e.preventDefault();
+                    
+                    var barcode = $('#barcode').val();
+                    if (!barcode) {
+                        showMessage('Please select a product.', 'error');
+                        return;
                     }
-                    showMessage(errorMessage, 'error');
-                    console.error('AJAX Error:', textStatus, errorThrown);
-                    logClientError('AJAX Error in StockAdjustment.php: ' + textStatus + ' - ' + errorThrown);
+
+                    var formData = $(this).serialize();
+
+                    $.ajax({
+                        url: 'process_adjustment.php',
+                        type: 'POST',
+                        data: formData,
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                showMessage(response.message, 'success');
+                                updateProductQuantity(barcode, response.new_quantity);
+                                resetForm();
+                            } else {
+                                showMessage(response.message, 'error');
+                                console.error('Error:', response.message);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            var errorMessage = 'An error occurred. Please try again.';
+                            if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                                errorMessage = jqXHR.responseJSON.message;
+                            }
+                            showMessage(errorMessage, 'error');
+                            console.error('AJAX Error:', textStatus, errorThrown);
+                            console.error('Response:', jqXHR.responseText);
+                        }
+                    });
+                });
+                function loadAdjustmentHistory(showArchived = false) {
+                    $.ajax({
+                        url: 'get_adjustment_history.php',
+                        type: 'GET',
+                        data: { show_archived: showArchived },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                displayAdjustmentHistory(response.data);
+                            } else {
+                                showMessage('Error loading adjustment history: ' + response.message, 'error');
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            showMessage('Error loading adjustment history. Please try again.', 'error');
+                            console.error('AJAX Error:', textStatus, errorThrown);
+                        }
+                    });
+                }
+
+                $('#showArchivedAdjustments').on('change', function() {
+                    loadAdjustmentHistory(this.checked);
+                });
+
+                function displayAdjustmentHistory(data) {
+                    var $tbody = $('#adjustmentHistoryBody');
+                    $tbody.empty();
+                    data.forEach(function(adjustment) {
+                        $tbody.append(`
+                            <tr>
+                                <td>${adjustment.id}</td>
+                                <td>${adjustment.barcode}</td>
+                                <td>${adjustment.adjustment_type}</td>
+                                <td>${adjustment.original_quantity}</td>
+                                <td>${adjustment.adjustment_quantity}</td>
+                                <td>${adjustment.new_quantity}</td>
+                                <td>${adjustment.adjustment_reason}</td>
+                                <td>${adjustment.adjusted_by}</td>
+                                <td>${adjustment.adjustment_date}</td>
+                            </tr>
+                        `);
+                    });
+                }
+
+                function showMessage(message, type) {
+                    $('#message').text(message).removeClass().addClass(type).show();
+                    setTimeout(function() {
+                        $('#message').fadeOut();
+                    }, 5000);
+                }
+
+                function updateProductQuantity(barcode, newQuantity) {
+                    var $row = $('tr[data-barcode="' + barcode + '"]');
+                    $row.find('.current-quantity').text(newQuantity);
+                    $row.data('current-quantity', newQuantity);
+                }
+
+                function resetForm() {
+                    $('#adjustmentForm')[0].reset();
+                    $('input[name="product_id"]').prop('checked', false);
+                    $('#current_quantity').val('');
+                    $('#barcode').val('');
+                    $('#barcode_display').val('');
+                    $('#description_display').val('');
+                    $('#product_id').val('');
                 }
             });
-        });
-
-        function showMessage(message, type) {
-            $('#message').text(message).removeClass().addClass(type).show();
-            setTimeout(function() {
-                $('#message').fadeOut();
-            }, 5000);
-        }
-
-        function updateProductQuantities(productId, newCurrentQuantity, newHistoryQuantity) {
-            var $row = $('tr[data-product-id="' + productId + '"]');
-            $row.find('.current-quantity').text(newCurrentQuantity);
-            $row.find('.history-quantity').text(newHistoryQuantity);
-            $row.data('current-quantity', newCurrentQuantity);
-            $row.data('history-quantity', newHistoryQuantity);
-        }
-
-        function resetForm() {
-            $('#adjustmentForm')[0].reset();
-            $('input[name="product_id"]').prop('checked', false);
-            $('#current_quantity').val('');
-            $('#history_quantity').val('');
-            $('#reference').val('');
-            $('#stock_in_id').val('');
-        }
-
-        function logClientError(errorMessage) {
-            $.ajax({
-                url: 'log_error.php',
-                type: 'POST',
-                data: { error: errorMessage },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status !== 'success') {
-                        console.error('Failed to log error:', response.message);
-                    }
-                },
-                error: function() {
-                    console.error('Failed to log error');
-                }
-            });
-        }
-    });
-    </script>
-</body>
-</html>
-<?php
-$conn->close();
-?>
+            </script>
+        </body>
+        </html>
+        <?php
+        $conn->close();
+        ?>

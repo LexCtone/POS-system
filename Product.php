@@ -1,10 +1,9 @@
 <?php
 session_start();
-include 'connect.php'; // Ensure this path is correct and the file exists
-// Start the session to access the admin info
+include 'connect.php';
 
 // Fetch the username of the logged-in admin
-$admin_username = "ADMINISTRATOR"; // Default value
+$admin_username = "ADMINISTRATOR";
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
     $query_admin = "SELECT username FROM accounts WHERE id = ?";
@@ -17,61 +16,41 @@ if (isset($_SESSION['user_id'])) {
     }
     $stmt->close();
 }
-// Fetch brands for dropdown
+
+// Fetch and display products
+$sql = "SELECT * FROM products";
+$result = mysqli_query($conn, $sql);
+
+// Fetch brands and categories for dropdowns
 $brand_query = "SELECT * FROM brands";
 $brand_result = mysqli_query($conn, $brand_query);
 $brand_result_update = mysqli_query($conn, $brand_query);
 
-// Fetch categories for dropdown
 $category_query = "SELECT * FROM categories";
 $category_result = mysqli_query($conn, $category_query);
 $category_result_update = mysqli_query($conn, $category_query);
 
-// Handle form submission for adding a new product
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['barcode'])) {
-    $barcode = $_POST['barcode'];
-    $description = $_POST['description'];
-    $brand = $_POST['brand'];
-    $category = $_POST['category'];
-    $price = $_POST['price'];
-    $quantity = $_POST['quantity'];
+// Handle archive request
+if (isset($_GET['archiveid'])) {
+    $id_to_archive = $_GET['archiveid'];
 
-    // Validate input
-    if (!empty($barcode) && !empty($description) && !empty($brand) && !empty($category) && is_numeric($price) && is_numeric($quantity)) {
-        // Insert the new product into the database
-        $stmt = $conn->prepare("INSERT INTO products (Barcode, Description, Brand, Category, Price, Quantity) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param('sssssi', $barcode, $description, $brand, $category, $price, $quantity);
+    // Start transaction
+    $conn->begin_transaction();
 
-        if ($stmt->execute()) {
-            echo 'Product added successfully';
-        } else {
-            echo 'Failed to add product: ' . $stmt->error;
+    try {
+        // Fetch product details from the products table
+        $product_query = "SELECT id, Barcode, Description, Brand, Category, Price, Quantity FROM products WHERE id = ?";
+        $stmt = $conn->prepare($product_query);
+        $stmt->bind_param('i', $id_to_archive);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $product = $result->fetch_assoc();
+
+        if (!$product) {
+            throw new Exception("Product not found for archiving.");
         }
 
-        $stmt->close();
-    } else {
-        echo 'All fields are required and price/quantity must be numeric';
-    }
-}
-
-
-
-// Handle delete request
-if (isset($_GET['deleteid'])) {
-    $id_to_delete = $_GET['deleteid'];
-
-    // Fetch product details from the products table
-    $product_query = "SELECT Barcode, Description, Brand, Category, Price 
-                      FROM products 
-                      WHERE id = ?";
-    $stmt = $conn->prepare($product_query);
-    $stmt->bind_param('i', $id_to_delete);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $product = $result->fetch_assoc();
-
-    if ($product) {
-        // Fetch vendor details and Reference_Number from stock_in_history using the Barcode
+        // Fetch vendor details and Reference_Number from stock_in_history
         $vendor_query = "SELECT vendor, reference FROM stock_in_history WHERE Barcode = ? ORDER BY reference DESC LIMIT 1";
         $vendor_stmt = $conn->prepare($vendor_query);
         $vendor_stmt->bind_param('s', $product['Barcode']);
@@ -79,110 +58,108 @@ if (isset($_GET['deleteid'])) {
         $vendor_result = $vendor_stmt->get_result();
         $vendor_row = $vendor_result->fetch_assoc();
 
-        // Set the vendor name and Reference_Number, defaulting to 'Unknown' if not found
         $vendor_name = $vendor_row ? $vendor_row['vendor'] : 'Unknown';
         $reference_number = $vendor_row ? $vendor_row['reference'] : 'Unknown';
 
-        // Get the current admin who is deleting the product
-        $deleted_by = isset($_SESSION['username']) ? $_SESSION['username'] : 'Unknown'; // Or use admin ID
+        // Get the current admin who is archiving the product
+        $archived_by = isset($_SESSION['username']) ? $_SESSION['username'] : 'Unknown';
 
-        // Insert the product and vendor details into deleted_products, including 'deleted_by'
-        $deleted_product_sql = "INSERT INTO deleted_products (Barcode, reference, Description, Brand, Category, Price, Vendor, deleted_by) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $deleted_stmt = $conn->prepare($deleted_product_sql);
-        $deleted_stmt->bind_param('ssssssss', 
+        // Insert the product into archived_products
+        $archived_product_sql = "INSERT INTO archived_products (id, Barcode, reference, Description, Brand, Category, Price, Quantity, Vendor, archived_by) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $archived_stmt = $conn->prepare($archived_product_sql);
+        $archived_stmt->bind_param('isssssddss', 
+            $product['id'],
             $product['Barcode'], 
-            $reference_number,  // Using reference from stock_in_history
+            $reference_number,
             $product['Description'], 
             $product['Brand'], 
             $product['Category'], 
-            $product['Price'], 
+            $product['Price'],
+            $product['Quantity'],
             $vendor_name,
-            $deleted_by // The admin who deleted the product
+            $archived_by
         );
 
-        if (!$deleted_stmt->execute()) {
-            // Handle insert error
-            error_log("Failed to insert deleted product: " . $deleted_stmt->error);
+        if (!$archived_stmt->execute()) {
+            throw new Exception("Error archiving product: " . $archived_stmt->error);
         }
-        $deleted_stmt->close();
-    } else {
-        error_log("Product not found for deletion ID: $id_to_delete");
+
+        // Move stock adjustment records to archived_stock_adjustment table
+        $move_adjustments_sql = "INSERT INTO archived_stock_adjustment 
+                                 SELECT * FROM stock_adjustment 
+                                 WHERE product_id = ?";
+        $move_adjustments_stmt = $conn->prepare($move_adjustments_sql);
+        $move_adjustments_stmt->bind_param('i', $id_to_archive);
+        
+        if (!$move_adjustments_stmt->execute()) {
+            throw new Exception("Error moving stock adjustments: " . $move_adjustments_stmt->error);
+        }
+
+        // Delete the stock adjustment records for this product
+        $delete_adjustments_sql = "DELETE FROM stock_adjustment WHERE product_id = ?";
+        $delete_adjustments_stmt = $conn->prepare($delete_adjustments_sql);
+        $delete_adjustments_stmt->bind_param('i', $id_to_archive);
+        
+        if (!$delete_adjustments_stmt->execute()) {
+            throw new Exception("Error deleting stock adjustments: " . $delete_adjustments_stmt->error);
+        }
+
+        // Delete the record from products table
+        $delete_sql = "DELETE FROM products WHERE id = ?";
+        $delete_stmt = $conn->prepare($delete_sql);
+        $delete_stmt->bind_param('i', $id_to_archive);
+        
+        if (!$delete_stmt->execute()) {
+            throw new Exception("Error deleting product: " . $delete_stmt->error);
+        }
+
+        // Log the archiving action
+        $log_sql = "INSERT INTO product_logs (action, product_barcode, performed_by) VALUES ('Archived', ?, ?)";
+        $log_stmt = $conn->prepare($log_sql);
+        $log_stmt->bind_param('ss', $product['Barcode'], $archived_by);
+        
+        if (!$log_stmt->execute()) {
+            throw new Exception("Error logging archive action: " . $log_stmt->error);
+        }
+
+        // Commit transaction
+        $conn->commit();
+        
+        $_SESSION['success_message'] = "Product archived successfully.";
+        header('Location: Product.php');
+        exit();
+
+    } catch (Exception $e) {
+        // Rollback transaction on error
+        $conn->rollback();
+        error_log("Error in Product.php (archiving): " . $e->getMessage());
+        $_SESSION['error_message'] = "Error: " . $e->getMessage();
+        header('Location: Product.php');
+        exit();
     }
-
-    // Delete the record from products table
-    $delete_sql = "DELETE FROM products WHERE id = ?";
-    $stmt = $conn->prepare($delete_sql);
-    $stmt->bind_param('i', $id_to_delete);
-
-    if ($stmt->execute()) {
-        // Rearrange IDs after deletion
-        $reset_sql = "SET @num := 0;";
-        mysqli_query($conn, $reset_sql);
-
-        $update_sql = "UPDATE products SET id = @num := (@num + 1);";
-        mysqli_query($conn, $update_sql);
-
-        // Reset AUTO_INCREMENT to the next available ID
-        $max_id_sql = "SELECT MAX(id) FROM products";
-        $max_id_result = mysqli_query($conn, $max_id_sql);
-        $max_id_row = mysqli_fetch_array($max_id_result);
-        $max_id = $max_id_row[0] + 1;
-
-        $alter_sql = "ALTER TABLE products AUTO_INCREMENT = $max_id";
-        mysqli_query($conn, $alter_sql);
-    } else {
-        // Handle delete error
-        error_log("Failed to delete product: " . $stmt->error);
-    }
-
-    $stmt->close();
-
-    // Redirect back to the product list
-    header('Location: Product.php');
-    exit();
 }
 
 
-// Fetch and display products
-$sql = "SELECT * FROM products";
-$result = mysqli_query($conn, $sql);
 
-mysqli_close($conn);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product List</title>
-  <link rel="stylesheet" type="text/css" href="CSS/Product.css">
-  <script type="text/javascript" src="JAVASCRIPT/Product.js" defer></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          // Search functionality
-          const searchInput = document.getElementById('search-input');
-          const productTable = document.getElementById('product-table');
-
-          searchInput.addEventListener('input', function() {
-              const searchTerm = this.value.toLowerCase();
-              const rows = productTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
-              Array.from(rows).forEach(row => {
-                  const barcodeCell = row.cells[1].textContent.toLowerCase();
-                  row.style.display = barcodeCell.includes(searchTerm) ? '' : 'none';
-              });
-          });
-      });
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" type="text/css" href="CSS/Product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="text/javascript" src="JAVASCRIPT/Product.js" defer></script>
 </head>
 <body>
     <nav class="sidebar">
         <header>
             <img src="profile.png" alt="profile"/>
             <br><?php echo htmlspecialchars($admin_username); ?>
-            </header>
+        </header>
         <ul>
             <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
             <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>
@@ -237,7 +214,7 @@ mysqli_close($conn);
                                         data-quantity="<?= htmlspecialchars($row['Quantity']) ?>">
                                     Update
                                 </button>
-                                <button class="button"><a href="?deleteid=<?= $row['id'] ?>" class="text-light">Delete</a></button>
+                                <button class="button"><a href="?archiveid=<?= $row['id'] ?>" class="text-light">Archive</a></button>
                             </td>
                         </tr>
                     <?php endwhile; ?>
@@ -245,109 +222,85 @@ mysqli_close($conn);
             </tbody>
         </table>
     </div>
-<!-- Add Product Modal -->
-<div id="product-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h2>Add New Product</h2>
-        <form id="product-form" action="add_product.php" method="post">
-            <label for="barcode">Barcode:</label>
-            <input type="text" id="barcode" name="barcode" required>
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description" required>
-            <label for="brand">Brand:</label>
-            <select id="brand" name="brand" required>
-                <option value="" disabled selected>Select Brand</option>
-                <?php while ($brand = mysqli_fetch_assoc($brand_result)): ?>
-                    <option value="<?= htmlspecialchars($brand['Brand']) ?>">
-                        <?= htmlspecialchars($brand['Brand']) ?>
-                    </option>
-                <?php endwhile; ?>
-            </select>
-            <label for="category">Category:</label>
-            <select id="category" name="category" required>
-                <option value="" disabled selected>Select Category</option>
-                <?php while ($category = mysqli_fetch_assoc($category_result)): ?>
-                    <option value="<?= htmlspecialchars($category['Category']) ?>">
-                        <?= htmlspecialchars($category['Category']) ?>
-                    </option>
-                <?php endwhile; ?>
-            </select>
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" required>
-            <button type="submit">Add Product</button>
-        </form>
-    </div>
-</div>
-<!-- Update Product Modal -->
-<div id="update-product-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h2>Update Product</h2>
-        <form id="update-product-form" action="update_product.php" method="post">
-            <input type="hidden" id="update-product-id" name="product-id">
-            <label for="update-barcode">Barcode:</label>
-            <input type="text" id="update-barcode" name="barcode" required>
-            <label for="update-description">Description:</label>
-            <input type="text" id="update-description" name="description" required>
-            <label for="update-brand">Brand:</label>
-            <select id="update-brand" name="brand" required>
-                <option value="" disabled selected>Select Brand</option>
-                <?php while ($brand = mysqli_fetch_assoc($brand_result_update)): ?>
-                    <option value="<?= htmlspecialchars($brand['Brand']) ?>">
-                        <?= htmlspecialchars($brand['Brand']) ?>
-                    </option>
-                <?php endwhile; ?>
-            </select>
-            <label for="update-category">Category:</label>
-            <select id="update-category" name="category" required>
-                <option value="" disabled selected>Select Category</option>
-                <?php while ($category = mysqli_fetch_assoc($category_result_update)): ?>
-                    <option value="<?= htmlspecialchars($category['Category']) ?>">
-                        <?= htmlspecialchars($category['Category']) ?>
-                    </option>
-                <?php endwhile; ?>
-            </select>
-            <label for="update-price">Price:</label>
-            <input type="text" id="update-price" name="price" required>
-            <div id="update-form-feedback" class="form-feedback"></div>
-            <div id="update-loading" class="loading-indicator" style="display: none;">Updating...</div>
-            <button type="submit">Update Product</button>
-        </form>
-    </div>
-</div>
-<script>
-    // Handle barcode scanning
-    const barcodeInput = document.getElementById('barcode');
-    barcodeInput.addEventListener('keypress', function (event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Prevent form submission
-            const barcode = this.value.trim();
 
-            if (barcode) {
-                // Perform an AJAX request to fetch product details based on the barcode
-                fetch(`get_product.php?barcode=${encodeURIComponent(barcode)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data) {
-                            document.getElementById('description').value = data.Description;
-                            document.getElementById('brand').value = data.Brand;
-                            document.getElementById('category').value = data.Category;
-                            document.getElementById('price').value = data.Price;
-                            document.getElementById('quantity').value = data.Quantity;
-                        } else {
-                            alert('Product not found. You can add it as a new product.');
-                            document.getElementById('description').value = '';
-                            document.getElementById('brand').value = '';
-                            document.getElementById('category').value = '';
-                            document.getElementById('price').value = '';
-                            document.getElementById('quantity').value = '';
-                        }
-                    })
-                    .catch(error => console.error('Error fetching product details:', error));
-            }
-        }
-    });
-</script>
+    <!-- Add Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Add New Product</h2>
+            <form id="product-form" action="add_product.php" method="post">
+                <label for="barcode">Barcode:</label>
+                <input type="text" id="barcode" name="barcode" required>
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" required>
+                <label for="brand">Brand:</label>
+                <select id="brand" name="brand" required>
+                    <option value="" disabled selected>Select Brand</option>
+                    <?php mysqli_data_seek($brand_result, 0); ?>
+                    <?php while ($brand = mysqli_fetch_assoc($brand_result)): ?>
+                        <option value="<?= htmlspecialchars($brand['Brand']) ?>">
+                            <?= htmlspecialchars($brand['Brand']) ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <?php mysqli_data_seek($category_result, 0); ?>
+                    <?php while ($category = mysqli_fetch_assoc($category_result)): ?>
+                        <option value="<?= htmlspecialchars($category['Category']) ?>">
+                            <?= htmlspecialchars($category['Category']) ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" required>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update Product Modal -->
+    <div id="update-product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Update Product</h2>
+            <form id="update-product-form" action="update_product.php" method="post">
+                <input type="hidden" id="update-product-id" name="product-id">
+                <label for="update-barcode">Barcode:</label>
+                <input type="text" id="update-barcode" name="barcode" required>
+                <label for="update-description">Description:</label>
+                <input type="text" id="update-description" name="description" required>
+                <label for="update-brand">Brand:</label>
+                <select id="update-brand" name="brand" required>
+                    <option value="" disabled selected>Select Brand</option>
+                    <?php mysqli_data_seek($brand_result_update, 0); ?>
+                    <?php while ($brand = mysqli_fetch_assoc($brand_result_update)): ?>
+                        <option value="<?= htmlspecialchars($brand['Brand']) ?>">
+                            <?= htmlspecialchars($brand['Brand']) ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <label for="update-category">Category:</label>
+                <select id="update-category" name="category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <?php mysqli_data_seek($category_result_update, 0); ?>
+                    <?php while ($category = mysqli_fetch_assoc($category_result_update)): ?>
+                        <option value="<?= htmlspecialchars($category['Category']) ?>">
+                            <?= htmlspecialchars($category['Category']) ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <label for="update-price">Price:</label>
+                <input type="number" id="update-price" name="price" step="0.01" required>
+                <div id="update-form-feedback" class="form-feedback"></div>
+                <div id="update-loading" class="loading-indicator" style="display: none;">Updating...</div>
+                <button type="submit">Update Product</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
+<?php
+$conn->close();
+?>

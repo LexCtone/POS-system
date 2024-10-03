@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let rowId = 1; // Global variable to keep track of row IDs
 
   // Generate a random 11-digit number
-// Generate a random number within the range of a signed 32-bit integer
-const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 100000000 + 1)) + 100000000; // Generates a random 9-digit number
+  // Generate a random number within the range of a signed 32-bit integer
+  const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 100000000 + 1)) + 100000000; // Generates a random 9-digit number
 
   // Event listener for the generate link
   document.getElementById('generateLink').addEventListener('click', function (event) {
@@ -49,7 +49,6 @@ const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 10000
     }
   };
   
-
   // Open and close modal
   document.querySelector('.browse-products-link').addEventListener('click', (event) => {
     event.preventDefault();
@@ -96,8 +95,6 @@ const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 10000
   
     addRemoveButtonListeners(); // Re-add event listeners for remove buttons
   };
-  
-
 
   // Add event listeners to remove buttons
   const addRemoveButtonListeners = () => {
@@ -145,56 +142,53 @@ const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 10000
   };
 
   // Save table data
-// Save table data
-document.getElementById('save-button').addEventListener('click', () => {
-  const referenceNo = document.getElementById('referenceNo').value;
-  const stockInBy = document.getElementById('stockInBy').value;
-  const vendor = document.getElementById('vendor').value;
-  const stockInDate = document.getElementById('stockInDate').value;
+  document.getElementById('save-button').addEventListener('click', () => {
+    const referenceNo = document.getElementById('referenceNo').value;
+    const stockInBy = document.getElementById('stockInBy').value;
+    const vendor = document.getElementById('vendor').value;
+    const stockInDate = document.getElementById('stockInDate').value;
 
-  const products = [];
-  const rows = document.querySelectorAll('#product-table tbody tr');
-  rows.forEach(row => {
-    const cells = row.querySelectorAll('td');
-    const product = {
-      Barcode: cells[2].innerText,
-      description: cells[3].innerText,
-      quantity: parseInt(row.querySelector('.product-quantity').value, 10) // Get the value from the input field
+    const products = [];
+    const rows = document.querySelectorAll('#product-table tbody tr');
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      const product = {
+        Barcode: cells[2].innerText,
+        description: cells[3].innerText,
+        quantity: parseInt(row.querySelector('.product-quantity').value, 10) // Get the value from the input field
+      };
+      products.push(product);
+    });
+
+    const data = {
+      referenceNo,
+      stockInBy,
+      vendor,
+      stockInDate,
+      products
     };
-    products.push(product);
+
+    fetch('process_stock_entry.php', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        alert(result.success);
+        clearProductTable(); // Clear the table after saving
+      } else {
+        alert(result.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
+    });
   });
-
-  const data = {
-    referenceNo,
-    stockInBy,
-    vendor,
-    stockInDate,
-    products
-  };
-
-  fetch('process_stock_entry.php', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(response => response.json())
-  .then(result => {
-    if (result.success) {
-      alert(result.success);
-      clearProductTable(); // Clear the table after saving
-    } else {
-      alert(result.error);
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('An error occurred. Please try again.');
-  });
-});
-
-
 
   // Fetch vendor details when the vendor is changed
   const vendorSelect = document.getElementById('vendor');
@@ -223,5 +217,13 @@ document.getElementById('save-button').addEventListener('click', () => {
     });
   } else {
     console.error('Element with ID "vendor" not found');
+  }
+
+  // Close modal when clicking outside
+  window.onclick = function(event) {
+    var modal = document.getElementById('adjustmentHistoryModal');
+    if (event.target == modal) {
+      document.body.removeChild(modal);
+    }
   }
 });

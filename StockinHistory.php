@@ -39,12 +39,12 @@
       <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
       <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
       <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
-      <li><a href="SalesHistory.php"><i class='fa-solid fa-clock-rotate-left' style='font-size:30px'></i>Sales History</a></li>
       <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
       <li><a href="#"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
   </nav>
 
+  <div class="content">
   <div class="table-container">
     <table class="table" id="product-table">
       <thead>
@@ -116,7 +116,6 @@
       </tbody>
     </table>
   </div>
-
   <script>
     function clearFilters() {
       // Redirect to the page without query parameters to clear the filters

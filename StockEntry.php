@@ -114,6 +114,7 @@ if (!$result) {
 </div>
 
 <!-- Table below the modal to show selected products -->
+<div class="content">
 <div class="table-container">
   <table class="table" id="product-table">
     <thead>

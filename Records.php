@@ -58,7 +58,7 @@ if (isset($_SESSION['user_id'])) {
         <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
         <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>
         <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
-        <button class="btn" onclick="location.href='DeletedProducts.php'">Deleted Products</button>
+        <button class="btn" onclick="location.href='ArchivedProducts.php'">Archived Products</button>
       </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
       <div class="form">

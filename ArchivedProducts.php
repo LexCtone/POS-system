@@ -1,22 +1,42 @@
+<?php
+session_start();
+include 'connect.php';
+
+// Fetch the username of the logged-in admin
+$admin_username = "ADMINISTRATOR";
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $query_admin = "SELECT username FROM accounts WHERE id = ?";
+    $stmt = $conn->prepare($query_admin);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $admin_username = $row['username'];
+    }
+    $stmt->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deleted Products</title>
-  <link rel="stylesheet" href="CSS\DeletedProducts.css">
+  <title>Archived Products</title>
+  <link rel="stylesheet" href="CSS/ArchivedProducts.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
-    <h2 class="StockHeader">Deleted Products</h2>
+    <h2 class="StockHeader">Archived Products</h2>
   </header>
   
   <nav class="sidebar">
     <header>
       <img src="profile.png" alt="profile"/>
-      <br>ADMINISTRATOR
+      <br><?php echo htmlspecialchars($admin_username); ?>
     </header>
     <ul>
       <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
@@ -26,7 +46,6 @@
       <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
       <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
       <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
-      <li><a href="SalesHistory.php"><i class='fa-solid fa-clock-rotate-left' style='font-size:30px'></i>Sales History</a></li>
       <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
       <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
@@ -41,12 +60,12 @@
         <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
         <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>
         <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
-        <button class="btn" onclick="location.href='DeletedProducts.php'">Deleted Products</button>
+        <button class="btn" onclick="location.href='ArchivedProducts.php'">Archived Products</button>
       </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
 
       <div class="form">
-        <form id="filter-form" method="GET" action="DeletedProducts.php">
+        <form id="filter-form" method="GET" action="ArchivedProducts.php">
           <div class="form-group">
             <label for="startDate" class="date-label">Filter by</label>
             <input type="date" id="startDate" name="startDate" class="date-input" value="<?php echo isset($_GET['startDate']) ? htmlspecialchars($_GET['startDate']) : ''; ?>">
@@ -56,16 +75,16 @@
               <span class="load-data-text">Load Data</span>
             </button>
             <div class="print-preview-button" onclick="window.print()">
-          <i class="fa-solid fa-print"></i>
-          <span class="print-preview-text">Print Preview</span>
-        </div>
+              <i class="fa-solid fa-print"></i>
+              <span class="print-preview-text">Print Preview</span>
+            </div>
           </div>
         </form>
       </div>
 
       <div class="content">
         <div class="table-container">
-        <table>
+          <table>
             <thead>
               <tr>
                 <th>#</th>
@@ -75,26 +94,24 @@
                 <th>Brand</th>
                 <th>Category</th>
                 <th>Price</th>
+                <th>Quantity</th>
                 <th>Vendor</th>
-                <th>Deleted By</th>
+                <th>Archived By</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               <?php
-              // Database connection
-              require 'connect.php'; // Adjust this path to your actual connection file
-
               // Set default query
-              $query = "SELECT * FROM deleted_products";
+              $query = "SELECT * FROM archived_products";
 
               // Check for date filtering
               if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
                   $startDate = $_GET['startDate'];
                   $endDate = $_GET['endDate'];
 
-                  // Adjust query to filter by date if both dates are provided
                   if (!empty($startDate) && !empty($endDate)) {
-                      $query .= " WHERE DATE(date_deleted) BETWEEN '$startDate' AND '$endDate'";
+                      $query .= " WHERE DATE(archived_at) BETWEEN '$startDate' AND '$endDate'";
                   }
               }
 
@@ -111,12 +128,14 @@
                       echo "<td>" . htmlspecialchars($row['Brand']) . "</td>";
                       echo "<td>" . htmlspecialchars($row['Category']) . "</td>";
                       echo "<td>" . htmlspecialchars($row['Price']) . "</td>";
+                      echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
                       echo "<td>" . htmlspecialchars($row['Vendor']) . "</td>";
-                      echo "<td>" . htmlspecialchars($row['deleted_by']) . "</td>"; // Displaying the admin who deleted the product
+                      echo "<td>" . htmlspecialchars($row['archived_by']) . "</td>";
+                      echo "<td><button class='restore-btn' data-id='" . $row['id'] . "'>Restore</button></td>";
                       echo "</tr>";
                   }
               } else {
-                echo "<tr><td colspan='9' style='text-align: center;'>No deleted products found.</td></tr>";
+                echo "<tr><td colspan='11' style='text-align: center;'>No archived products found.</td></tr>";
               }
               ?>
             </tbody>
@@ -125,5 +144,38 @@
       </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const restoreButtons = document.querySelectorAll('.restore-btn');
+      restoreButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const productId = this.getAttribute('data-id');
+          if (confirm('Are you sure you want to restore this product?')) {
+            fetch('restore_product.php', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: 'id=' + productId
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('Product restored successfully');
+                location.reload();
+              } else {
+                alert('Failed to restore product: ' + data.message);
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('An error occurred while restoring the product');
+            });
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
