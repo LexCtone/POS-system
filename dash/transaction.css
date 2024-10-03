@@ -1106,3 +1106,20 @@ table tbody tr:hover {
 #printButton:hover {
     background-color: #45a049;
 }
+
+@media print {
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    @page {
+      size: 58mm auto;
+      margin: 0;
+    }
+    div {
+      width: 58mm;
+      padding: 0;
+      margin: 0 auto;
+    }
+  }
+  
