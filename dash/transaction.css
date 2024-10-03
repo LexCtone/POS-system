@@ -1082,3 +1082,27 @@ table tbody tr:hover {
     font-size: 28px;
     cursor: pointer;
 }
+
+#printReceiptModal .modal-content {
+    width: 80%;
+    max-width: 600px;
+}
+
+#receiptContent {
+    margin-bottom: 20px;
+}
+
+#printButton {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#printButton:hover {
+    background-color: #45a049;
+}

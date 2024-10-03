@@ -1890,3 +1890,1003 @@
 
 [2024-10-03 09:24:06] Executed sale insert for barcode: 195243500438
 [2024-10-03 09:24:06] Executed product update for barcode: 195243500438
+[2024-10-03 09:37:09] Received data: Array
+(
+    [invoice] => 20241003016716903
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 5
+                    [discount_amount] => 0
+                    [total] => 615
+                )
+
+        )
+
+    [totalAmount] => 615
+    [paymentAmount] => 615
+    [change] => 0
+)
+
+[2024-10-03 09:37:09] Executed sale insert for barcode: 200110212312
+[2024-10-03 09:37:09] Executed product update for barcode: 200110212312
+[2024-10-03 09:38:44] Received data: Array
+(
+    [invoice] => 20241003107415545
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 09:38:44] Executed sale insert for barcode: 200110212312
+[2024-10-03 09:38:44] Executed product update for barcode: 200110212312
+[2024-10-03 09:41:42] Received data: Array
+(
+    [invoice] => 20241003125816125
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 09:41:42] Executed sale insert for barcode: 200110212312
+[2024-10-03 09:41:42] Executed product update for barcode: 200110212312
+[2024-10-03 09:43:26] Received data: Array
+(
+    [invoice] => 20241003337442375
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 3
+                    [discount_amount] => 0
+                    [total] => 369
+                )
+
+        )
+
+    [totalAmount] => 369
+    [paymentAmount] => 369
+    [change] => 0
+)
+
+[2024-10-03 09:43:26] Executed sale insert for barcode: 200110212312
+[2024-10-03 09:43:26] Executed product update for barcode: 200110212312
+[2024-10-03 09:45:47] Received data: Array
+(
+    [invoice] => 20241003407017471
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 246
+                )
+
+        )
+
+    [totalAmount] => 246
+    [paymentAmount] => 600
+    [change] => 354
+)
+
+[2024-10-03 09:45:47] Executed sale insert for barcode: 200110212312
+[2024-10-03 09:45:47] Executed product update for barcode: 200110212312
+[2024-10-03 09:46:15] Received data: Array
+(
+    [invoice] => 20241003548072480
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 09:46:15] Executed sale insert for barcode: 200110212312
+[2024-10-03 09:46:15] Executed product update for barcode: 200110212312
+[2024-10-03 10:03:07] Received data: Array
+(
+    [invoice] => 20241003576705064
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 246
+                )
+
+        )
+
+    [totalAmount] => 246
+    [paymentAmount] => 246
+    [change] => 0
+)
+
+[2024-10-03 10:03:07] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:03:07] Executed product update for barcode: 200110212312
+[2024-10-03 10:04:01] Received data: Array
+(
+    [invoice] => 20241003588336353
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:04:01] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:04:01] Executed product update for barcode: 200110212312
+[2024-10-03 10:07:33] Received data: Array
+(
+    [invoice] => 20241003850002589
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:07:33] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:07:33] Executed product update for barcode: 200110212312
+[2024-10-03 10:10:51] Received data: Array
+(
+    [invoice] => 20241003854818336
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:10:51] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:10:51] Executed product update for barcode: 200110212312
+[2024-10-03 10:11:22] Received data: Array
+(
+    [invoice] => 20241003052313889
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:11:22] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:11:22] Executed product update for barcode: 200110212312
+[2024-10-03 10:17:27] Received data: Array
+(
+    [invoice] => 20241003444153584
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:17:27] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:17:27] Executed product update for barcode: 200110212312
+[2024-10-03 10:19:42] Received data: Array
+(
+    [invoice] => 20241003575199491
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:19:43] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:19:43] Executed product update for barcode: 200110212312
+[2024-10-03 10:22:01] Received data: Array
+(
+    [invoice] => 20241003715020618
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:22:01] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:22:01] Executed product update for barcode: 200110212312
+[2024-10-03 10:22:16] Received data: Array
+(
+    [invoice] => 20241003731889072
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:22:16] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:22:16] Executed product update for barcode: 200110212312
+[2024-10-03 10:22:30] Received data: Array
+(
+    [invoice] => 20241003744158798
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 12300
+    [change] => 12177
+)
+
+[2024-10-03 10:22:30] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:22:30] Executed product update for barcode: 200110212312
+[2024-10-03 10:22:42] Received data: Array
+(
+    [invoice] => 20241003756468709
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 20
+                    [barcode] => 9876543
+                    [description] => tanga mo bong
+                    [price] => 25
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 25
+                )
+
+        )
+
+    [totalAmount] => 25
+    [paymentAmount] => 50
+    [change] => 25
+)
+
+[2024-10-03 10:22:42] Executed sale insert for barcode: 9876543
+[2024-10-03 10:22:42] Executed product update for barcode: 9876543
+[2024-10-03 10:27:15] Received data: Array
+(
+    [invoice] => 20241003024189769
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:27:15] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:27:15] Executed product update for barcode: 200110212312
+[2024-10-03 10:30:58] Received data: Array
+(
+    [invoice] => 20241003036666387
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:30:58] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:30:58] Executed product update for barcode: 200110212312
+[2024-10-03 10:38:27] Received data: Array
+(
+    [invoice] => 20241003700360357
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:38:27] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:38:27] Executed product update for barcode: 200110212312
+[2024-10-03 10:40:32] Received data: Array
+(
+    [invoice] => 20241003827072312
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:40:32] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:40:32] Executed product update for barcode: 200110212312
+[2024-10-03 10:50:53] Received data: Array
+(
+    [invoice] => 20241003968415599
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:50:53] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:50:53] Executed product update for barcode: 200110212312
+[2024-10-03 10:54:26] Received data: Array
+(
+    [invoice] => 20241003454602604
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:54:26] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:54:26] Executed product update for barcode: 200110212312
+[2024-10-03 10:56:35] Received data: Array
+(
+    [invoice] => 20241003667875774
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 10:56:35] Executed sale insert for barcode: 200110212312
+[2024-10-03 10:56:35] Executed product update for barcode: 200110212312
+[2024-10-03 11:01:38] Received data: Array
+(
+    [invoice] => 20241003796682561
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:01:38] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:01:38] Executed product update for barcode: 200110212312
+[2024-10-03 11:02:56] Received data: Array
+(
+    [invoice] => 20241003169962659
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:02:56] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:02:56] Executed product update for barcode: 200110212312
+[2024-10-03 11:03:50] Received data: Array
+(
+    [invoice] => 20241003177867583
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:03:50] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:03:50] Executed product update for barcode: 200110212312
+[2024-10-03 11:05:30] Received data: Array
+(
+    [invoice] => 20241003260043223
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:05:30] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:05:30] Executed product update for barcode: 200110212312
+[2024-10-03 11:06:05] Received data: Array
+(
+    [invoice] => 20241003357140926
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:06:05] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:06:05] Executed product update for barcode: 200110212312
+[2024-10-03 11:08:56] Received data: Array
+(
+    [invoice] => 20241003531184163
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 125
+    [change] => 2
+)
+
+[2024-10-03 11:08:56] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:08:56] Executed product update for barcode: 200110212312
+[2024-10-03 11:13:56] Received data: Array
+(
+    [invoice] => 20241003827697480
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:13:56] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:13:56] Executed product update for barcode: 200110212312
+[2024-10-03 11:15:22] Received data: Array
+(
+    [invoice] => 20241003915565678
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:15:22] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:15:22] Executed product update for barcode: 200110212312
+[2024-10-03 11:15:56] Received data: Array
+(
+    [invoice] => 20241003951282691
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:15:56] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:15:56] Executed product update for barcode: 200110212312
+[2024-10-03 11:17:57] Received data: Array
+(
+    [invoice] => 20241003071709901
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 11111
+    [change] => 10988
+)
+
+[2024-10-03 11:17:57] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:17:57] Executed product update for barcode: 200110212312
+[2024-10-03 11:18:36] Received data: Array
+(
+    [invoice] => 20241003097912700
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:18:36] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:18:36] Executed product update for barcode: 200110212312
+[2024-10-03 11:19:35] Received data: Array
+(
+    [invoice] => 20241003168920962
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:19:35] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:19:35] Executed product update for barcode: 200110212312
+[2024-10-03 11:20:10] Received data: Array
+(
+    [invoice] => 20241003205054855
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:20:10] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:20:10] Executed product update for barcode: 200110212312
+[2024-10-03 11:21:23] Received data: Array
+(
+    [invoice] => 20241003276950382
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 999
+    [change] => 876
+)
+
+[2024-10-03 11:21:23] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:21:23] Executed product update for barcode: 200110212312
+[2024-10-03 11:22:57] Received data: Array
+(
+    [invoice] => 20241003348824849
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:22:57] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:22:57] Executed product update for barcode: 200110212312
+[2024-10-03 11:23:37] Received data: Array
+(
+    [invoice] => 20241003410257475
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-03 11:23:37] Executed sale insert for barcode: 200110212312
+[2024-10-03 11:23:37] Executed product update for barcode: 200110212312
