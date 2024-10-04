@@ -640,126 +640,10 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
         document.getElementById('change-amount').textContent = '₱0.00';
     };
     
-    window.calculateChange = function() {
-        const totalAmount = parseFloat(document.getElementById('total-amount').textContent.replace('₱', ''));
-        const paymentAmount = parseFloat(document.getElementById('payment-amount').value);
-        if (isNaN(paymentAmount)) {
-            alert('Please enter a valid payment amount.');
-            return;
-        }
-        if (paymentAmount < totalAmount) {
-            alert('Payment amount is less than the total amount.');
-            return;
-        }
-        const change = paymentAmount - totalAmount;
-        document.getElementById('change-amount').textContent = '₱' + change.toFixed(2);
-    
-        saveTransaction(totalAmount, paymentAmount, change)
-            .then(() => {
-                printReceipt(totalAmount, paymentAmount, change);
-            })
-            .catch(error => {
-                console.error('Error saving transaction:', error);
-                alert('An error occurred while saving the transaction. Receipt printing failed.');
-            });
-    };
-
-    function printReceipt(totalAmount, paymentAmount, change) {
-        const receiptContent = document.getElementById('receiptContent');
-        const transactionNo = document.getElementById('transactionNo').textContent;
-        const cashierName = document.getElementById('cashierName').textContent;
-        const currentDate = new Date().toLocaleString();
-    
-        let receiptHTML = `
-            <div style="font-family: Arial, sans-serif; width: 300px; margin: 0 auto; padding: 20px; border: 1px solid #ccc;">
-                <h2 style="text-align: center; margin-bottom: 10px;">Sales Receipt</h2>
-                <p style="margin: 5px 0;"><strong>Transaction No:</strong> ${transactionNo}</p>
-                <p style="margin: 5px 0;"><strong>Date:</strong> ${currentDate}</p>
-                <p style="margin: 5px 0;"><strong>Cashier:</strong> ${cashierName}</p>
-                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr>
-                            <th style="text-align: left; padding: 5px; border-bottom: 1px solid #000;">Item</th>
-                            <th style="text-align: right; padding: 5px; border-bottom: 1px solid #000;">Qty</th>
-                            <th style="text-align: right; padding: 5px; border-bottom: 1px solid #000;">Price</th>
-                            <th style="text-align: right; padding: 5px; border-bottom: 1px solid #000;">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        `;
-    
-        const tableBody = document.querySelector('.transaction-table tbody');
-        const rows = tableBody.querySelectorAll('tr');
-    
-        rows.forEach(row => {
-            const description = row.cells[1].textContent;
-            const price = parseFloat(row.cells[2].textContent.replace('₱', ''));
-            const quantity = parseInt(row.querySelector('.quantity-input').value);
-            const total = parseFloat(row.cells[5].textContent.replace('₱', ''));
-    
-            receiptHTML += `
-                <tr>
-                    <td style="text-align: left; padding: 5px;">${description}</td>
-                    <td style="text-align: right; padding: 5px;">${quantity}</td>
-                    <td style="text-align: right; padding: 5px;">₱${price.toFixed(2)}</td>
-                    <td style="text-align: right; padding: 5px;">₱${total.toFixed(2)}</td>
-                </tr>
-            `;
-        });
-    
-        receiptHTML += `
-                    </tbody>
-                </table>
-                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
-                <p style="text-align: right; margin: 5px 0;"><strong>Total Amount:</strong> ₱${totalAmount.toFixed(2)}</p>
-                <p style="text-align: right; margin: 5px 0;"><strong>Payment:</strong> ₱${paymentAmount.toFixed(2)}</p>
-                <p style="text-align: right; margin: 5px 0;"><strong>Change:</strong> ₱${change.toFixed(2)}</p>
-                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
-                <p style="text-align: center; margin-top: 20px;">Thank you for your purchase!</p>
-            </div>
-        `;
-    
-        receiptContent.innerHTML = receiptHTML;
-    
-        const printReceiptModal = document.getElementById('printReceiptModal');
-        openModal(printReceiptModal);
-    
-        // Set up the event listener for the print button
-        document.getElementById('printButton').addEventListener('click', function() {
-            const printWindow = window.open('', '', 'width=400,height=600');
-            printWindow.document.open();
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Print Receipt</title>
-                        <style>
-                            @media print {
-                                body { margin: 0; padding: 0; }
-                                @page { size: 80mm 297mm; margin: 0; }
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        ${receiptHTML}
-                        <script>
-                            window.onload = function() {
-                                window.print();
-                                window.onafterprint = function() {
-                                    window.close();
-                                };
-                            };
-                        </script>
-                    </body>
-                </html>
-            `);
-            printWindow.document.close();
-        });
-    }
-
     function gatherSaleData() {
         const tableBody = document.querySelector('.transaction-table tbody');
         const rows = tableBody.querySelectorAll('tr');
+        console.log('Number of rows in gatherSaleData:', rows.length);
         const sales = [];
         
         rows.forEach(row => {
@@ -785,8 +669,150 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
         return sales;
     }
     
+    function printReceipt(totalAmount, paymentAmount, change) {
+        const sales = gatherSaleData();
+        console.log('Sales data for receipt:', sales);
+    
+        const receiptContent = document.getElementById('receiptContent');
+        const transactionNo = document.getElementById('transactionNo').textContent;
+        const cashierName = document.getElementById('cashierName').textContent;
+        const currentDate = new Date().toLocaleString();
+    
+        let receiptHTML = `
+            <div style="font-family: Arial, sans-serif; width: 300px; margin: 0 auto; padding: 20px; border: 1px solid #ccc;">
+                <h2 style="text-align: center; margin-bottom: 10px;">Sales Receipt</h2>
+                <p style="margin: 5px 0;"><strong>Transaction No:</strong> ${transactionNo}</p>
+                <p style="margin: 5px 0;"><strong>Date:</strong> ${currentDate}</p>
+                <p style="margin: 5px 0;"><strong>Cashier:</strong> ${cashierName}</p>
+                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding: 5px; border-bottom: 1px solid #000;">Item</th>
+                            <th style="text-align: right; padding: 5px; border-bottom: 1px solid #000;">Qty</th>
+                            <th style="text-align: right; padding: 5px; border-bottom: 1px solid #000;">Price</th>
+                            <th style="text-align: right; padding: 5px; border-bottom: 1px solid #000;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+    
+        if (sales.length === 0) {
+            receiptHTML += `
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 5px;">No items</td>
+                </tr>
+            `;
+        } else {
+            sales.forEach(sale => {
+                receiptHTML += `
+                    <tr>
+                        <td style="text-align: left; padding: 5px;">${sale.description}</td>
+                        <td style="text-align: right; padding: 5px;">${sale.quantity}</td>
+                        <td style="text-align: right; padding: 5px;">₱${sale.price.toFixed(2)}</td>
+                        <td style="text-align: right; padding: 5px;">₱${sale.total.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+        }
+    
+        receiptHTML += `
+                    </tbody>
+                </table>
+                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
+                <p style="text-align: right; margin: 5px 0;"><strong>Total Amount:</strong> ₱${totalAmount.toFixed(2)}</p>
+                <p style="text-align: right; margin: 5px 0;"><strong>Payment:</strong> ₱${paymentAmount.toFixed(2)}</p>
+                <p style="text-align: right; margin: 5px 0;"><strong>Change:</strong> ₱${change.toFixed(2)}</p>
+                <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
+                <p style="text-align: center; margin-top: 20px;">Thank you for your purchase!</p>
+            </div>
+        `;
+    
+        receiptContent.innerHTML = receiptHTML;
+    
+        const printReceiptModal = document.getElementById('printReceiptModal');
+        openModal(printReceiptModal);
+
+    
+        // Set up the event listener for the print button
+        const printButton = document.getElementById('printButton');
+        if (printButton) {
+            printButton.addEventListener('click', function() {
+                const printWindow = window.open('', '', 'width=400,height=600');
+                printWindow.document.open();
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Print Receipt</title>
+                            <style>
+                                body { font-family: Arial, sans-serif; }
+                                @media print {
+                                    body { margin: 0; padding: 0; }
+                                    @page { size: 80mm 297mm; margin: 0; }
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            ${receiptHTML}
+                            <script>
+                                window.onload = function() {
+                                    window.print();
+                                    window.onafterprint = function() {
+                                        window.close();
+                                    };
+                                };
+                            </script>
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            });
+        }
+    
+        // Add event listener to close the modal when clicking outside
+        printReceiptModal.addEventListener('click', function(event) {
+            if (event.target === printReceiptModal) {
+                closeModal('printReceiptModal');
+            }
+        });
+    }
+    
+    window.calculateChange = async function() {
+        const totalAmount = parseFloat(document.getElementById('total-amount').textContent.replace('₱', ''));
+        const paymentAmount = parseFloat(document.getElementById('payment-amount').value);
+        if (isNaN(paymentAmount)) {
+            alert('Please enter a valid payment amount.');
+            return;
+        }
+        if (paymentAmount < totalAmount) {
+            alert('Payment amount is less than the total amount.');
+            return;
+        }
+        const change = paymentAmount - totalAmount;
+        document.getElementById('change-amount').textContent = '₱' + change.toFixed(2);
+    
+        try {
+            await saveTransaction(totalAmount, paymentAmount, change);
+            printReceipt(totalAmount, paymentAmount, change);
+            alert('Transaction completed successfully!');
+            
+            // Close the settle payment modal
+            closeModal('settle_payment');
+    
+            // Clear the transaction table and generate new transaction number
+            clearTransactionTable();
+            generateTransactionNo();
+    
+            // The print receipt modal will remain open for the user to interact with
+        } catch (error) {
+            console.error('Error saving transaction:', error);
+            alert('An error occurred while saving the transaction. Receipt printing failed.');
+        }
+    };
+    
     async function saveTransaction(totalAmount, paymentAmount, change) {
         const sales = gatherSaleData();
+        console.log('Sales data in saveTransaction:', sales);
         const transactionData = {
             invoice: document.getElementById('transactionNo').textContent,
             sales: sales,
@@ -810,19 +836,14 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
     
             const result = await response.json();
     
-            if (result.success) {
-                console.log('Transaction saved successfully!');
-                alert('Transaction completed successfully!');
-                
-                clearTransactionTable();
-                closeModal('settle_payment');
-                generateTransactionNo();
-            } else {
+            if (!result.success) {
                 throw new Error(result.message || 'Failed to save transaction');
             }
+    
+            console.log('Transaction saved successfully!');
         } catch (error) {
             console.error('Error saving transaction:', error);
-            alert('An error occurred while saving the transaction. Please try again.');
+            throw error; // Re-throw the error to be caught in calculateChange
         }
     }
 

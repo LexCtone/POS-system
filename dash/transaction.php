@@ -521,9 +521,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
         </div>
     </div>
 </div>
+
 <div id="printReceiptModal" class="modal">
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close-button">&times;</span>
         <h2>Print Receipt</h2>
         <div id="receiptContent"></div>
         <button id="printButton">Print</button>
@@ -574,14 +575,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
     </div>
 </div>
 
-<div id="printReceiptModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Print Receipt</h2>
-        <div id="receiptContent"></div>
-        <button id="printButton">Print</button>
-    </div>
-</div>
+
 
     <!-- Footer --> 
     <footer class="footer"> 
