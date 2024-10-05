@@ -27,3 +27,6 @@
 [2024-10-03 09:15:19] process_adjustment.php: Received data - product_id: 15, adjustment_quantity: -50, adjustment_reason: kasi pukingina, barcode: 200110212312, reference: adjustment_reference
 [2024-10-03 09:15:35] process_adjustment.php: Received data - product_id: 19, adjustment_quantity: 25, adjustment_reason: asd, barcode: 195243500438, reference: adjustment_reference
 [2024-10-03 09:15:54] process_adjustment.php: Received data - product_id: 19, adjustment_quantity: -25, adjustment_reason: kasi sobra ng 25 bobo ka ba!, barcode: 195243500438, reference: adjustment_reference
+[2024-10-05 18:08:28] process_adjustment.php: Received data - product_id: 15, adjustment_quantity: 7, adjustment_reason: dagdag lang man, barcode: 200110212312, reference: adjustment_reference
+[2024-10-05 18:08:45] process_adjustment.php: Received data - product_id: 15, adjustment_quantity: 5, adjustment_reason: ASD, barcode: 200110212312, reference: adjustment_reference
+[2024-10-05 18:12:38] process_adjustment.php: Received data - product_id: 15, adjustment_quantity: -10, adjustment_reason: asd, barcode: 200110212312, reference: adjustment_reference

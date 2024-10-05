@@ -4856,3 +4856,231 @@
 [2024-10-04 10:37:49] Executed product update for barcode: 195243500438
 [2024-10-04 10:37:49] Executed sale insert for barcode: 9876543
 [2024-10-04 10:37:49] Executed product update for barcode: 9876543
+[2024-10-05 05:51:38] Received data: Array
+(
+    [invoice] => 20241005288630995
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-05 05:51:38] Executed sale insert for barcode: 200110212312
+[2024-10-05 05:51:38] Executed product update for barcode: 200110212312
+[2024-10-05 05:53:31] Received data: Array
+(
+    [invoice] => 20241005305322139
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 123
+    [paymentAmount] => 123
+    [change] => 0
+)
+
+[2024-10-05 05:53:31] Executed sale insert for barcode: 200110212312
+[2024-10-05 05:53:31] Executed product update for barcode: 200110212312
+[2024-10-05 06:09:44] Received data: Array
+(
+    [invoice] => 20241005904076620
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 21
+                    [barcode] => 8850006304563
+                    [description] => sample 1
+                    [price] => 123
+                    [quantity] => 10
+                    [discount_amount] => 61.5
+                    [total] => 1168.5
+                )
+
+        )
+
+    [totalAmount] => 1168.5
+    [paymentAmount] => 2000
+    [change] => 831.5
+)
+
+[2024-10-05 06:09:44] Executed sale insert for barcode: 8850006304563
+[2024-10-05 06:09:44] Executed product update for barcode: 8850006304563
+[2024-10-05 06:13:43] Received data: Array
+(
+    [invoice] => 20241005415217512
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+            [1] => Array
+                (
+                    [product_id] => 19
+                    [barcode] => 195243500438
+                    [description] => paa ni nognog
+                    [price] => 279
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 279
+                )
+
+            [2] => Array
+                (
+                    [product_id] => 20
+                    [barcode] => 9876543
+                    [description] => tanga mo bong
+                    [price] => 25
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 25
+                )
+
+            [3] => Array
+                (
+                    [product_id] => 21
+                    [barcode] => 8850006304563
+                    [description] => sample 1
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 550
+    [paymentAmount] => 550
+    [change] => 0
+)
+
+[2024-10-05 06:13:43] Executed sale insert for barcode: 200110212312
+[2024-10-05 06:13:43] Executed product update for barcode: 200110212312
+[2024-10-05 06:13:43] Executed sale insert for barcode: 195243500438
+[2024-10-05 06:13:43] Executed product update for barcode: 195243500438
+[2024-10-05 06:13:43] Executed sale insert for barcode: 9876543
+[2024-10-05 06:13:43] Executed product update for barcode: 9876543
+[2024-10-05 06:13:43] Executed sale insert for barcode: 8850006304563
+[2024-10-05 06:13:43] Executed product update for barcode: 8850006304563
+[2024-10-05 06:15:26] Received data: Array
+(
+    [invoice] => 20241005691234315
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 200110212312
+                    [description] => qwe
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+            [1] => Array
+                (
+                    [product_id] => 19
+                    [barcode] => 195243500438
+                    [description] => paa ni nognog
+                    [price] => 279
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 279
+                )
+
+            [2] => Array
+                (
+                    [product_id] => 20
+                    [barcode] => 9876543
+                    [description] => tanga mo bong
+                    [price] => 25
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 25
+                )
+
+            [3] => Array
+                (
+                    [product_id] => 21
+                    [barcode] => 8850006304563
+                    [description] => sample 1
+                    [price] => 123
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 123
+                )
+
+        )
+
+    [totalAmount] => 550
+    [paymentAmount] => 550
+    [change] => 0
+)
+
+[2024-10-05 06:15:26] Executed sale insert for barcode: 200110212312
+[2024-10-05 06:15:26] Executed product update for barcode: 200110212312
+[2024-10-05 06:15:26] Executed sale insert for barcode: 195243500438
+[2024-10-05 06:15:26] Executed product update for barcode: 195243500438
+[2024-10-05 06:15:26] Executed sale insert for barcode: 9876543
+[2024-10-05 06:15:26] Executed product update for barcode: 9876543
+[2024-10-05 06:15:26] Executed sale insert for barcode: 8850006304563
+[2024-10-05 06:15:26] Executed product update for barcode: 8850006304563
+[2024-10-05 06:32:06] Received data: Array
+(
+    [invoice] => 20241005971260439
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 22
+                    [barcode] => 6928073661383
+                    [description] => Hammer Drill
+                    [price] => 100
+                    [quantity] => 100
+                    [discount_amount] => 0
+                    [total] => 10000
+                )
+
+        )
+
+    [totalAmount] => 10000
+    [paymentAmount] => 10000
+    [change] => 0
+)
+
+[2024-10-05 06:32:06] Executed sale insert for barcode: 6928073661383
+[2024-10-05 06:32:06] Executed product update for barcode: 6928073661383
