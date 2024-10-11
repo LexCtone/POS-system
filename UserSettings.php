@@ -56,6 +56,7 @@ if (isset($_SESSION['user_id'])) {
         <button class="btn" onclick="location.href='UserSettings.php'">Create Account</button>
         <button class="btn" onclick="location.href='ChangePassword.php'">Change Password</button>
         <button class="btn" onclick="location.href='ActDeact.php'">Activate/Deactivate Account</button>
+        <button class="btn" onclick="location.href='Accounts.php'">Accounts</button>
       </div>
       <div class="form">
       <form id="password-form" action="save_account.php" method="POST">

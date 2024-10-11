@@ -156,7 +156,7 @@ mysqli_close($conn);
                 <?php if ($result): ?>
                     <?php while ($row = mysqli_fetch_assoc($result)): ?>
                         <tr>
-                            <th scope="row"><?= htmlspecialchars($row['id']) ?></th>
+                            <th scope="row"><?= htmlspecialchars($row['id'])  ?></th>
                             <td><?= htmlspecialchars($row['vendor']) ?></td>
                             <td><?= htmlspecialchars($row['contact']) ?></td>
                             <td><?= htmlspecialchars($row['telephone']) ?></td>
@@ -186,7 +186,7 @@ mysqli_close($conn);
     <div id="add-vendor-modal"  class="modal" style="display: none;">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <form id="add-vendor-form">
+                <form id="add-vendor-form" action="Vendor.php" method="post">
                 <label for="vendor-name">Vendor Name:</label>
                 <input type="text" id="vendor-name" name="vendor-name" required>
                 <label for="contact-person">Contact Person:</label>

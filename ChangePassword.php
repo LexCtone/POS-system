@@ -95,6 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <button onclick="location.href='UserSettings.php'">Create Account</button>
                 <button onclick="location.href='ChangePassword.php'">Change Password</button> 
                 <button onclick="location.href='ActDeact.php'">Activate/Deactivate Account</button> 
+                <button class="btn" onclick="location.href='Accounts.php'">Accounts</button>
             </div>
             <div class="form">
                 <?php if (!empty($message)): ?>

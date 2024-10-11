@@ -64,11 +64,7 @@ if (isset($_SESSION['user_id'])) {
           </thead>
           <tbody>
           <?php
-$conn = mysqli_connect('localhost', 'root', '', 'sv_hardware_db');
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
+include 'connect.php';
 // Handle delete request
 if (isset($_GET['deleteid'])) {
     $id_to_delete = $_GET['deleteid'];

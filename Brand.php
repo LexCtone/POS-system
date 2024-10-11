@@ -64,10 +64,7 @@ if (isset($_SESSION['user_id'])) {
           </thead>
           <tbody>
           <?php
-$conn = mysqli_connect('localhost', 'root', '', 'sv_hardware_db');
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+include 'connect.php'; // Ensure this path is correct and the file exists
 
 // Handle delete request
 if (isset($_GET['deleteid'])) {
@@ -78,19 +75,15 @@ if (isset($_GET['deleteid'])) {
     mysqli_query($conn, $delete_sql);
 
     // Rearrange IDs after deletion
-    $reset_sql = "SET @num := 0;";
-    mysqli_query($conn, $reset_sql);
-
-    $update_sql = "UPDATE brands SET id = @num := (@num + 1);";
-    mysqli_query($conn, $update_sql);
+    $reorder_sql = "
+        SET @num := 0;
+        UPDATE brands SET id = (@num := @num + 1) ORDER BY id;
+    ";
+    mysqli_multi_query($conn, $reorder_sql);
+    while (mysqli_next_result($conn)) {;} // Flush multi-query results
 
     // Reset AUTO_INCREMENT to the next available ID
-    $max_id_sql = "SELECT MAX(id) FROM brands";
-    $max_id_result = mysqli_query($conn, $max_id_sql);
-    $max_id_row = mysqli_fetch_array($max_id_result);
-    $max_id = $max_id_row[0] + 1;
-
-    $alter_sql = "ALTER TABLE brands AUTO_INCREMENT = $max_id";
+    $alter_sql = "ALTER TABLE brands AUTO_INCREMENT = 1";
     mysqli_query($conn, $alter_sql);
 
     // Redirect back to the brand list

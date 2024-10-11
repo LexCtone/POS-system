@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     vendorSelect.addEventListener('change', async (event) => {
       const vendorId = event.target.value;
       if (vendorId) {
-        const url = `/POS/get_vendor_details.php?id=${vendorId}`;
+        const url = `/get_vendor_details.php?id=${vendorId}`;
         console.log(`Fetching vendor details from: ${url}`);
 
         try {

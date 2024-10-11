@@ -15,77 +15,77 @@ try {
     if ($procedureExistsStmt->num_rows == 0) {
         // Create the procedure if it does not exist
         $create_procedure = "
-        CREATE PROCEDURE void_item(
-            IN p_sale_id INT,
-            IN p_product_code VARCHAR(50),
-            IN p_void_quantity INT,
-            IN p_void_by VARCHAR(50),
-            IN p_cancelled_by VARCHAR(50),
-            IN p_reason TEXT,
-            IN p_add_to_inventory BOOLEAN
-        )
-        BEGIN
-            DECLARE v_current_quantity INT;
-            DECLARE v_unit_price DECIMAL(10, 2);
-            DECLARE v_product_id INT;
-            DECLARE v_new_sale_id INT;
-            DECLARE v_invoice VARCHAR(50);
-            DECLARE v_cashier_name VARCHAR(255);
-            DECLARE v_description VARCHAR(255);  -- Added description
+     CREATE PROCEDURE void_item(
+    IN p_sale_id INT,
+    IN p_product_code VARCHAR(50),
+    IN p_void_quantity INT,
+    IN p_void_by VARCHAR(50),
+    IN p_cancelled_by VARCHAR(50),
+    IN p_reason TEXT,
+    IN p_add_to_inventory BOOLEAN
+)
+BEGIN
+    DECLARE v_current_quantity INT;
+    DECLARE v_unit_price DECIMAL(10, 2);
+    DECLARE v_product_id INT;
+    DECLARE v_new_sale_id INT;
+    DECLARE v_invoice VARCHAR(50);
+    DECLARE v_cashier_name VARCHAR(255);
+    DECLARE v_description VARCHAR(255);
 
-            START TRANSACTION;
+    START TRANSACTION;
 
-            -- Get the product_id based on the product_code
-            SELECT id INTO v_product_id
-            FROM products
-            WHERE Barcode = p_product_code;
+    -- Get the product_id based on the product_code with collation
+    SELECT id INTO v_product_id
+    FROM products
+    WHERE Barcode COLLATE utf8mb4_general_ci = p_product_code COLLATE utf8mb4_general_ci;
 
-            -- Get current sale information, including description, invoice, and cashier_name
-            SELECT quantity, price, invoice, cashier_name, description 
-            INTO v_current_quantity, v_unit_price, v_invoice, v_cashier_name, v_description
-            FROM sales
-            WHERE id = p_sale_id AND barcode = p_product_code;
+    -- Get current sale information, including description, invoice, and cashier_name with collation
+    SELECT quantity, price, invoice, cashier_name, description 
+    INTO v_current_quantity, v_unit_price, v_invoice, v_cashier_name, v_description
+    FROM sales
+    WHERE id = p_sale_id AND barcode COLLATE utf8mb4_general_ci = p_product_code COLLATE utf8mb4_general_ci;
 
-            -- Check if the void quantity exceeds the current quantity
-            IF p_void_quantity > v_current_quantity THEN
-                SIGNAL SQLSTATE '45000'
-                SET MESSAGE_TEXT = 'Void quantity exceeds current quantity';
-            END IF;
+    -- Check if the void quantity exceeds the current quantity
+    IF p_void_quantity > v_current_quantity THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Void quantity exceeds current quantity';
+    END IF;
 
-            -- Create a new sale entry for the voided items, including description, invoice, and cashier_name
-            INSERT INTO sales (barcode, description, quantity, price, total, status, sale_date, invoice, cashier_name)
-            SELECT barcode, v_description, p_void_quantity, price, p_void_quantity * price, 'voided', NOW(), v_invoice, v_cashier_name
-            FROM sales
-            WHERE id = p_sale_id;
+    -- Create a new sale entry for the voided items
+    INSERT INTO sales (barcode, description, quantity, price, total, status, sale_date, invoice, cashier_name)
+    SELECT barcode, v_description, p_void_quantity, price, p_void_quantity * price, 'voided', NOW(), v_invoice, v_cashier_name
+    FROM sales
+    WHERE id = p_sale_id;
 
-            SET v_new_sale_id = LAST_INSERT_ID();
+    SET v_new_sale_id = LAST_INSERT_ID();
 
-            -- Insert void entry into the item_voids table
-            INSERT INTO item_voids (sale_id, product_id, void_quantity, void_by, cancelled_by, reason, add_to_inventory)
-            VALUES (v_new_sale_id, v_product_id, p_void_quantity, p_void_by, p_cancelled_by, p_reason, p_add_to_inventory);
+    -- Insert void entry into the item_voids table
+    INSERT INTO item_voids (sale_id, product_id, void_quantity, void_by, cancelled_by, reason, add_to_inventory)
+    VALUES (v_new_sale_id, v_product_id, p_void_quantity, p_void_by, p_cancelled_by, p_reason, p_add_to_inventory);
 
-            -- Update original sale quantity and total
-            UPDATE sales
-            SET quantity = quantity - p_void_quantity,
-                total = (quantity - p_void_quantity) * price
-            WHERE id = p_sale_id AND barcode = p_product_code;
+    -- Update original sale quantity and total
+    UPDATE sales
+    SET quantity = quantity - p_void_quantity,
+        total = (quantity - p_void_quantity) * price
+    WHERE id = p_sale_id AND barcode COLLATE utf8mb4_general_ci = p_product_code COLLATE utf8mb4_general_ci;
 
-            -- Add back to inventory if requested
-            IF p_add_to_inventory THEN
-                UPDATE products
-                SET Quantity = Quantity + p_void_quantity
-                WHERE id = v_product_id;
-            END IF;
-                
-            -- Mark the original sale as voided if quantity is zero
-            IF (v_current_quantity - p_void_quantity) = 0 THEN
-                UPDATE sales
-                SET status = 'voided'
-                WHERE id = p_sale_id AND barcode = p_product_code;
-            END IF;
+    -- Add back to inventory if requested
+    IF p_add_to_inventory THEN
+        UPDATE products
+        SET Quantity = Quantity + p_void_quantity
+        WHERE id = v_product_id;
+    END IF;
+        
+    -- Mark the original sale as voided if quantity is zero
+    IF (v_current_quantity - p_void_quantity) = 0 THEN
+        UPDATE sales
+        SET status = 'voided'
+        WHERE id = p_sale_id AND barcode COLLATE utf8mb4_general_ci = p_product_code COLLATE utf8mb4_general_ci;
+    END IF;
 
-            COMMIT;
-        END
+    COMMIT;
+END
         ";
 
         $conn->query($create_procedure);

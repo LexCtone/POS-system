@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dailySalesBtn = document.getElementById('dailySalesBtn');    
     const modals = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.close-button');
-    const searchInput = document.querySelector('#search-barcode');3
+    const searchInput = document.querySelector('#search-barcode');
     const productTableBody = document.querySelector('#product-table-body');
     const clearCartBtn = document.querySelector('button.clear-btn:not(#searchProductBtn)');
     const headerTotalSalesElement = document.getElementById('headerTotalSales');
@@ -595,31 +595,33 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
         return;
     }
 
-    // Send the form data to the server
-    fetch('change_password.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `currentPassword=${encodeURIComponent(currentPassword)}&newPassword=${encodeURIComponent(newPassword)}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Password changed successfully. Please log in again.');
-            // Redirect to login page after the user clicks OK on the alert
-            window.location.href = '../login.php';
-        } else {
-            passwordError.textContent = data.message;
-            passwordError.style.display = 'block';
-        }
-    })
-    .catch(error => {
-        passwordError.textContent = 'An error occurred. Please try again.';
+fetch('change_password.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `currentPassword=${encodeURIComponent(currentPassword)}&newPassword=${encodeURIComponent(newPassword)}`
+})
+.then(response => response.json())
+.then(data => {
+    // Log the data to inspect the response
+    console.log(data); // Inspect the response
+
+    if (data.success) {
+        alert(data.message); // Alert the success message
+        window.location.href = '/Login.php'; // Redirect to the login page
+    } else {
+        passwordError.textContent = data.message; // Display the error message
         passwordError.style.display = 'block';
-        console.error('Error:', error);
-    });
+    }
+})
+.catch(error => {
+    passwordError.textContent = 'An error occurred. Please try again.'; // Handle the error
+    passwordError.style.display = 'block';
+    console.error('Error:', error);
 });
+});
+
 
     function openSettlePaymentModal() {
         const totalAmount = headerTotalSalesElement.textContent;
@@ -1160,56 +1162,60 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
         openModal(document.getElementById('cancelTransactionModal'));
     }
     
-    function handleCancelTransaction() {
-        const invoice = document.getElementById('transactionId').value;
-        const transactionTotal = parseFloat(document.getElementById('transactionTotal').value.replace('₱', ''));
-        const voidBy = document.getElementById('transactionVoidBy').value;
-        const cancelReason = document.getElementById('transactionCancelReason').value;
-    
-        if (!cancelReason.trim()) {
-            alert('Please provide a reason for cancellation.');
-            return;
-        }
-    
-        if (!invoice || !transactionTotal) {
-            alert('Invoice and total amount are required.');
-            return;
-        }
-    
-        if (!confirm(`Are you sure you want to cancel transaction ${invoice}?`)) {
-            return;
-        }
-    
-        const requestData = {
-            invoice: invoice,
-            totalAmount: transactionTotal,
-            voidBy: voidBy,
-            cancelReason: cancelReason
-        };
-    
-        fetch('void_transaction.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(`Transaction ${invoice} cancelled successfully.`);
-                closeModal('cancelTransactionModal');
-                filterSales();
-            } else {
-                throw new Error(data.message || 'Cancellation failed');
-            }
-        })
-        .catch(error => {
-            console.error('Error cancelling transaction:', error);
-            alert('An error occurred while cancelling the transaction. Please try again.');
-        });
+ function handleCancelTransaction() {
+    const invoice = document.getElementById('transactionId').value;
+    const transactionTotal = parseFloat(document.getElementById('transactionTotal').value.replace('₱', ''));
+    const voidBy = document.getElementById('transactionVoidBy').value;
+    const cancelReason = document.getElementById('transactionCancelReason').value;
+
+    if (!cancelReason.trim()) {
+        alert('Please provide a reason for cancellation.');
+        return;
     }
 
+    if (!invoice || !transactionTotal) {
+        alert('Invoice and total amount are required.');
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to cancel transaction ${invoice}?`)) {
+        return;
+    }
+
+    const requestData = {
+        invoice: invoice,
+        totalAmount: transactionTotal,
+        voidBy: voidBy,
+        cancelReason: cancelReason
+    };
+
+    fetch('void_transaction.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert(`Transaction ${invoice} cancelled successfully.`);
+            closeModal('cancelTransactionModal');
+            filterSales();
+        } else {
+            throw new Error(data.message || 'Cancellation failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error cancelling transaction:', error);
+        alert(`An error occurred while cancelling the transaction: ${error.message}. Please check the server logs for more details.`);
+    });
+}
     function updateSalesDisplay(invoice) {
         // Find the row with the cancelled invoice
         const row = document.querySelector(`tr[data-invoice="${invoice}"]`);

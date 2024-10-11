@@ -1,9 +1,35 @@
+<?php
+session_start(); // Start the session
+include '../connect.php'; // Database connection
+error_log(print_r($_SESSION, true)); // Log session variables
+
+
+// Check if the user is logged in and is a cashier
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'cashier') {
+    header("Location: access_denied.php");
+    exit();
+}
+
+
+// Fetch user information
+$userId = $_SESSION['user_id'];
+$stmt = $conn->prepare("SELECT username, role FROM accounts WHERE id = ?");
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+$stmt->close();
+
+// Store the username in the session
+$_SESSION['username'] = $user['username'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Right Sidebar Example</title>
+    <title>Cashier Dashboard</title>
     <link rel="stylesheet" href="Cashier_dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -13,13 +39,13 @@
     <div class="sidebar">
         <h3> 
             <ul class="menu">
-                <li><a href="Cashier_dashboard.php"><i class='fa fa-plus'></i>Dashboard</a></li>
-                <li><a href="transaction.php"><i class='fa fa-plus'></i> New Transaction</a></li>
+                <li><a href="Cashier_dashboard.php"><i class='fa fa-plus'></i> Dashboard</a></li>
+<li><a href="transaction.php"><i class='fa fa-plus'></i> New Transaction</a></li>
                 <li><a href="#"><i class='fa fa-percent'></i> Add Discount</a></li>
                 <li><a href="#"><i class='fa fa-chart-line'></i> Daily Sales</a></li>
                 <li><a href="#"><i class='fa fa-trash'></i> Clear Cart</a></li>
                 <li><a href="#"><i class='fa fa-cogs'></i> User Settings</a></li>
-                <li><a href="#"><i class='fa fa-sign-out'></i> Logout</a></li>
+                <li><a href="..\Login.php"><i class='fa fa-sign-out'></i> Logout</a></li>
             </ul>
         </h3>
     </div>

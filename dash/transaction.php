@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_log(print_r($_SESSION, true)); // Log session variables
 include '../connect.php';
 
 // Check if the user is logged in and is a cashier
@@ -7,6 +8,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'cashier') {
     header("Location: access_denied.php");
     exit();
 }
+
+// Debugging line
+error_log(print_r($_SESSION, true)); // This will log the session array to the server log
 
 // Fetch user information
 $userId = $_SESSION['user_id'];
@@ -226,7 +230,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
             <li><a href="#" id="addDiscountBtn"><i class='fa fa-percent'></i> Add Discount</a></li>
             <li><a href="#" id="dailySalesBtn"><i class='fa fa-chart-line'></i> Daily Sales</a></li>
             <li><a href="#" id="userSettingsBtn"><i class='fa fa-cogs'></i> User Settings</a></li>
-            <li><a href="..\login.php"><i class='fa fa-sign-out'></i> Logout</a></li>
+            <li><a href="..\Login.php"><i class='fa fa-sign-out'></i> Logout</a></li>
         </ul>
     </div>
 
@@ -574,7 +578,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
         </form>
     </div>
 </div>
-
 
 
     <!-- Footer --> 

@@ -64,7 +64,7 @@ if (isset($_GET['archiveid'])) {
         // Get the current admin who is archiving the product
         $archived_by = isset($_SESSION['username']) ? $_SESSION['username'] : 'Unknown';
 
-        // Insert the product into archived_products
+        // Insert the product into archived_products (ID is preserved)
         $archived_product_sql = "INSERT INTO archived_products (id, Barcode, reference, Description, Brand, Category, Price, Quantity, Vendor, archived_by) 
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $archived_stmt = $conn->prepare($archived_product_sql);
@@ -96,6 +96,27 @@ if (isset($_GET['archiveid'])) {
             throw new Exception("Error moving stock adjustments: " . $move_adjustments_stmt->error);
         }
 
+    
+        
+    // Function to rearrange IDs in the products table
+    function rearrangeProductIDs($conn) {
+    // Fetch all current product IDs, ordered by ID
+    $products_query = "SELECT id FROM products ORDER BY id";
+    $products_result = $conn->query($products_query);
+    $new_id = 1;
+
+    while ($product = $products_result->fetch_assoc()) {
+        $update_query = "UPDATE products SET id = ? WHERE id = ?";
+        $update_stmt = $conn->prepare($update_query);
+        $update_stmt->bind_param('ii', $new_id, $product['id']);
+        $update_stmt->execute();
+        $new_id++;
+    }
+
+    // Reset auto-increment to the next available ID
+    $conn->query("ALTER TABLE products AUTO_INCREMENT = $new_id");
+}
+
         // Delete the stock adjustment records for this product
         $delete_adjustments_sql = "DELETE FROM stock_adjustment WHERE product_id = ?";
         $delete_adjustments_stmt = $conn->prepare($delete_adjustments_sql);
@@ -113,6 +134,9 @@ if (isset($_GET['archiveid'])) {
         if (!$delete_stmt->execute()) {
             throw new Exception("Error deleting product: " . $delete_stmt->error);
         }
+        
+        rearrangeProductIDs($conn);
+
 
         // Log the archiving action
         $log_sql = "INSERT INTO product_logs (action, product_barcode, performed_by) VALUES ('Archived', ?, ?)";
@@ -140,8 +164,70 @@ if (isset($_GET['archiveid'])) {
     }
 }
 
+// Handle restore request
+if (isset($_GET['restoreid'])) {
+    $id_to_restore = $_GET['restoreid'];
 
+    // Start transaction
+    $conn->begin_transaction();
 
+    try {
+        // Fetch product details from the archived_products table without ID
+        $archived_product_query = "SELECT Barcode, Description, Brand, Category, Price, Quantity, Vendor FROM archived_products WHERE id = ?";
+        $stmt = $conn->prepare($archived_product_query);
+        $stmt->bind_param('i', $id_to_restore);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $archived_product = $result->fetch_assoc();
+
+        if (!$archived_product) {
+            throw new Exception("Archived product not found for restoring.");
+        }
+
+        // Insert the product back into products table with a new ID
+        $restore_product_sql = "INSERT INTO products (Barcode, Description, Brand, Category, Price, Quantity, Vendor) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $restore_stmt = $conn->prepare($restore_product_sql);
+        $restore_stmt->bind_param(
+            'ssssdis',
+            $archived_product['Barcode'],
+            $archived_product['Description'],
+            $archived_product['Brand'],
+            $archived_product['Category'],
+            $archived_product['Price'],
+            $archived_product['Quantity'],
+            $archived_product['Vendor']
+        );
+
+        if (!$restore_stmt->execute()) {
+            throw new Exception("Error restoring product: " . $restore_stmt->error);
+        }
+
+        // Delete the product from archived_products after successful restore
+        $delete_archived_sql = "DELETE FROM archived_products WHERE id = ?";
+        $delete_archived_stmt = $conn->prepare($delete_archived_sql);
+        $delete_archived_stmt->bind_param('i', $id_to_restore);
+
+        if (!$delete_archived_stmt->execute()) {
+            throw new Exception("Error deleting archived product: " . $delete_archived_stmt->error);
+        }
+
+        // Commit transaction
+        $conn->commit();
+
+        $_SESSION['success_message'] = "Product restored successfully.";
+        header('Location: archived_products.php'); // Adjust the redirect location as needed
+        exit();
+
+    } catch (Exception $e) {
+        // Rollback transaction on error
+        $conn->rollback();
+        error_log("Error in restoring product: " . $e->getMessage());
+        $_SESSION['error_message'] = "Error: " . $e->getMessage();
+        header('Location: archived_products.php');
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -152,7 +238,9 @@ if (isset($_GET['archiveid'])) {
     <title>Product List</title>
     <link rel="stylesheet" type="text/css" href="CSS/Product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon"> <!-- Adjust path if necessary -->
     <script type="text/javascript" src="JAVASCRIPT/Product.js" defer></script>
+    
 </head>
 <body>
     <nav class="sidebar">
