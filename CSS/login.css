@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
+  font-size: 15px;
   background-color: #f4f4f4;
   background-image: url('BG.png'); 
 }
@@ -58,7 +59,24 @@ body {
   border-radius: 4px;
 }
 
-
 .submit{
  margin-top: 15px;
+}
+
+.error-message {
+    background-color: #FFCCCB;
+    border: 1px solid #FF0000;
+    color: #FF0000;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.success-message {
+    background-color: #90EE90;
+    border: 1px solid #008000;
+    color: #008000;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: bold;
 }

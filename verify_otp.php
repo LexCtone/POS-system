@@ -1,50 +1,70 @@
 <?php
-session_start();
-include('connect.php'); // Database connection
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Check if user is logged in and OTP was generated
-if (!isset($_SESSION['pending_user_id']) || !isset($_SESSION['pending_username'])) {
-    header('Location: Login.php'); // Redirect to login if session is missing
+// Start session
+session_start();
+include('connect.php');
+
+if (!isset($_SESSION['user_id'])) {
+    error_log("Unauthorized access attempt to verify login OTP");
+    header('Location: Login.php');
     exit();
 }
 
 $error_message = '';
 
+// Check for OTP submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $entered_otp = trim($_POST['otp']);
-    $user_id = $_SESSION['pending_user_id'];
+    $user_id = $_SESSION['user_id'];
 
-    // Query to check if OTP is valid and not expired
-    $query = "SELECT * FROM login_otps WHERE user_id = ? AND otp = ? AND expires_at > NOW()";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('is', $user_id, $entered_otp);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    error_log("Verifying login OTP for User ID: " . $user_id);
 
-    if ($result->num_rows > 0) {
-        // OTP is valid; clear OTPs and redirect based on role
-        $conn->query("DELETE FROM login_otps WHERE user_id = $user_id"); // Clear OTPs
+    $query = "SELECT * FROM login_otps WHERE user_id = ? AND BINARY otp = ? AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1";
 
-        // Redirect based on role
-        switch ($_SESSION['pending_role']) {
-            case 'admin':
-                header('Location: Dashboard.php');
-                break;
-            case 'cashier':
-                header('Location: dash/Cashier_dashboard.php');
-                break;
-            default:
-                $error_message = 'Invalid role detected. Please contact support.';
-                break;
+    if ($stmt = $conn->prepare($query)) {
+        $stmt->bind_param('is', $user_id, $entered_otp);
+
+        if (!$stmt->execute()) {
+            error_log("Query execution failed: " . $stmt->error);
+            $error_message = "An error occurred while verifying OTP. Please try again.";
+        } else {
+            $result = $stmt->get_result();
+            error_log("Query result rows: " . $result->num_rows);
+
+            if ($result->num_rows > 0) {
+                // OTP is valid
+                $_SESSION['authenticated'] = true;
+
+                // Redirect to the dashboard based on role
+                $role_query = "SELECT role FROM accounts WHERE id = ?";
+                $role_stmt = $conn->prepare($role_query);
+                $role_stmt->bind_param('i', $user_id);
+                $role_stmt->execute();
+                $role_result = $role_stmt->get_result();
+                $user_role = $role_result->fetch_assoc()['role'];
+
+                if ($user_role === 'admin') {
+                    header('Location: Dashboard.php');
+                } elseif ($user_role === 'cashier') {
+                    header('Location: dash/Cashier_dashboard.php');
+                } else {
+                    $error_message = "Unknown user role. Please contact an administrator.";
+                    error_log("Unknown user role: " . $user_role);
+                }
+                exit();
+            } else {
+                $error_message = "Invalid OTP entered for User ID: " . $user_id;
+                error_log("Invalid OTP entered for user ID: " . $user_id . ", Entered OTP: " . $entered_otp);
+            }
         }
-        exit();
     } else {
-        // OTP is invalid or expired
-        $error_message = "Invalid or expired OTP. Please try again.";
+        $error_message = "Failed to prepare SQL statement.";
+        error_log("Failed to prepare query: " . $conn->error);
     }
-
-    $stmt->close();
-    $conn->close();
 }
 ?>
 
@@ -52,33 +72,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Verify OTP</title>
-    <style>
-        .container {
-            width: 300px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .error {
-            color: red;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Login OTP</title>
+    <link rel="stylesheet" href="CSS/verify_otp.css">
 </head>
-<body>
+<body id="loginBody">
     <div class="container">
-        <h2>Verify OTP</h2>
+        <h2>Verify Login OTP</h2>
         <?php if (!empty($error_message)) { ?>
-            <div class="error">
+            <div class="error-message">
                 <p><?= htmlspecialchars($error_message) ?></p>
             </div>
         <?php } ?>
         <form action="verify_otp.php" method="POST">
-            <label for="otp">Enter OTP:</label>
-            <input type="text" name="otp" required>
-            <button type="submit">Verify OTP</button>
+            <input type="text" name="otp" placeholder="Enter OTP" required><br>
+            <input class="submit" type="submit" value="Verify OTP">
         </form>
+        <p><a href="Login.php">Back to Login</a></p>
     </div>
 </body>
 </html>

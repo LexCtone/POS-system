@@ -426,3 +426,53 @@
 
 [2024-10-11 10:42:40] Executed sale insert for barcode: 10000001
 [2024-10-11 10:42:40] Executed product update for barcode: 10000001
+[2024-10-13 00:53:40] Received data: Array
+(
+    [invoice] => 20241012999992451
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => vape 10k puffs
+                    [price] => 25
+                    [quantity] => 50
+                    [discount_amount] => 0
+                    [total] => 1250
+                )
+
+        )
+
+    [totalAmount] => 1250
+    [paymentAmount] => 1250
+    [change] => 0
+)
+
+[2024-10-13 00:53:40] Executed sale insert for barcode: 10000001
+[2024-10-13 00:53:40] Executed product update for barcode: 10000001
+[2024-10-14 20:23:36] Received data: Array
+(
+    [invoice] => 20241014580141134
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-14 20:23:36] Executed sale insert for barcode: 10000001
+[2024-10-14 20:23:36] Executed product update for barcode: 10000001
