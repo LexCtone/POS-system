@@ -11,7 +11,9 @@ $key = base64_decode($env['ENCRYPTION_KEY']);
 // Check if the form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
+    $name = $_POST['name']; // Fetch the name field
     $username = $_POST['username'];
+    $email = $_POST['email']; // Fetch the email field
     $password = $_POST['new-password']; // Make sure this matches your form field name
     $role = $_POST['role'];
 
@@ -30,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "IV (Hex): " . htmlspecialchars($iv_hex) . "<br>";
 
     // Prepare and bind the SQL statement
-    $stmt = $conn->prepare("INSERT INTO accounts (username, password, iv, role, status) VALUES (?, ?, ?, ?, 1)");
-    $stmt->bind_param("ssss", $username, $encryptedPassword, $iv_hex, $role);
+    $stmt = $conn->prepare("INSERT INTO accounts (name, username, email, password, iv, role, status) VALUES (?, ?, ?, ?, ?, ?, 1)");
+    $stmt->bind_param("ssssss", $name, $username, $email, $encryptedPassword, $iv_hex, $role);
 
     // Execute the statement
     if ($stmt->execute()) {

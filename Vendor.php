@@ -4,19 +4,20 @@ include 'connect.php'; // Ensure this path is correct and the file exists
 
 
 // Fetch the username of the logged-in admin
-$admin_username = "ADMINISTRATOR"; // Default value
+$admin_name = "ADMINISTRATOR"; // Default value
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
-    $query_admin = "SELECT username FROM accounts WHERE id = ?";
+    $query_admin = "SELECT name FROM accounts WHERE id = ?";
     $stmt = $conn->prepare($query_admin);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($row = $result->fetch_assoc()) {
-        $admin_username = $row['username'];
+        $admin_name = $row['name'];
     }
     $stmt->close();
 }
+
 // Handle form submission for adding a new vendor
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vendor-name'])) {
     $vendorName = $_POST['vendor-name'];
@@ -117,7 +118,7 @@ mysqli_close($conn);
 <nav class="sidebar">
     <header>
             <img src="profile.png" alt="profile"/>
-            <br><?php echo htmlspecialchars($admin_username); ?>
+            <br><?php echo htmlspecialchars($admin_name); ?>
           </header>
           <ul>
               <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>

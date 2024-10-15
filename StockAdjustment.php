@@ -1,8 +1,23 @@
 <?php
 // StockAdjustment.php
-
 session_start();
 include 'connect.php';
+
+// Fetch the username of the logged-in admin
+$admin_name = "ADMINISTRATOR"; // Default value
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $query_admin = "SELECT name FROM accounts WHERE id = ?";
+    $stmt = $conn->prepare($query_admin);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $admin_name = $row['name'];
+    }
+    $stmt->close();
+}
+
 
 function logError($message) {
     error_log(date('[Y-m-d H:i:s] ') . "StockAdjustment.php: " . $message . "\n", 3, "error.log");
@@ -23,6 +38,7 @@ if (!$result) {
     logError("Query error: " . $conn->error);
     die("Error: " . $conn->error);
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -50,7 +66,7 @@ if (!$result) {
     <nav class="sidebar">
         <header>
             <img src="profile.png" alt="profile"/>
-            <br>ADMINISTRATOR
+            <br><?php echo htmlspecialchars($admin_name); ?>
         </header>
         <ul>
             <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>

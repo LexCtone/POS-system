@@ -3,16 +3,16 @@ session_start();
 include 'connect.php';
 
 // Fetch the username of the logged-in admin
-$admin_username = "ADMINISTRATOR";
+$admin_name = "ADMINISTRATOR"; // Default value
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
-    $query_admin = "SELECT username FROM accounts WHERE id = ?";
+    $query_admin = "SELECT name FROM accounts WHERE id = ?";
     $stmt = $conn->prepare($query_admin);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($row = $result->fetch_assoc()) {
-        $admin_username = $row['username'];
+        $admin_name = $row['name'];
     }
     $stmt->close();
 }
@@ -246,8 +246,8 @@ if (isset($_GET['restoreid'])) {
     <nav class="sidebar">
         <header>
             <img src="profile.png" alt="profile"/>
-            <br><?php echo htmlspecialchars($admin_username); ?>
-        </header>
+           <br><?php echo htmlspecialchars($admin_name); ?>
+            </header>
         <ul>
             <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
             <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>

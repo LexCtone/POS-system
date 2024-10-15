@@ -4,16 +4,16 @@ session_start();
 include 'connect.php'; // Ensure this path is correct and the file exists
 
 // Fetch the username of the logged-in admin
-$admin_username = "ADMINISTRATOR"; // Default value
+$admin_name = "ADMINISTRATOR"; // Default value
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
-    $query_admin = "SELECT username FROM accounts WHERE id = ?";
+    $query_admin = "SELECT name FROM accounts WHERE id = ?";
     $stmt = $conn->prepare($query_admin);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($row = $result->fetch_assoc()) {
-        $admin_username = $row['username'];
+        $admin_name = $row['name'];
     }
     $stmt->close();
 }?>
@@ -31,11 +31,10 @@ if (isset($_SESSION['user_id'])) {
   <header>
     <h2 class="Header">Account</h2>
   </header>
-  
   <nav class="sidebar">
     <header>
       <img src="profile.png" alt="Profile"/>
-      <br><?php echo htmlspecialchars($admin_username); ?>
+      <br><?php echo htmlspecialchars($admin_name); ?>
       </header>
     <ul>
       <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
@@ -49,7 +48,6 @@ if (isset($_SESSION['user_id'])) {
       <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
   </nav>
-
   <div class="container">
     <div class="account-box">
       <div class="button-container">
@@ -61,8 +59,16 @@ if (isset($_SESSION['user_id'])) {
       <div class="form">
       <form id="password-form" action="save_account.php" method="POST">
   <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required>
+  </div>
+  <div class="form-group">
     <label for="username">Username</label>
     <input type="text" id="username" name="username" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="text" id="email" name="email" required>
   </div>
   <div class="form-group">
     <label for="new-password">Password</label>
@@ -86,8 +92,6 @@ if (isset($_SESSION['user_id'])) {
     <button type="button" class="cancel-btn" onclick="location.href='UserSettings.php'">Cancel</button>
   </div>
 </form>
-
-
   <script>
     function validatePasswords() {
       var newPassword = document.getElementById('new-password').value;

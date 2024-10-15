@@ -9,7 +9,7 @@ $env = require __DIR__ . '/.env.php'; // Adjust the path as needed
 $key = base64_decode($env['ENCRYPTION_KEY']); // Decode the encryption key
 
 // SQL query to fetch cashier accounts
-$sql = "SELECT id, username, password, iv, role, status FROM accounts WHERE role = 'Cashier'";
+$sql = "SELECT id, name, username, password, iv, role, status FROM accounts WHERE role = 'Cashier'";
 $result = $conn->query($sql);
 
 // Array to store results
@@ -25,6 +25,7 @@ if ($result->num_rows > 0) {
         // Add to data array with the decrypted password
         $data[] = [
             'id' => $row['id'],
+            'name' => $row['name'],
             'username' => $row['username'],
             'password' => $decryptedPassword, // Use decrypted password
             'role' => $row['role'],

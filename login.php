@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Check if the account is locked
             if ($user['is_locked'] == 1) {
-                $lockout_duration = 179; // 2:59 in seconds
+                $lockout_duration = 10; // 2:59 in seconds
                 if (strtotime($user['lockout_time']) + $lockout_duration > time()) {
                     $remaining_time = (strtotime($user['lockout_time']) + $lockout_duration) - time();
                     $error_message = 'Your account is locked due to multiple failed login attempts. Please wait before trying again.';
@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $lockStmt->bind_param('i', $user['id']);
                         $lockStmt->execute();
 
-                        $remaining_time = 179; // 2:59 in seconds
+                        $remaining_time = 10; // 2:59 in seconds
                         $error_message = 'Your account is locked due to multiple failed login attempts. Please wait before trying again.';
                     } else {
                         $error_message = 'Invalid password or role. Please try again.';
@@ -180,14 +180,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body id="loginBody">
     <div class="container">
         <img src="logo.jpg" alt="LOGO">
-        <?php if (!empty($error_message)) { ?>
-            <div class="error">
-                <p><?= htmlspecialchars($error_message) ?></p>
-                <?php if ($remaining_time > 0) { ?>
-                    <p id="countdown" aria-live="polite"></p>
-                <?php } ?>
-            </div>
+            <?php if (!empty($error_message)) { ?>
+        <div class="error" id="error-message">
+            <p><?= htmlspecialchars($error_message) ?></p>
+        </div>
         <?php } ?>
+            <?php if ($remaining_time > 0) { ?>
+                <p id="countdown" aria-live="polite"></p>
+            <?php } ?>
         <form action="Login.php" method="POST">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
             <input type="text" name="username" placeholder="Username" required><br>
@@ -199,10 +199,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     const countdownElement = document.getElementById('countdown');
+    const errorMessage = document.getElementById('error-message');
+
     if (countdownElement) {
         let totalSeconds = <?= $remaining_time ?>;
 
         function updateCountdown() {
+            if (errorMessage) {
+                errorMessage.style.display = 'none'; // Hide the error message when countdown starts
+            }
+
             if (totalSeconds <= 0) {
                 countdownElement.textContent = 'You can now log in again.';
                 countdownElement.className = 'success-message';
