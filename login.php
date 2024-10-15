@@ -3,6 +3,13 @@ session_start();
 $error_message = '';
 $remaining_time = 0;
 
+// Check if the password reset was successful
+if (isset($_POST['password_reset_success']) && $_POST['password_reset_success'] == 1) {
+    $success_message = 'Password updated successfully! You can now log in.';
+    unset($_SESSION['password_reset_success']); // Clear the success flag
+}
+
+
 // Generate CSRF token if it doesn't exist
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -141,8 +148,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
-        } else {
-            $error_message = 'Invalid username or account is inactive. Please try again or contact an administrator.';
+            // Display custom error if it's a password reset login attempt
+            if (isset($success_message)) {
+                $error_message = $success_message;
+            } else {
+                $error_message = 'Invalid username or password. Please try again or contact an administrator.';
+            }
         }
 
         $stmt->close();
@@ -150,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
