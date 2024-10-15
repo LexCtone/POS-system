@@ -111,36 +111,58 @@ button i {
   font-size: 1.2em;
 }
 
-/* Table styling */
+.content {
+  margin-left: 363px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-right: 5px;
+}
+
+/* Container styling */
 .table-container {
-  width: 80%; /* Reduce width slightly */
-  margin-right: 5px; /* Reduce the space between the two columns */
-  border: 1px solid #000;
-  box-sizing: border-box;
-  margin-left: 365px;
+  height: 600px; /* Set the height of the table container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ddd; /* Optional: border around the container */
+  box-sizing: border-box; 
+  border-radius: 4px;
+  margin-top: 25px;/* Include padding and border in the element’s total width and height */
 }
-
-.table-container table {
+#brand-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.table-container th, .table-container td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-  font-size: 18px;
+#brand-table th, 
+#brand-table td {
+  padding: 12px 15px;
+  text-align: center;
 }
 
-.table-container th {
+#brand-table th {
   background-color: #1C75A6;
   color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
-.table-container tr:nth-child(even) {
-  background-color: #f2f2f2;
+#brand-table tr:nth-child(even) {
+  background-color: #f8f8f8;
 }
 
+#brand-table tr:hover {
+  background-color: #e8f4f8;
+  transition: background-color 0.3s ease;
+}
+
+#brand-table td {
+  border-bottom: 1px solid #e0e0e0;
+}
 .modal {
   display: none;
   position: fixed;

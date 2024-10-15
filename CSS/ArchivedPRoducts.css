@@ -167,41 +167,51 @@ body {
   margin-top: 20px;
 }
 
-/* Left Column: Table */
+/* Container styling */
 .table-container {
   width: 100%;
-  margin-right: 5px;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  max-height: 600px; /* Adjust this value as needed */
-  overflow-y: auto;
+  height: 630px; /* Set the height of the table container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ddd; /* Optional: border around the container */
+  box-sizing: border-box; 
+  border-radius: 4px;
+  margin-top: 25px;/* Include padding and border in the element’s total width and height */
 }
-
-.table-container table {
+#product-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.table-container thead {
+#product-table th, 
+#product-table td {
+  padding: 12px 15px;
+  text-align: center;
+}
+
+#product-table th {
+  background-color: #1C75A6;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
   position: sticky;
   top: 0;
   z-index: 1;
-  background-color: #1C75A6;
 }
 
-.table-container th, .table-container td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
+#product-table tr:nth-child(even) {
+  background-color: #f8f8f8;
 }
 
-.table-container th {
-  background-color: #1C75A6;
-  color: white;
+#product-table tr:hover {
+  background-color: #e8f4f8;
+  transition: background-color 0.3s ease;
 }
 
-.table-container tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+#product-table td {
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .total-sales {

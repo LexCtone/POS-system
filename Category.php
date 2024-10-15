@@ -47,14 +47,14 @@ if (isset($_SESSION['user_id'])) {
       </nav>    
       <header>    
       <h2 class="ProductHeader">Category List  
-  <input id="search-input" type="text" placeholder="Search...">
-  <button id="search-button"><i class="fas fa-search"></i></button>
-  <button id="add-product-button"><i class='fas fa-plus'></i></button>
-</h2>
-   
+        <input id="search-input" type="text" placeholder="Search...">
+        <button id="search-button"><i class="fas fa-search"></i></button>
+        <button id="add-product-button"><i class='fas fa-plus'></i></button>
+     </h2>
       </header>
+      <div class="content">
     <div class="table-container">
-        <table class="table" id="product-table">
+        <table class="table" id="category-table">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -103,7 +103,7 @@ if ($result) {
         $category = $row['Category'];
 
         echo '<tr>
-        <th scope="row">'.$id.'</th>
+        <td scope="row">'.$id.'</td>
         <td>'.$category.'</td>
         <td>
             <button class="button update-button" data-id="'.$id.'" data-category="'.htmlspecialchars($category, ENT_QUOTES, 'UTF-8').'"><a href="#" class="text-light">Update</a></button>

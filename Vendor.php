@@ -138,6 +138,7 @@ mysqli_close($conn);
             <button id="add-vendor-button"><i class='fas fa-plus'></i></button>
         </h2>    
     </header>
+    <div class="content">
     <div class="table-container">
         <table class="table" id="vendor-table">
             <thead>
@@ -156,7 +157,7 @@ mysqli_close($conn);
                 <?php if ($result): ?>
                     <?php while ($row = mysqli_fetch_assoc($result)): ?>
                         <tr>
-                            <th scope="row"><?= htmlspecialchars($row['id'])  ?></th>
+                            <td scope="row"><?= htmlspecialchars($row['id'])  ?></td>
                             <td><?= htmlspecialchars($row['vendor']) ?></td>
                             <td><?= htmlspecialchars($row['contact']) ?></td>
                             <td><?= htmlspecialchars($row['telephone']) ?></td>

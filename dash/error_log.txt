@@ -476,3 +476,53 @@
 
 [2024-10-14 20:23:36] Executed sale insert for barcode: 10000001
 [2024-10-14 20:23:36] Executed product update for barcode: 10000001
+[2024-10-16 00:28:34] Received data: Array
+(
+    [invoice] => 20241015707430044
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-16 00:28:34] Executed sale insert for barcode: 10000001
+[2024-10-16 00:28:34] Executed product update for barcode: 10000001
+[2024-10-16 00:29:00] Received data: Array
+(
+    [invoice] => 20241015719544704
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 10000002
+                    [description] => Acrylic Thinner Bottle
+                    [price] => 45
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 45
+                )
+
+        )
+
+    [totalAmount] => 45
+    [paymentAmount] => 45
+    [change] => 0
+)
+
+[2024-10-16 00:29:00] Executed sale insert for barcode: 10000002
+[2024-10-16 00:29:00] Executed product update for barcode: 10000002

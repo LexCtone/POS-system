@@ -19,7 +19,7 @@ function loadData() {
 }
 
 function updateTable(data) {
-  const tableBody = document.querySelector('#salesTable tbody');
+  const tableBody = document.querySelector('#sales-table tbody');
   tableBody.innerHTML = '';
   if (data.length === 0) {
     const row = tableBody.insertRow();

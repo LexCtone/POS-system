@@ -65,7 +65,7 @@
 </div>
 <div class="content">
   <div class="table-container">
-    <table id="recordsTable">
+    <table class="table" id="records-table">
       <thead>
         <tr id="tableHeader">
           <!-- Table headers will be dynamically updated -->

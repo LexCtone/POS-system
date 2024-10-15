@@ -89,7 +89,7 @@ if (isset($_SESSION['user_id'])) {
       <div class="content">
         <!-- Left Column: Table -->
         <div class="table-container">
-          <table id="salesTable">
+          <table class="table" id="sales-table">
             <thead>
               <tr>
                 <th>#</th>

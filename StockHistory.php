@@ -64,8 +64,8 @@
   </div>
       <div class="content">
         <div class="table-container">
-        <table>
-            <thead>
+        <table class="table" id="stock-table">
+          <thead>
               <tr>
                 <th>#</th>
                 <th>BARCODE</th>

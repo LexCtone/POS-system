@@ -84,7 +84,7 @@ if (isset($_SESSION['user_id'])) {
 
       <div class="content">
         <div class="table-container">
-          <table>
+          <table class="table" id="product-table">
             <thead>
               <tr>
                 <th>#</th>

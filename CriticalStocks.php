@@ -66,10 +66,9 @@ if (!$result) {
     </div>
 </div>
 <div class="content">
-      <!-- Left Column: Table -->
       <div class="table-container">
-        <table>
-          <thead>
+       <table class="table" id="critical-table">
+        <thead>
             <tr>
               <th>#</th>
               <th>BARCODE</th>

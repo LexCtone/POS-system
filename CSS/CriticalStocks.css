@@ -116,53 +116,52 @@ body {
 
 .content {
   display: flex;
-  margin-top: 20px;
 }
 
-/* Updated table styles for scrollability */
+/* Container styling */
 .table-container {
+  height: 670px; /* Set the height of the table container */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border: 1px solid #ddd; /* Optional: border around the container */
+  box-sizing: border-box; 
+  border-radius: 4px;
+  margin-top: 25px;/* Include padding and border in the element’s total width and height */
+}
+#critical-table {
   width: 100%;
-  max-height: calc(100vh - 300px); /* Adjust this value as needed */
-  overflow-y: auto;
-  border: 1px solid #ccc;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.table-container table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
+#critical-table th, 
+#critical-table td {
+  padding: 12px 15px;
+  text-align: center;
 }
 
-.table-container thead {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+#critical-table th {
   background-color: #1C75A6;
   color: white;
-}
-
-.table-container th {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
   position: sticky;
   top: 0;
-  background-color: #1C75A6;
-  color: white;
   z-index: 1;
 }
 
-.table-container th, 
-.table-container td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: left;
-  width: 20%; /* Adjust based on the number of columns */
-  box-sizing: border-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+#critical-table tr:nth-child(even) {
+  background-color: #f8f8f8;
 }
 
-.table-container tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+#critical-table tr:hover {
+  background-color: #e8f4f8;
+  transition: background-color 0.3s ease;
+}
+
+#critical-table td {
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .total-sales {

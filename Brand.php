@@ -53,6 +53,7 @@ if (isset($_SESSION['user_id'])) {
         <button id="add-brand-button"><i class='fas fa-plus'></i></button>
       </h2>
       </header>
+      <div class="content">
     <div class="table-container">
         <table class="table" id="brand-table">
           <thead>
@@ -100,7 +101,7 @@ if ($result) {
         $brand = $row['Brand'];
 
         echo '<tr>
-        <th scope="row">'.$id.'</th>
+        <td scope="row">'.$id.'</td>
         <td>'.$brand.'</td>
         <td>
             <button class="button update-button" data-id="'.$id.'" data-brand="'.htmlspecialchars($brand, ENT_QUOTES, 'UTF-8').'"><a href="#" class="text-light">Update</a></button>

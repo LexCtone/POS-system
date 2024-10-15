@@ -83,7 +83,7 @@
     </div>
       <div class="content">
         <div class="table-container">
-          <table>
+          <table class="table" id="sales-table">
             <thead>
               <tr>
                 <th>#</th>

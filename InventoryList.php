@@ -48,9 +48,8 @@
     </div>
 </div>
 <div class="content">
-    <!-- Left Column: Table -->
     <div class="table-container">
-        <table>
+         <table class="table" id="inventory-table">
             <thead>
                 <tr>
                     <th>#</th>

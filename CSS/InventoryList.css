@@ -117,60 +117,52 @@ body {
 /* Container for the two columns */
 .content {
   display: flex;
-  margin-top: 20px;
 }
 
-
-/* Left Column: Scrollable Table */
+/* Container styling */
 .table-container {
-  width: 100%; /* Keep full width */
-  max-height: calc(100vh - 300px); /* Adjust height based on available viewport */
+  height: 670px; /* Set the height of the table container */
   overflow-y: auto; /* Enable vertical scrolling */
-  border: 1px solid #ccc; /* Table border */
-  box-sizing: border-box;
+  border: 1px solid #ddd; /* Optional: border around the container */
+  box-sizing: border-box; 
+  border-radius: 4px;
+  margin-top: 25px;/* Include padding and border in the element’s total width and height */
 }
-
-/* Table Styles */
-.table-container table {
+#inventory-table {
   width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; /* Ensures table width consistency */
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.table-container thead {
-  position: sticky; /* Keep the header fixed at the top */
-  top: 0;
-  z-index: 2;
-  background-color: #1C75A6; /* Header background color */
-  color: white; /* Header text color */
+#inventory-table th, 
+#inventory-table td {
+  padding: 12px 15px;
+  text-align: center;
 }
 
-/* Sticky header */
-.table-container th {
-  position: sticky; /* Sticky for table headers */
+#inventory-table th {
+  background-color: #1C75A6;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  position: sticky;
   top: 0;
-  background-color: #1C75A6; /* Header background color */
-  color: white; /* Text color */
   z-index: 1;
-  padding: 10px;
 }
 
-/* Table cells and row styles */
-.table-container th, 
-.table-container td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: left;
-  width: 20%; /* Adjust based on the number of columns */
-  box-sizing: border-box;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Truncate overflowing text */
-  white-space: nowrap; /* Prevent text from wrapping */
+#inventory-table tr:nth-child(even) {
+  background-color: #f8f8f8;
 }
 
-/* Alternating row colors for readability */
-.table-container tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+#inventory-table tr:hover {
+  background-color: #e8f4f8;
+  transition: background-color 0.3s ease;
+}
+
+#inventory-table td {
+  border-bottom: 1px solid #e0e0e0;
 }
 
 /* Total Sales Section */
