@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadDataButton.addEventListener('click', loadData);
   printPreviewButton.addEventListener('click', printPreview);
-
+  
   const today = new Date();
   const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
   startDateInput.value = formatDate(thirtyDaysAgo);
@@ -119,60 +119,16 @@ function updateSalesInfo(totalActiveSales, totalVoidedSales, voidedTransactionsC
 }
 
 function printPreview() {
-  const printWindow = window.open('', '_blank');
-  
-  const styles = Array.from(document.styleSheets)
-    .map(styleSheet => {
-      try {
-        return Array.from(styleSheet.cssRules)
-          .map(rule => rule.cssText)
-          .join('\n');
-      } catch (e) {
-        console.log('Access to stylesheet blocked by CORS policy');
-        return '';
-      }
-    })
-    .join('\n');
+  // Add the print-mode class to apply print styles
+  document.body.classList.add('print-mode');
 
-  const tableContent = document.querySelector('.table-container').innerHTML;
-  const salesInfo = document.querySelector('.sales-info').innerHTML;
+  // Trigger the print dialog
+  window.print();
 
-  const printContent = `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Sales History Print Preview</title>
-      <style>
-        ${styles}
-        body { font-family: Arial, sans-serif; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .voided-transaction { background-color: #ffcccc; }
-        @media print {
-          .no-print { display: none; }
-          body { -webkit-print-color-adjust: exact; }
-        }
-      </style>
-    </head>
-    <body>
-      <h1>Sales History</h1>
-      ${salesInfo}
-      ${tableContent}
-      <div class="no-print">
-        <button onclick="window.print()">Print</button>
-        <button onclick="window.close()">Close</button>
-      </div>
-    </body>
-    </html>
-  `;
-
-  printWindow.document.open();
-  printWindow.document.write(printContent);
-  printWindow.document.close();
+  // Remove the print-mode class to restore the normal view
+  document.body.classList.remove('print-mode');
 }
+
 
 function formatDate(date) {
   const year = date.getFullYear();

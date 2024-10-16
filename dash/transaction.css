@@ -4,6 +4,46 @@
     padding: 0;
     box-sizing: border-box;
 }
+.transaction-content {
+    display: flex;
+}
+
+.transaction-info {
+    width: 40%; /* Adjust width as needed */
+}
+
+.box-container {
+    display: flex;
+    flex-direction: row; /* Stack boxes vertically if needed */
+    width: 35%; /* Adjust width as needed */
+    gap: 20px;
+}
+
+.box {
+    width: 100%;
+    height: 100px; /* Adjust height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Space between boxes */
+}
+
+.orange {
+    background-color: orange;
+}
+
+.yellow {
+    background-color: yellow;
+    color: black; /* For better contrast */
+}
+
+.green {
+    background-color: green;
+}
 
 body {
     font-family: monospace;
@@ -167,7 +207,6 @@ body {
 
 /* Table styles */
 .transaction-table {
-    margin-top: 15px;
     margin-right: 300px;
     width: calc(100% - 300px);
     font-size: 18px;

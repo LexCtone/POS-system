@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($user_role === 'admin') {
                     header('Location: Dashboard.php');
                 } elseif ($user_role === 'cashier') {
-                    header('Location: dash/Cashier_dashboard.php');
+                    header('Location: dash/transaction.php');
                 } else {
                     $error_message = "Unknown user role. Please contact an administrator.";
                     error_log("Unknown user role: " . $user_role);

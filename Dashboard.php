@@ -57,7 +57,7 @@ if (isset($_SESSION['user_id'])) {
     <?php echo htmlspecialchars($admin_name); ?>
     </header>
               <ul>
-              <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
+              <li><a href="Dashboard.php"class="selected"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
               <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>
               <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
               <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>

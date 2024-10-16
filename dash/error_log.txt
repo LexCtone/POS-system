@@ -526,3 +526,604 @@
 
 [2024-10-16 00:29:00] Executed sale insert for barcode: 10000002
 [2024-10-16 00:29:00] Executed product update for barcode: 10000002
+[2024-10-16 18:12:02] Received data: Array
+(
+    [invoice] => 20241016501839917
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+            [1] => Array
+                (
+                    [product_id] => 3
+                    [barcode] => 10000003
+                    [description] => Acrylic Thinner Gallon
+                    [price] => 395
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 395
+                )
+
+            [2] => Array
+                (
+                    [product_id] => 5
+                    [barcode] => 10000005
+                    [description] => Butane Gas - 220 Grams
+                    [price] => 95
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 95
+                )
+
+            [3] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 10000006
+                    [description] => Concrete Epoxy - 1.50 Kilograms
+                    [price] => 1150
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 1150
+                )
+
+            [4] => Array
+                (
+                    [product_id] => 7
+                    [barcode] => 10000007
+                    [description] => Concrete Neutralizer Gallon
+                    [price] => 335
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 335
+                )
+
+            [5] => Array
+                (
+                    [product_id] => 10
+                    [barcode] => 10000010
+                    [description] => Denatured Alchohol Bottle
+                    [price] => 35
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 35
+                )
+
+        )
+
+    [totalAmount] => 2075
+    [paymentAmount] => 3000
+    [change] => 925
+)
+
+[2024-10-16 18:12:02] Executed sale insert for barcode: 10000001
+[2024-10-16 18:12:02] Executed product update for barcode: 10000001
+[2024-10-16 18:12:02] Executed sale insert for barcode: 10000003
+[2024-10-16 18:12:02] Executed product update for barcode: 10000003
+[2024-10-16 18:12:02] Executed sale insert for barcode: 10000005
+[2024-10-16 18:12:02] Executed product update for barcode: 10000005
+[2024-10-16 18:12:02] Executed sale insert for barcode: 10000006
+[2024-10-16 18:12:02] Executed product update for barcode: 10000006
+[2024-10-16 18:12:02] Executed sale insert for barcode: 10000007
+[2024-10-16 18:12:02] Executed product update for barcode: 10000007
+[2024-10-16 18:12:02] Executed sale insert for barcode: 10000010
+[2024-10-16 18:12:02] Executed product update for barcode: 10000010
+[2024-10-16 18:13:15] Received data: Array
+(
+    [invoice] => 20241016537959621
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 62
+                    [barcode] => 10000062
+                    [description] => Sealant - Prosil
+                    [price] => 220
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 220
+                )
+
+            [1] => Array
+                (
+                    [product_id] => 52
+                    [barcode] => 10000052
+                    [description] => Polituff - Liter
+                    [price] => 265
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 265
+                )
+
+            [2] => Array
+                (
+                    [product_id] => 51
+                    [barcode] => 10000051
+                    [description] => Polituff - Gallon
+                    [price] => 1020
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 1020
+                )
+
+            [3] => Array
+                (
+                    [product_id] => 47
+                    [barcode] => 10000047
+                    [description] => No More Nail - Tube
+                    [price] => 195
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 195
+                )
+
+            [4] => Array
+                (
+                    [product_id] => 18
+                    [barcode] => 10000018
+                    [description] => Epoxy (All Purporse) - 15 ML
+                    [price] => 85
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 85
+                )
+
+            [5] => Array
+                (
+                    [product_id] => 15
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purporse) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 235
+                )
+
+            [6] => Array
+                (
+                    [product_id] => 11
+                    [barcode] => 10000011
+                    [description] => Elastoseal (Pisil) - Pisil Pack
+                    [price] => 185
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 185
+                )
+
+            [7] => Array
+                (
+                    [product_id] => 10
+                    [barcode] => 10000010
+                    [description] => Denatured Alchohol Bottle
+                    [price] => 35
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 35
+                )
+
+            [8] => Array
+                (
+                    [product_id] => 8
+                    [barcode] => 10000008
+                    [description] => (Puree) - Concrete Neutralizer Bottle
+                    [price] => 45
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 45
+                )
+
+            [9] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 10000006
+                    [description] => Concrete Epoxy - 1.50 Kilograms
+                    [price] => 1150
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 2300
+                )
+
+            [10] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 4650
+    [paymentAmount] => 5000
+    [change] => 350
+)
+
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000062
+[2024-10-16 18:13:15] Executed product update for barcode: 10000062
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000052
+[2024-10-16 18:13:15] Executed product update for barcode: 10000052
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000051
+[2024-10-16 18:13:15] Executed product update for barcode: 10000051
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000047
+[2024-10-16 18:13:15] Executed product update for barcode: 10000047
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000018
+[2024-10-16 18:13:15] Executed product update for barcode: 10000018
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000015
+[2024-10-16 18:13:15] Executed product update for barcode: 10000015
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000011
+[2024-10-16 18:13:15] Executed product update for barcode: 10000011
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000010
+[2024-10-16 18:13:15] Executed product update for barcode: 10000010
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000008
+[2024-10-16 18:13:15] Executed product update for barcode: 10000008
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000006
+[2024-10-16 18:13:15] Executed product update for barcode: 10000006
+[2024-10-16 18:13:15] Executed sale insert for barcode: 10000001
+[2024-10-16 18:13:15] Executed product update for barcode: 10000001
+[2024-10-16 18:16:17] Received data: Array
+(
+    [invoice] => 20241016599204146
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 13
+                    [barcode] => 10000013
+                    [description] => Epoxy (All Purporse) - 1 Liter
+                    [price] => 695
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 1390
+                )
+
+            [1] => Array
+                (
+                    [product_id] => 12
+                    [barcode] => 10000012
+                    [description] => Elastoseal (Pisil) - 8 Grams
+                    [price] => 95
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 95
+                )
+
+            [2] => Array
+                (
+                    [product_id] => 9
+                    [barcode] => 10000009
+                    [description] => Denatured Alchohol Gallon
+                    [price] => 290
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 290
+                )
+
+            [3] => Array
+                (
+                    [product_id] => 14
+                    [barcode] => 10000014
+                    [description] => Epoxy (All Purporse) - 3/4 Liter
+                    [price] => 440
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 880
+                )
+
+            [4] => Array
+                (
+                    [product_id] => 19
+                    [barcode] => 10000019
+                    [description] => Epoxy (Clear, Plus Five)
+                    [price] => 85
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 85
+                )
+
+            [5] => Array
+                (
+                    [product_id] => 20
+                    [barcode] => 10000020
+                    [description] => Epoxy (Marine) - 1 Liter
+                    [price] => 695
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 695
+                )
+
+            [6] => Array
+                (
+                    [product_id] => 23
+                    [barcode] => 10000023
+                    [description] => Epoxy (Marine) - 1/4 Liter
+                    [price] => 250
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 250
+                )
+
+            [7] => Array
+                (
+                    [product_id] => 24
+                    [barcode] => 10000024
+                    [description] => Epoxy (Marine) - 160 ML
+                    [price] => 165
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 165
+                )
+
+            [8] => Array
+                (
+                    [product_id] => 25
+                    [barcode] => 10000025
+                    [description] => Epoxy Steel - 40 Grams
+                    [price] => 135
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 135
+                )
+
+            [9] => Array
+                (
+                    [product_id] => 26
+                    [barcode] => 10000026
+                    [description] => Epoxy Steel - 15 Grams
+                    [price] => 95
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 190
+                )
+
+            [10] => Array
+                (
+                    [product_id] => 27
+                    [barcode] => 10000027
+                    [description] => Fedtite - 1 Liter
+                    [price] => 335
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 335
+                )
+
+            [11] => Array
+                (
+                    [product_id] => 32
+                    [barcode] => 10000032
+                    [description] => (Puree) Lacquer Thinner - Bottle
+                    [price] => 45
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 45
+                )
+
+            [12] => Array
+                (
+                    [product_id] => 40
+                    [barcode] => 10000040
+                    [description] => Moldex - 100 ML
+                    [price] => 85
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 85
+                )
+
+        )
+
+    [totalAmount] => 4640
+    [paymentAmount] => 5000
+    [change] => 360
+)
+
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000013
+[2024-10-16 18:16:17] Executed product update for barcode: 10000013
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000012
+[2024-10-16 18:16:17] Executed product update for barcode: 10000012
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000009
+[2024-10-16 18:16:17] Executed product update for barcode: 10000009
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000014
+[2024-10-16 18:16:17] Executed product update for barcode: 10000014
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000019
+[2024-10-16 18:16:17] Executed product update for barcode: 10000019
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000020
+[2024-10-16 18:16:17] Executed product update for barcode: 10000020
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000023
+[2024-10-16 18:16:17] Executed product update for barcode: 10000023
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000024
+[2024-10-16 18:16:17] Executed product update for barcode: 10000024
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000025
+[2024-10-16 18:16:17] Executed product update for barcode: 10000025
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000026
+[2024-10-16 18:16:17] Executed product update for barcode: 10000026
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000027
+[2024-10-16 18:16:17] Executed product update for barcode: 10000027
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000032
+[2024-10-16 18:16:17] Executed product update for barcode: 10000032
+[2024-10-16 18:16:17] Executed sale insert for barcode: 10000040
+[2024-10-16 18:16:17] Executed product update for barcode: 10000040
+[2024-10-16 18:17:29] Received data: Array
+(
+    [invoice] => 20241016778724748
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 51
+                    [barcode] => 10000051
+                    [description] => Polituff - Gallon
+                    [price] => 1020
+                    [quantity] => 20
+                    [discount_amount] => 0
+                    [total] => 20400
+                )
+
+        )
+
+    [totalAmount] => 20400
+    [paymentAmount] => 20400
+    [change] => 0
+)
+
+[2024-10-16 18:17:29] Executed sale insert for barcode: 10000051
+[2024-10-16 18:17:29] Executed product update for barcode: 10000051
+[2024-10-16 18:20:46] Received data: Array
+(
+    [invoice] => 20241016850787653
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 52
+                    [barcode] => 10000052
+                    [description] => Polituff - Liter
+                    [price] => 265
+                    [quantity] => 25
+                    [discount_amount] => 0
+                    [total] => 6625
+                )
+
+        )
+
+    [totalAmount] => 6625
+    [paymentAmount] => 1000000
+    [change] => 993375
+)
+
+[2024-10-16 18:20:46] Executed sale insert for barcode: 10000052
+[2024-10-16 18:20:46] Executed product update for barcode: 10000052
+[2024-10-17 02:12:56] Received data: Array
+(
+    [invoice] => 20241016342631456
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 02:12:56] Executed sale insert for barcode: 10000001
+[2024-10-17 02:12:56] Executed product update for barcode: 10000001
+[2024-10-17 02:22:15] Received data: Array
+(
+    [invoice] => 20241016923359594
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 02:22:15] Executed sale insert for barcode: 10000001
+[2024-10-17 02:22:15] Executed product update for barcode: 10000001
+[2024-10-17 02:22:47] Received data: Array
+(
+    [invoice] => 20241016959830404
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 02:22:47] Executed sale insert for barcode: 10000001
+[2024-10-17 02:22:47] Executed product update for barcode: 10000001
+[2024-10-17 02:26:16] Received data: Array
+(
+    [invoice] => 20241016168348507
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 02:26:16] Executed sale insert for barcode: 10000001
+[2024-10-17 02:26:16] Executed product update for barcode: 10000001
+[2024-10-17 02:50:11] Received data: Array
+(
+    [invoice] => 20241016600972125
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 02:50:11] Executed sale insert for barcode: 10000001
+[2024-10-17 02:50:11] Executed product update for barcode: 10000001

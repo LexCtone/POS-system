@@ -155,6 +155,31 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
     echo json_encode(['sales' => $sales, 'totalSales' => $totalSales]);
     exit();
 }
+
+
+// Query for daily sales
+$query_daily_sales = "SELECT SUM(total) as daily_sales FROM sales WHERE DATE(sale_date) = CURDATE()";
+$result_daily_sales = $conn->query($query_daily_sales);
+$daily_sales = 0;
+if ($result_daily_sales && $row = $result_daily_sales->fetch_assoc()) {
+    $daily_sales = $row['daily_sales'] ? $row['daily_sales'] : 0;
+}
+
+// Query for stock on hand
+$query_stock_on_hand = "SELECT SUM(Quantity) as stock_on_hand FROM products";
+$result_stock_on_hand = $conn->query($query_stock_on_hand);
+$stock_on_hand = 0;
+if ($result_stock_on_hand && $row = $result_stock_on_hand->fetch_assoc()) {
+    $stock_on_hand = $row['stock_on_hand'] ? $row['stock_on_hand'] : 0;
+}
+
+// Query for critical items
+$query_critical_items = "SELECT COUNT(*) as critical_items FROM products WHERE Quantity < 10";
+$result_critical_items = $conn->query($query_critical_items);
+$critical_items = 0;
+if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
+    $critical_items = $row['critical_items'] ? $row['critical_items'] : 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -178,6 +203,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
 
     <!-- Transaction Details -->
     <div class="transaction-details">
+    <div class="transaction-content">
         <div class="transaction-info">
             <div class="transaction-item">
                 <label>Transaction No.</label>
@@ -202,6 +228,21 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
             </div>
         </div>
 
+               <!-- Box Container on the Right -->
+               <div class="box-container">
+            <div class="box orange" id="box1">
+                <?= number_format($daily_sales, 2) ?><br> DAILY SALES
+            </div>
+            <div class="box yellow" id="box2">
+                <?= number_format($stock_on_hand) ?><br> STOCK ON HAND
+            </div>
+            <div class="box green" id="box3">
+                <?= number_format($critical_items) ?><br> CRITICAL ITEMS
+            </div>
+        </div>
+    </div>
+</div>
+
         <div class="transaction-table">
             <table id="transactionTable">
                 <thead>
@@ -225,7 +266,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'fetch_sales') {
     <!-- Sidebar on the right -->
     <div class="sidebar">
         <ul class="menu">
-            <li><a href="Cashier_dashboard.php"><i class="fa fa-pie-chart"></i> Dashboard</a></li>
             <li><a href="transaction.php"><i class='fa fa-plus'></i> New Transaction</a></li>
             <li><a href="#" id="addDiscountBtn"><i class='fa fa-percent'></i> Add Discount</a></li>
             <li><a href="#" id="dailySalesBtn"><i class='fa fa-chart-line'></i> Daily Sales</a></li>

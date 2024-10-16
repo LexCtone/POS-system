@@ -42,24 +42,40 @@ body {
   line-height: 70px;
   font-size: 20px;
   color: white;
-  padding-left: 0px;
+  padding-left: 25px;
   box-sizing: border-box;
   text-align: left;
   text-decoration: none;
 }
 
-.sidebar ul li:hover a {
-  padding-left: 10px;
-  color: black;
-  transition: padding-left 0.1s, color 0.1s;
+.sidebar ul li a:hover {
+  background-color: #0e394f;
+  padding-left: 35px;
+}
+
+/* Add border to selected item */
+.sidebar ul li a.selected {
+  border-left: 5px solid #ffffff; /* White border on the left */
+  background-color: #0e394f;
+  padding-left: 30px; /* Adjust padding for balance */
+  font-weight: bold; /* Emphasize the selected item */
 }
 
 .sidebar ul a i {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .sidebar ul {
   list-style: none;
+  padding: 0; /* Remove padding from the list */
+  margin: 1; /* Remove margins to bring everything to the edge */
+}
+
+.button-container button.selected {
+  background-color: #ccc; /* Highlight background color */
+  color: #1c75a6; /* Contrast text color */
+  font-weight: bold;
+  border: 2px solid #1c75a6; /* Optional border for emphasis */
 }
 
 .StockHeader {
@@ -186,8 +202,9 @@ body {
 
 #sales-table th, 
 #sales-table td {
-  padding: 12px 15px;
+  padding: 20px 15px;
   text-align: center;
+  font-size: 15.5px;
 }
 
 #sales-table th {
@@ -237,3 +254,46 @@ body {
 .legend-item-hidden {
   text-decoration: line-through;
 }
+ /* Hide report header in regular view */
+ .report-header {
+  display: none;
+}
+
+/* Show the report header only in print view */
+@media print {
+/* Hide all non-print elements */
+body * {
+  visibility: hidden;
+}
+
+/* Show only the report header and table */
+#reportHeader, #reportHeader *, .table-container, .table-container * {
+  visibility: visible;
+}
+
+/* Ensure report header is positioned above the table */
+.table-container {
+  position: absolute;
+  top: 180px;
+  left: 20px;
+  right: 20px;
+  width: 96%;
+}
+
+/* Style adjustments for the report header during printing */
+.report-header {
+  display: block;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white; /* Optional, to add a background color */
+  padding: 10px 0;
+  margin: 0; /* Remove any bottom margin to keep it flush with the content */
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+}
+
+

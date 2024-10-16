@@ -45,7 +45,7 @@ if (isset($_SESSION['user_id'])) {
       <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
       <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
       <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
-      <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
+      <li><a href="Records.php" class="selected"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
       <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
       <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
@@ -53,7 +53,7 @@ if (isset($_SESSION['user_id'])) {
   <div class="container">
     <div class="account-box">
       <div class="button-container">
-        <button class="btn" onclick="location.href='Records.php'">Top Selling</button>
+        <button class="btn selected" onclick="location.href='Records.php'" class="selected">Top Selling</button>
         <button class="btn" onclick="location.href='SalesHistory.php'">Sales History</button>
         <button class="btn" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
         <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
@@ -80,16 +80,23 @@ if (isset($_SESSION['user_id'])) {
             <i class="fa fa-refresh"></i>
             <span class="load-data-text">Load Data</span>
           </div>
-          <div class="print-preview-button" onclick="window.print()">
-            <i class="fa-solid fa-print"></i>
-            <span class="print-preview-text">Print Preview</span>
+          <div class="print-preview-button" onclick="printTable()">
+              <i class="fa-solid fa-print"></i>
+              <span class="print-preview-text">Print Table</span>
           </div>
         </div>
       </div>
 
       <div class="content">
         <!-- Left Column: Table -->
+
         <div class="table-container">
+        <div id="reportHeader" class="report-header" style="display: none;">
+            <!-- Content will be dynamically populated by JavaScript -->
+          </div>
+        <div id="sortInfo" class="sort-info" style="display: none;">
+
+          </div>
           <table class="table" id="sales-table">
             <thead>
               <tr>

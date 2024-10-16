@@ -42,24 +42,40 @@ body {
   line-height: 70px;
   font-size: 20px;
   color: white;
-  padding-left: 0px;
+  padding-left: 25px;
   box-sizing: border-box;
   text-align: left;
   text-decoration: none;
 }
 
-.sidebar ul li:hover a {
-  padding-left: 10px;
-  color: black;
-  transition: padding-left 0.1s, color 0.1s;
+.sidebar ul li a:hover {
+  background-color: #0e394f;
+  padding-left: 35px;
+}
+
+/* Add border to selected item */
+.sidebar ul li a.selected {
+  border-left: 5px solid #ffffff; /* White border on the left */
+  background-color: #0e394f;
+  padding-left: 30px; /* Adjust padding for balance */
+  font-weight: bold; /* Emphasize the selected item */
 }
 
 .sidebar ul a i {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .sidebar ul {
   list-style: none;
+  padding: 0; /* Remove padding from the list */
+  margin: 1; /* Remove margins to bring everything to the edge */
+}
+
+.button-container button.selected {
+  background-color: #ccc; /* Highlight background color */
+  color: #1c75a6; /* Contrast text color */
+  font-weight: bold;
+  border: 2px solid #1c75a6; /* Optional border for emphasis */
 }
 
 .StockHeader {
@@ -232,4 +248,60 @@ body {
   width: 250px;
   margin-left: 20px;
   font-size: 15px;
+}
+
+@media print {
+  /* Hide everything except the table */
+  body * {
+      visibility: hidden;
+  }
+
+  /* Make only the table container visible */
+  .print-mode #sales-table,
+  .print-mode #sales-table * {
+      visibility: visible;
+  }
+
+  /* Center and style the table container */
+  #sales-table {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      top: 50px;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+  }
+
+  /* Title above the table */
+  #sales-table::before {
+      display: block;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+  }
+
+  /* Table header styling */
+  #sales-table th {
+      background-color: #1C75A6;
+      color: white;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: bold;
+      border: 1px solid #ddd;
+      text-transform: uppercase;
+      text-align: center;
+  }
+
+  /* Table data cell styling */
+  #sales-table td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+      font-size: 13px;
+  }
+
+  /* Alternating row colors for readability */
+  #sales-table tr:nth-child(even) {
+      background-color: #f8f8f8;
+  }
 }

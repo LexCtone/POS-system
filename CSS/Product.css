@@ -43,24 +43,33 @@ body {
   line-height: 70px;
   font-size: 20px;
   color: white;
-  padding-left: 0px;
+  padding-left: 25px;
   box-sizing: border-box;
   text-align: left;
   text-decoration: none;
 }
 
-.sidebar ul li:hover a {
-  padding-left: 10px;
-  color: black;
-  transition: padding-left 0.1s, color 0.1s;
+.sidebar ul li a:hover {
+  background-color: #0e394f;
+  padding-left: 35px;
+}
+
+/* Add border to selected item */
+.sidebar ul li a.selected {
+  border-left: 5px solid #ffffff; /* White border on the left */
+  background-color: #0e394f;
+  padding-left: 30px; /* Adjust padding for balance */
+  font-weight: bold; /* Emphasize the selected item */
 }
 
 .sidebar ul a i {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .sidebar ul {
   list-style: none;
+  padding: 0; /* Remove padding from the list */
+  margin: 1; /* Remove margins to bring everything to the edge */
 }
 
 .ProductHeader {

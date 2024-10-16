@@ -1,5 +1,19 @@
 let salesChart;
 
+function updateSortInfo() {
+  const sortByDropdown = document.getElementById("sortBy");
+  const sortOrderDropdown = document.getElementById("sortOrder");
+  const sortBy = sortByDropdown.options[sortByDropdown.selectedIndex].text;
+  const sortOrder = sortOrderDropdown.options[sortOrderDropdown.selectedIndex].text;
+
+  const sortInfoDiv = document.getElementById("sortInfo");
+  if (sortBy !== "Sort by") {
+    sortInfoDiv.textContent = `Sorted by: ${sortBy} (${sortOrder})`;
+  } else {
+    sortInfoDiv.textContent = "";
+  }
+}
+
 function loadData() {
   const startDate = document.getElementById('startDate').value;
   const endDate = document.getElementById('endDate').value;
@@ -11,6 +25,8 @@ function loadData() {
     .then(data => {
       updateTable(data);
       updateChart(data);
+      updateSortInfo();
+      updateReportHeader();
     })
     .catch(error => {
       console.error('Error:', error);
@@ -39,7 +55,28 @@ function updateTable(data) {
     });
   }
 }
+function updateReportHeader() {
+  const sortByDropdown = document.getElementById("sortBy");
+  const sortType = sortByDropdown.options[sortByDropdown.selectedIndex].text;
+  const sortOrderDropdown = document.getElementById("sortOrder");
+  const sortOrder = sortOrderDropdown.options[sortOrderDropdown.selectedIndex].text;
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
 
+  const reportHeader = document.getElementById("reportHeader");
+  reportHeader.innerHTML = `
+    <h2>Top Selling Items Report</h2>
+    <p><strong>Sort by:</strong> ${sortType !== "Sort by" ? `${sortType} (${sortOrder})` : "None"}</p>
+    <p><strong>Date Range:</strong> ${startDate || "N/A"} - ${endDate || "N/A"}</p>
+  `;
+}
+
+function printTable() {
+  updateReportHeader();
+  document.getElementById("reportHeader").style.display = "block";  
+  window.print();
+  document.getElementById("reportHeader").style.display = "none";
+}
 function updateChart(data) {
   const labels = data.map(item => item.description);
   const salesData = data.map(item => item.total_sales);

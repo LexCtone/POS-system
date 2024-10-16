@@ -21,9 +21,9 @@ body {
     transition: all 0.5s ease;
     top: 0;
     left: 0;
-}
-
-.sidebar header {
+  }
+  
+  .sidebar header {
     font-size: 28px;
     color: white;
     text-align: center;
@@ -34,41 +34,50 @@ body {
     align-items: center;
     flex-direction: column;
     margin-bottom: 40px;
-}
-
-.sidebar header img {
+  }
+  
+  .sidebar header img {
     width: 120px;
     height: 120px;
     margin-top: 25px;
     margin-left: 10px;
-}
-
-.sidebar ul a {
+  }
+  
+  .sidebar ul a {
     display: block;
     height: 100%;
     width: 100%;
     line-height: 70px;
     font-size: 20px;
     color: white;
-    padding-left: 0px;
+    padding-left: 25px;
     box-sizing: border-box;
     text-align: left;
     text-decoration: none;
-}
-
-.sidebar ul li:hover a {
-    padding-left: 10px;
-    color: black;
-    transition: padding-left 0.1s, color 0.1s;
-}
-
-.sidebar ul a i {
-    margin-right: 20px;
-}
-
-.sidebar ul {
+  }
+  
+  .sidebar ul li a:hover {
+    background-color: #0e394f;
+    padding-left: 35px;
+  }
+  
+  /* Add border to selected item */
+  .sidebar ul li a.selected {
+    border-left: 5px solid #ffffff; /* White border on the left */
+    background-color: #0e394f;
+    padding-left: 30px; /* Adjust padding for balance */
+    font-weight: bold; /* Emphasize the selected item */
+  }
+  
+  .sidebar ul a i {
+    margin-right: 10px;
+  }
+  
+  .sidebar ul {
     list-style: none;
-}
+    padding: 0; /* Remove padding from the list */
+    margin: 1; /* Remove margins to bring everything to the edge */
+  }
 
 .button-container {
     align-items: left;
@@ -77,6 +86,14 @@ body {
     justify-content: center;
     margin-top: 35px;
 }
+
+.button-container button.selected {
+    background-color: #ccc; /* Highlight background color */
+    color: #1c75a6; /* Contrast text color */
+    font-weight: bold;
+    border: 2px solid #1c75a6; /* Optional border for emphasis */
+  }
+  
 
 .button-container button {
     padding: 10px 20px;

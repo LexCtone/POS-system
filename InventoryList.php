@@ -45,7 +45,7 @@ if (isset($_SESSION['user_id'])) {
               <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
               <li><a href="Brand.php"><i class='fa-solid fa-tag' style='font-size:30px'></i>Brand</a></li>
               <li><a href="Category.php"><i class='fa-solid fa-layer-group' style='font-size:30px'></i>Category</a></li>
-              <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
+              <li><a href="Records.php" class="selected"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
               <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
               <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
               </ul>
@@ -56,7 +56,7 @@ if (isset($_SESSION['user_id'])) {
         <button class="btn" onclick="location.href='Records.php'">Top Selling</button>
         <button class="btn" onclick="location.href='SalesHistory.php'">Sales History</button>
         <button class="btn" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
-        <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
+        <button class="btn selected" onclick="location.href='InventoryList.php'">Inventory List</button>
         <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>
         <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
         <button class="btn" onclick="location.href='ArchivedProducts.php'">Archived Products</button>
