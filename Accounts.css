@@ -70,3 +70,21 @@
     padding: 0; /* Remove padding from the list */
     margin: 1; /* Remove margins to bring everything to the edge */
   }
+  .edit-btn {
+    background-color: #1c75a6; /* Green */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .edit-btn:hover {
+    background-color: #165c81;
+  }
+  
+.table-container{
+border: 1px solid;
+border-radius: 10px;
+padding: 10px;
+border-color: rgb(103, 105, 106);
+  }

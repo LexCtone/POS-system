@@ -8,8 +8,8 @@ $env = require __DIR__ . '/.env.php'; // Adjust the path as needed
 // Access the encryption key
 $key = base64_decode($env['ENCRYPTION_KEY']); // Decode the encryption key
 
-// SQL query to fetch cashier accounts
-$sql = "SELECT id, name, username, password, iv, role, status FROM accounts WHERE role = 'Cashier'";
+// SQL query to fetch both admin and cashier accounts including email
+$sql = "SELECT id, name, username, email, password, iv, role, status FROM accounts WHERE role IN ('Admin', 'Cashier')";
 $result = $conn->query($sql);
 
 // Array to store results
@@ -22,11 +22,12 @@ if ($result->num_rows > 0) {
         $iv = hex2bin($row['iv']); // Convert IV from hex to binary
         $decryptedPassword = openssl_decrypt($row['password'], $cipher, $key, 0, $iv);
 
-        // Add to data array with the decrypted password
+        // Add to data array with the decrypted password and email
         $data[] = [
             'id' => $row['id'],
             'name' => $row['name'],
             'username' => $row['username'],
+            'email' => $row['email'], // Include the email in the response
             'password' => $decryptedPassword, // Use decrypted password
             'role' => $row['role'],
             'status' => $row['status']

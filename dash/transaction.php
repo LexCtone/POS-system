@@ -227,7 +227,6 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
                 </div>
             </div>
         </div>
-
                <!-- Box Container on the Right -->
                <div class="box-container">
             <div class="box orange" id="box1">
@@ -242,7 +241,6 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
         </div>
     </div>
 </div>
-
         <div class="transaction-table">
             <table id="transactionTable">
                 <thead>

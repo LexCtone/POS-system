@@ -49,7 +49,6 @@ if (isset($_SESSION['user_id'])) {
       <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
   </nav>
-
   <div class="container">
     <div class="account-box">
       <div class="button-container">
@@ -60,8 +59,6 @@ if (isset($_SESSION['user_id'])) {
       </div>
       </div>
       </div>
-      
-      
  <div class="content">
         <div id="message" class="message"></div>
         <div class="modals">
@@ -72,8 +69,10 @@ if (isset($_SESSION['user_id'])) {
                             <th>#</th>
                             <th>Name</th>
                             <th>Username</th>
+                            <th>Email</th>
                             <th>Role</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,16 +95,79 @@ if (isset($_SESSION['user_id'])) {
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${account.name}</td>
-            <td>${account.username}</td>
+            <td class="editable" data-field="name">${account.name}</td>
+            <td class="editable" data-field="username">${account.username}</td>
+            <td class="editable" data-field="email">${account.email}</td>
             <td>${account.role}</td>
             <td>${account.status}</td>
+            <td>
+              <button class="edit-btn" data-id="${account.id}" onclick="editAccount(this)">Edit</button>
+              <button class="save-btn" data-id="${account.id}" style="display:none;" onclick="saveAccount(this)">Save</button>
+            </td>
           `;
           tbody.appendChild(row);
         });
       })
       .catch(error => console.error("Error fetching cashier data:", error));
   });
+
+  function editAccount(button) {
+    const row = button.closest("tr");
+    const editables = row.querySelectorAll(".editable");
+
+    // Make fields editable by replacing text with input fields
+    editables.forEach(td => {
+      const value = td.textContent;
+      const field = td.getAttribute("data-field");
+      td.innerHTML = `<input type="text" value="${value}" name="${field}">`; // Turn text into input fields
+    });
+
+    button.style.display = "none"; // Hide Edit button
+    const saveButton = row.querySelector(".save-btn");
+    saveButton.style.display = "inline"; // Show Save button
+  }
+
+  function saveAccount(button) {
+    const row = button.closest("tr");
+    const id = button.getAttribute("data-id");
+    const editables = row.querySelectorAll(".editable");
+    const updatedData = {};
+
+    // Collect the updated data from the input fields
+    editables.forEach(td => {
+      const input = td.querySelector("input");
+      if (input) {
+        updatedData[td.getAttribute("data-field")] = input.value; // Get updated values
+        td.textContent = input.value; // Replace input with the new text value
+      }
+    });
+
+    // Send the updated data to the server
+    fetch("update_account.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        ...updatedData,
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert("Account updated successfully.");
+      } else {
+        alert("Error updating account.");
+      }
+    })
+    .catch(error => console.error("Error updating account:", error));
+
+    button.style.display = "none"; // Hide Save button
+    const editButton = row.querySelector(".edit-btn");
+    editButton.style.display = "inline"; // Show Edit button
+  }
 </script>
+
 </body>
 </html>

@@ -1127,3 +1127,678 @@
 
 [2024-10-17 02:50:11] Executed sale insert for barcode: 10000001
 [2024-10-17 02:50:11] Executed product update for barcode: 10000001
+[2024-10-17 02:58:19] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 02:58:19] Executed sale insert for barcode: 10000001
+[2024-10-17 02:58:19] Executed product update for barcode: 10000001
+[2024-10-17 02:58:38] Received data: Array
+(
+    [invoice] => 20241016000000002
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 10000002
+                    [description] => Acrylic Thinner Bottle
+                    [price] => 45
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 45
+                )
+
+        )
+
+    [totalAmount] => 45
+    [paymentAmount] => 45
+    [change] => 0
+)
+
+[2024-10-17 02:58:38] Executed sale insert for barcode: 10000002
+[2024-10-17 02:58:38] Executed product update for barcode: 10000002
+[2024-10-17 03:00:18] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 03:00:18] Executed sale insert for barcode: 10000001
+[2024-10-17 03:00:18] Executed product update for barcode: 10000001
+[2024-10-17 03:00:30] Received data: Array
+(
+    [invoice] => 20241016000000002
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 9
+                    [barcode] => 10000009
+                    [description] => Denatured Alchohol Gallon
+                    [price] => 290
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 290
+                )
+
+        )
+
+    [totalAmount] => 290
+    [paymentAmount] => 9999
+    [change] => 9709
+)
+
+[2024-10-17 03:00:30] Executed sale insert for barcode: 10000009
+[2024-10-17 03:00:30] Executed product update for barcode: 10000009
+[2024-10-17 03:01:03] Received data: Array
+(
+    [invoice] => 20241016000000003
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 03:01:03] Executed sale insert for barcode: 10000001
+[2024-10-17 03:01:03] Executed product update for barcode: 10000001
+[2024-10-17 03:16:38] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:16:38] Executed sale insert for barcode: 10000001
+[2024-10-17 03:16:38] Executed product update for barcode: 10000001
+[2024-10-17 03:17:33] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 03:17:33] Executed sale insert for barcode: 10000001
+[2024-10-17 03:17:33] Executed product update for barcode: 10000001
+[2024-10-17 03:18:23] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 03:18:23] Executed sale insert for barcode: 10000001
+[2024-10-17 03:18:23] Executed product update for barcode: 10000001
+[2024-10-17 03:19:05] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 650
+    [change] => 585
+)
+
+[2024-10-17 03:19:05] Executed sale insert for barcode: 10000001
+[2024-10-17 03:19:05] Executed product update for barcode: 10000001
+[2024-10-17 03:19:53] Received data: Array
+(
+    [invoice] => 20241016000000002
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 03:19:53] Executed sale insert for barcode: 10000001
+[2024-10-17 03:19:53] Executed product update for barcode: 10000001
+[2024-10-17 03:20:18] Received data: Array
+(
+    [invoice] => 20241016000000003
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 03:20:18] Executed sale insert for barcode: 10000001
+[2024-10-17 03:20:18] Executed product update for barcode: 10000001
+[2024-10-17 03:20:58] Received data: Array
+(
+    [invoice] => 20241016000000004
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:20:58] Executed sale insert for barcode: 10000001
+[2024-10-17 03:20:58] Executed product update for barcode: 10000001
+[2024-10-17 03:23:42] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-17 03:23:42] Executed sale insert for barcode: 10000001
+[2024-10-17 03:23:42] Executed product update for barcode: 10000001
+[2024-10-17 03:25:52] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:25:52] Executed sale insert for barcode: 10000001
+[2024-10-17 03:25:52] Executed product update for barcode: 10000001
+[2024-10-17 03:27:34] Received data: Array
+(
+    [invoice] => 20241016000000002
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:27:34] Executed sale insert for barcode: 10000001
+[2024-10-17 03:27:34] Executed product update for barcode: 10000001
+[2024-10-17 03:30:04] Received data: Array
+(
+    [invoice] => 20241016000000014
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:30:04] Executed sale insert for barcode: 10000001
+[2024-10-17 03:30:04] Executed product update for barcode: 10000001
+[2024-10-17 03:31:11] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:31:11] Executed sale insert for barcode: 10000001
+[2024-10-17 03:31:11] Executed product update for barcode: 10000001
+[2024-10-17 03:46:02] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:46:02] Executed sale insert for barcode: 10000001
+[2024-10-17 03:46:02] Executed product update for barcode: 10000001
+[2024-10-17 03:46:22] Received data: Array
+(
+    [invoice] => 20241016000000001
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:46:22] Executed sale insert for barcode: 10000001
+[2024-10-17 03:46:22] Executed product update for barcode: 10000001
+[2024-10-17 03:46:41] Received data: Array
+(
+    [invoice] => 20241016000000002
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:46:41] Executed sale insert for barcode: 10000001
+[2024-10-17 03:46:41] Executed product update for barcode: 10000001
+[2024-10-17 03:49:07] Received data: Array
+(
+    [invoice] => 20241016000000014
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:49:07] Executed sale insert for barcode: 10000001
+[2024-10-17 03:49:07] Executed product update for barcode: 10000001
+[2024-10-17 03:50:44] Received data: Array
+(
+    [invoice] => 20241016000000037
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:50:44] Executed sale insert for barcode: 10000001
+[2024-10-17 03:50:44] Executed product update for barcode: 10000001
+[2024-10-17 03:51:02] Received data: Array
+(
+    [invoice] => 20241016000000038
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:51:02] Executed sale insert for barcode: 10000001
+[2024-10-17 03:51:02] Executed product update for barcode: 10000001
+[2024-10-17 03:51:33] Received data: Array
+(
+    [invoice] => 20241016000000041
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:51:33] Executed sale insert for barcode: 10000001
+[2024-10-17 03:51:33] Executed product update for barcode: 10000001
+[2024-10-17 03:51:58] Received data: Array
+(
+    [invoice] => 20241016000000042
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:51:58] Executed sale insert for barcode: 10000001
+[2024-10-17 03:51:58] Executed product update for barcode: 10000001
+[2024-10-17 03:52:21] Received data: Array
+(
+    [invoice] => 20241016000000045
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-17 03:52:21] Executed sale insert for barcode: 10000001
+[2024-10-17 03:52:21] Executed product update for barcode: 10000001
+[2024-10-17 03:59:05] Received data: Array
+(
+    [invoice] => 20241016738807772
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 76
+    [change] => 11
+)
+
+[2024-10-17 03:59:05] Executed sale insert for barcode: 10000001
+[2024-10-17 03:59:05] Executed product update for barcode: 10000001
