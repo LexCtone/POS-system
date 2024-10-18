@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute the statement
     if ($stmt->execute()) {
-        // Redirect to the success page
+        // Redirect to UserSettings.php with success message
         header("Location: UserSettings.php?success=1");
         exit();
     } else {

@@ -239,3 +239,35 @@ canvas {
 .form .cancel-btn:hover {
   opacity: 0.8;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-10px); }
+}
+
+.message {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.message.fadeOut {
+  animation: fadeOut 0.5s ease-in forwards;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}

@@ -16,16 +16,38 @@ if (isset($_SESSION['user_id'])) {
         $admin_name = $row['name'];
     }
     $stmt->close();
-}?>
+}
+
+
+// Initialize message variable
+$message = '';
+
+// Check for success message in the query string
+if (isset($_GET['success']) && $_GET['success'] == 1) {
+    $message = "Account created successfully.";
+}
+
+// Check for error messages in the query string
+if (isset($_GET['error'])) {
+    $errors = explode(',', $_GET['error']);
+    if (in_array('username_taken', $errors)) {
+        $message = "Username already taken.";
+    }
+    if (in_array('email_taken', $errors)) {
+        $message = "Email already used in another account.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account</title>
-  <link rel="stylesheet" href="NAVBAR.css">
-  <link rel="stylesheet" href="CSS/UserSettings.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link rel="stylesheet" href="NAVBAR.css">
+    <link rel="stylesheet" href="CSS/UserSettings.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <header>
@@ -35,7 +57,7 @@ if (isset($_SESSION['user_id'])) {
     <header>
       <img src="profile.png" alt="Profile"/>
       <br><?php echo htmlspecialchars($admin_name); ?>
-      </header>
+    </header>
     <ul>
       <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Home</a></li>
       <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a></li>
@@ -56,27 +78,22 @@ if (isset($_SESSION['user_id'])) {
         <button class="btn" onclick="location.href='ActDeact.php'">Activate/Deactivate Account</button>
         <button class="btn" onclick="location.href='Accounts.php'">Accounts</button>
       </div>
-                <?php
-          // Check if error messages are set in the query string
-          if (isset($_GET['error'])) {
-              $errors = explode(',', $_GET['error']);
+      
 
-              if (in_array('username_taken', $errors)) {
-                  echo '<p style="color: red;">Username is already taken.</p>';
-              }
-
-              if (in_array('email_taken', $errors)) {
-                  echo '<p style="color: red;">Email is already used in another account.</p>';
-              }
-          }
-          ?>
       <div class="form">
+      <div id="message-container">
+        <?php if (!empty($message)): ?>
+            <div class="message <?php echo strpos($message, 'Error') !== false ? 'error' : 'success'; ?>">
+                <?php echo addslashes($message); ?>
+            </div>
+        <?php endif; ?>
+      </div>
         <form id="password-form" action="save_account.php" method="POST">
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required>
           </div>
-            <div class="form-group">
+          <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
             <small id="username-error" style="color: red; display: none; margin-left: 10px;">Username is already taken.</small>
@@ -190,8 +207,24 @@ if (isset($_SESSION['user_id'])) {
                 });
             }
         });
-    });
+        
+            // Display message if it exists
+            <?php if (!empty($message)): ?>
+            const messageContainer = document.getElementById('message-container');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message <?php echo strpos($message, 'Error') !== false ? 'error' : 'success'; ?>';
+            messageElement.textContent = '<?php echo addslashes($message); ?>';
+            messageContainer.appendChild(messageElement);
+              //fade out animation not working//
+            // Remove message after 5 seconds with fade-out animation
+            setTimeout(() => {
+                messageElement.classList.add('fadeOut');
+                messageElement.addEventListener('animationend', () => {
+                    messageElement.remove();
+                });
+            }, 2000);
+            <?php endif; ?>
+        });
 </script>
-
 </body>
 </html>

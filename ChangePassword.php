@@ -2,7 +2,12 @@
 session_start();
 include 'connect.php';
 
-// Fetch the username of the logged-in admin
+// Load the .env.php file
+$env = require __DIR__ . '/.env.php'; // Adjust the path as needed
+
+// Access the encryption key and decode it
+$key = base64_decode($env['ENCRYPTION_KEY']);
+
 $admin_name = "ADMINISTRATOR"; // Default value
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
@@ -29,12 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Debug information
     $debug_info .= "POST data received. Username: $username\n";
 
-    // Verify if the new password and retyped password match
     if ($new_password !== $retype_password) {
         $message = "New passwords do not match.";
     } else {
-        // Check if the username exists and the old password is correct
-        $stmt = $conn->prepare("SELECT password FROM accounts WHERE username = ?");
+        $stmt = $conn->prepare("SELECT password, iv FROM accounts WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -43,12 +46,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result->num_rows === 1) {
             $row = $result->fetch_assoc();
-            if (password_verify($old_password, $row['password'])) {
-                // Update the password
-                $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            // Debugging the stored password
+            $debug_info .= "Stored encrypted password from DB: " . htmlspecialchars($row['password']) . "\n";
+
+            // Decrypt the stored password
+            $iv = hex2bin($row['iv']);
+            $cipher = "AES-256-CBC";
+            $decrypted_password = openssl_decrypt($row['password'], $cipher, $key, 0, $iv);
+
+            // Verify the old password against the decrypted password
+            if ($old_password === $decrypted_password) {
+                // Encrypt the new password
+                $encrypted_password = openssl_encrypt($new_password, $cipher, $key, 0, $iv);
                 $update_stmt = $conn->prepare("UPDATE accounts SET password = ? WHERE username = ?");
-                $update_stmt->bind_param("ss", $hashed_password, $username);
-                
+                $update_stmt->bind_param("ss", $encrypted_password, $username);
+
                 if ($update_stmt->execute()) {
                     $message = "Password changed successfully.";
                     $debug_info .= "Password updated successfully.\n";
@@ -112,10 +124,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <button class="btn" onclick="location.href='Accounts.php'">Accounts</button>
             </div>
             <div class="form">
+                                <!-- Message container for animations -->
+                            <div id="message-container"></div>
+                <!-- PHP block to generate the message -->
                 <?php if (!empty($message)): ?>
-                    <p style="color: <?php echo $message === 'Password changed successfully.' ? 'green' : 'red'; ?>;">
-                        <?php echo htmlspecialchars($message); ?>
-                    </p>
+                <script>
+                    const messageContainer = document.getElementById('message-container');
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'message <?php echo strpos($message, 'Error') !== false ? 'error' : 'success'; ?>';
+                    messageElement.textContent = '<?php echo addslashes($message); ?>';
+                    messageContainer.appendChild(messageElement);
+
+                    // Remove message after 5 seconds with fade-out animation
+                    setTimeout(() => {
+                        messageElement.classList.add('fadeOut');
+                        messageElement.addEventListener('animationend', () => {
+                            messageElement.remove();
+                        });
+                    }, 2000);
+                </script>
                 <?php endif; ?>
                 <form id="change-password-form" method="POST">
                     <div class="form-group">
@@ -144,12 +171,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-    <?php if (!empty($debug_info)): ?>
-        <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
-            <h3>Debug Information:</h3>
-            <pre><?php echo htmlspecialchars($debug_info); ?></pre>
-        </div>
-    <?php endif; ?>
+    <?php /*
+if (!empty($debug_info)): ?>
+    <div style="margin-left: 420px; width: 500px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
+        <h3>Debug Information:</h3>
+        <pre><?php echo htmlspecialchars($debug_info); ?></pre>
+    </div>
+<?php endif; */ ?>
+
 
     <script>
         document.getElementById('change-password-form').addEventListener('submit', function(event) {
