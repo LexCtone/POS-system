@@ -3,7 +3,7 @@ body {
   background-color: white;
   margin: 0;
   padding: 0;
-  font-family: monospace;
+  font-family: Arial, Helvetica, sans-serif;
   display: flex;
   height: 100vh;
   align-items: center;
@@ -106,4 +106,48 @@ button:hover {
   button {
       font-size: 14px;
   }
+}
+
+/* Input Container Styles */
+.input-container {
+  display: flex;
+  width: 100%;
+}
+
+.input-container input[type="text"] {
+  flex: 1; /* Allow input to take up remaining space */
+  margin-right: 10px; /* Space between input and button */
+  padding: 10px; /* Ensure input has padding */
+  border: 1px solid #ccc;
+  border-radius: 4px; 
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.input-container input.submit {
+  padding: 10px; /* Remove padding to align with input height */
+  background-color: #2ca61c; /* Button background color */
+  color: white;
+  border: none;
+  border-radius: 4px; /* Keep the border-radius */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  height: 100%; /* Match the height of the input field */
+  display: flex; /* Center the text vertically */
+  align-items: center; /* Align text vertically */
+  justify-content: center; /* Center the text horizontally */
+}
+
+.input-container input.submit:hover {
+  background-color: #1c7d34; /* Darker shade on hover */
+}
+
+.back-to-login {
+  font-size: 15px; /* Adjust the size as needed */
+  color: #1c75a6; /* Optional: match the theme color */
+  text-decoration: none; /* Optional: remove underline */
+}
+
+.back-to-login:hover {
+  text-decoration: underline; /* Optional: underline on hover for clarity */
 }

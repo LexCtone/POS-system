@@ -93,12 +93,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $mail->isSMTP();
                             $mail->Host = 'smtp.gmail.com';
                             $mail->SMTPAuth = true;
-                            $mail->Username = 'lexdecastro123@gmail.com'; // Your email
-                            $mail->Password = 'yygy vaqn mbwn agrq'; // Your email password
+                            $mail->Username = 'stvincenthardware2020@gmail.com'; // Your email
+                            $mail->Password = 'rmmn tfus kfxk dmym'; // Your email password
                             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                             $mail->Port = 587;
 
-                            $mail->setFrom('noreply@yourdomain.com', 'Your Application');
+                            $mail->setFrom('noreply@yourdomain.com', 'St. Vincent Hardware');
                             $mail->addAddress($user['email']);
 
                             $mail->isHTML(true);

@@ -75,6 +75,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Login OTP</title>
     <link rel="stylesheet" href="CSS/verify_otp.css">
+    <script>
+        let countdownTimer;
+
+        function startCountdown() {
+            let countdownTime = 2; // 2 minutes in seconds
+            const countdownDisplay = document.getElementById('countdown');
+
+            countdownTimer = setInterval(function() {
+                const minutes = Math.floor(countdownTime / 60);
+                const seconds = countdownTime % 60;
+
+                countdownDisplay.innerHTML = `Resend OTP in ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+                countdownTime--;
+
+                if (countdownTime < 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById('resend-button').disabled = false; // Enable resend button
+                    countdownDisplay.innerHTML = ''; // Clear countdown
+                }
+            }, 1000);
+        }
+
+        window.onload = function() {
+            startCountdown();
+        };
+    </script>
 </head>
 <body id="loginBody">
     <div class="container">
@@ -84,10 +111,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p><?= htmlspecialchars($error_message) ?></p>
             </div>
         <?php } ?>
-        <form action="verify_otp.php" method="POST">
-            <input type="text" name="otp" placeholder="Enter OTP" required><br>
-            <input class="submit" type="submit" value="Verify OTP">
-        </form>
+        <form action="verify_otp.php" method="POST" style="margin-top: 20px;">
+    <div class="input-container">
+        <input type="text" name="otp" placeholder="Enter OTP" required>
+        <input class="submit" type="submit" value="Verify OTP">
+    </div>
+</form>
+
+        <div id="countdown"></div>
+        <button id="resend-button" onclick="location.href='resend_otp.php'" disabled>Resend OTP</button>
         <p><a href="Login.php">Back to Login</a></p>
     </div>
 </body>
