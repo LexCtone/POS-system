@@ -1,3 +1,4 @@
 [2024-10-11 08:14:50] process_adjustment.php: Received data - product_id: 3, adjustment_quantity: 50, adjustment_reason: kulang e gago, barcode: 10000003, reference: adjustment_reference
 [2024-10-11 08:15:06] process_adjustment.php: Received data - product_id: 2, adjustment_quantity: 50, adjustment_reason: kulang rin, barcode: 10000002, reference: adjustment_reference
 [2024-10-11 08:15:24] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 50, adjustment_reason: kulang nanaman ng 50, barcode: 10000001, reference: adjustment_reference
+[2024-10-19 10:14:10] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 100, adjustment_reason: ., barcode: 10000001, reference: adjustment_reference

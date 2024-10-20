@@ -686,6 +686,7 @@ fetch('change_password.php', {
                 <p style="margin: 5px 0;"><strong>Transaction No:</strong> ${transactionNo}</p>
                 <p style="margin: 5px 0;"><strong>Date:</strong> ${currentDate}</p>
                 <p style="margin: 5px 0;"><strong>Cashier:</strong> ${cashierName}</p>
+                /* lagyan sya ng text field para sa customer name at customer address */
                 <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
                     <thead>

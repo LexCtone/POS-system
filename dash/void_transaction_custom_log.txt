@@ -157,3 +157,8 @@ Received data: {"invoice":"20241015707430044","totalAmount":65,"voidBy":"cashier
 Data validated successfully.
 Statement prepared successfully.
 Statement executed successfully.
+Stored procedure created.
+Received data: {"invoice":"20241019789869927","totalAmount":835,"voidBy":"cashier","cancelReason":"asd"}
+Data validated successfully.
+Statement prepared successfully.
+Statement executed successfully.
