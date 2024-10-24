@@ -271,3 +271,12 @@ canvas {
   background-color: #f8d7da;
   color: #721c24;
 }
+.submenu {
+  display: none;
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.submenu li {
+  margin-top: 10px;
+}

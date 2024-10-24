@@ -384,3 +384,12 @@ body {
     background-color: #e8f4f8;
     transition: background-color 0.3s ease;
 }
+.submenu {
+    display: none;
+    list-style-type: none;
+    padding-left: 20px;
+  }
+  
+  .submenu li {
+    margin-top: 10px;
+  }

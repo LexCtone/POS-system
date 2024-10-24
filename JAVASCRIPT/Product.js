@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('product-modal');
   const openModalButton = document.getElementById('add-product-button');
   const closeButton = modal ? modal.querySelector('.close-button') : null;
+  
 
   if (openModalButton && modal) {
     openModalButton.addEventListener('click', () => {
@@ -47,7 +48,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Get the barcode input element
+  // Add collapsible submenu functionality for Product
+  const productMenu = document.querySelector('.submenu');
+  const productLink = document.querySelector('a[href="Product.php"]');
+
+  if (productLink && productMenu) {
+    productLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      productMenu.style.display = productMenu.style.display === 'block' ? 'none' : 'block';
+    });
+  }
+
+  // Existing functionality for barcode input
   const barcodeInput = document.getElementById('barcode');
   if (barcodeInput) {
     barcodeInput.addEventListener('keypress', async (event) => {

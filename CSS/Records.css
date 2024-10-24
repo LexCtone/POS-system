@@ -258,7 +258,15 @@ body {
  .report-header {
   display: none;
 }
+.submenu {
+  display: none;
+  list-style-type: none;
+  padding-left: 20px;
+}
 
+.submenu li {
+  margin-top: 10px;
+}
 /* Show the report header only in print view */
 @media print {
 /* Hide all non-print elements */

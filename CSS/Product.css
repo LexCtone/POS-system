@@ -285,3 +285,38 @@ form button {
   text-decoration: none;
   cursor: pointer;
 }
+.submenu {
+  display: none;
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.submenu li {
+  margin-top: 10px;
+}
+.product-link {
+  position: relative; /* So the triangle can be positioned within */
+}
+
+.product-link .triangle {
+  display: inline-block;
+  width: 0; 
+  height: 0; 
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid white; /* Triangle color */
+  margin-left: 8px; /* Adjust spacing between text and triangle */
+  transform: rotate(-90deg); /* Rotate the triangle to point right */
+}
+
+.submenu {
+  display: none; /* Initially hide the submenu */
+}
+
+.submenu.active {
+  display: block; /* Show submenu when it's active */
+}
+
+.product-link.active .triangle {
+  transform: rotate(360deg); /* Rotate the triangle when the submenu is open */
+}

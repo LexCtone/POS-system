@@ -5,6 +5,16 @@ body {
   font-family: monospace;
 }
 
+.submenu {
+  display: none;
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.submenu li {
+  margin-top: 10px;
+}
+
 .sidebar {
   position: fixed;
   width: 350px;

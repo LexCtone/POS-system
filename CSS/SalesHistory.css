@@ -250,6 +250,16 @@ body {
   font-size: 15px;
 }
 
+.submenu {
+  display: none;
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.submenu li {
+  margin-top: 10px;
+}
+
 @media print {
   /* Hide everything except the table */
   body * {
