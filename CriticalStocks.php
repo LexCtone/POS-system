@@ -77,6 +77,7 @@ if (!$result) {
         <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>
         <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
         <button class="btn" onclick="location.href='ArchivedProducts.php'">Archived Products</button>
+        <button class="btn" onclick="location.href='SalesReport.php'">Sales Report</button>
       </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
       <div class="print-preview-button" onclick="window.print()">

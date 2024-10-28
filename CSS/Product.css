@@ -320,3 +320,8 @@ form button {
 .product-link.active .triangle {
   transform: rotate(360deg); /* Rotate the triangle when the submenu is open */
 }
+.submenu li a {
+  margin-left: 50px;
+  display: block; /* Ensure each item is displayed on its own line */
+  text-decoration: none; /* Remove underline */
+}

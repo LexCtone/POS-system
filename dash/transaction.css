@@ -202,16 +202,20 @@ body {
 /* Transaction details */
 .transaction-details {
     margin-top: 90px;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 /* Table styles */
 .transaction-table {
     margin-right: 300px;
     width: calc(100% - 300px);
-    font-size: 18px;
+    font-size: 25px;
     text-align: left;
     overflow-x: auto;
+}
+
+.transaction-table td:nth-child(7) {
+    width: 215px; /* 5% of the table width */
 }
 
 .transaction-table table {
@@ -355,8 +359,13 @@ body {
     padding: 10px;
     border: 1px solid #ddd;
     background-color: #f9f9f9;
+    text-align: left;
+    word-wrap: break-word; 
+    /* Ensure the content wraps within the cells */
+}
+#searchProductTable td:nth-child(7) {
+    width: 200px; /* Adjust width for the tenth column (e.g., Action) */
     text-align: center;
-    word-wrap: break-word; /* Ensure the content wraps within the cells */
 }
 
 /* Responsive Adjustments */
@@ -711,13 +720,23 @@ table {
     table-layout: fixed;
 }
 
-table th, table td {
+table th {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
     font-size: 15px;
     word-wrap: break-word;
 }
+
+table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    font-size: 20px;
+    word-wrap: break-word;
+    font-weight: bold;
+}
+
 
 table td.action-column {
     min-width: 100px; /* Minimum width for the action column */
@@ -743,15 +762,28 @@ table th {
 table tbody {
     display: block;
     max-height: 60vh; /* Dynamic height based on viewport */
-    overflow-y: auto;
+    overflow-y:scroll;
+    height: 507px;
 }
-
 
 table thead,
 table tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
+}
+/* Make thead sticky */
+table thead {
+    position: sticky; /* Make the header sticky */
+    top: 0; /* Stick it to the top of its container */
+    background-color: white; /* Background color to avoid transparency issues */
+    z-index: 10; /* Ensure it stays above the table body */
+}
+
+/* Optional: Add some styling for header cells */
+table thead th {
+    padding: 10px; /* Add padding for a better appearance */
+    border-bottom: 2px solid #ccc; /* Optional: Border below the header */
 }
 
 table tbody tr:nth-child(even) {
@@ -761,6 +793,12 @@ table tbody tr:nth-child(even) {
 table tbody tr:hover {
     background-color: #f1f1f1;
 }
+
+.scrollable-tbody td:nth-child(10) {
+    width: 135px;/* Adjust width for the tenth column (e.g., Action) */
+    text-align: center;
+}
+
 
 /* Print button */
 .print-btn {

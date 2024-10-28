@@ -14,6 +14,38 @@ body {
   top: 0;
   left: 0;
 }
+.ProductHeader {
+  background-color: #1C75A6;
+  color: white;
+  padding: 20px;
+  margin-left: 350px;
+  margin-top: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 200px;
+  margin-left: 1000px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  background-color: #125275;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button i {
+  font-size: 18px;
+}
+
 
 .sidebar header {
   font-size: 28px;
@@ -81,165 +113,7 @@ body {
   height: 130px;
 }
 
-.container .orange {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #FF9A24;
-  margin-top: 110px;
-  width: 100%;
-  height: 175px;
-  border-radius: 5px;
-  color: white;
-  font-size: 20px;
-  font-family: monospace;
-  text-align: center;
-  transition: all 0.5s ease;
-}
 
-.container .yellow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #FFD600;
-  margin-top: 110px;
-  width: 100%;
-  height: 175px;
-  border-radius: 5px;
-  color: white;
-  font-size: 20px;
-  font-family: monospace;
-  text-align: center;
-  margin-left: 50px;
-  margin-right: 50px;
-}
-
-.container .green {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #14C01B;
-  margin-top: 110px;
-  width: 100%;
-  height: 175px;
-  border-radius: 5px;
-  color: white;
-  font-size: 20px;
-  font-family: monospace;
-  text-align: center;
-}
-
-.pie-chart {
-  width: 570px;
-  height: 570px;
-  border-radius: 50%;
-  margin-top: 175px;
-  margin-left: 850px;
-  position: relative;
-  background: conic-gradient(
-    #57C3FF var(--slice-start, 0deg) 40%,
-    #1C75A6 var(--slice-end, 0deg) 100%
-  );
-}
-
-.text-at-40 {
-  position: absolute;
-  top: 20%;
-  left: 70%;
-  transform: translate(-50%, -50%);
-  font-size: 18px;
-  font-family: monospace;
-  color: rgb(255, 255, 255);
-  z-index: 2;
-}
-
-.text-at-60 {
-  position: absolute;
-  top: 70%;
-  left: 25%;
-  transform: translate(-50%, -50%);
-  font-size: 18px;
-  font-family: monospace;
-  color: rgb(255, 255, 255);
-  z-index: 2;
-}
-
-.slice {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  clip-path: polygon(50% 50%, 0 0, 100% 0);
-  --slice-start: 0deg;
-  --slice-end: 0deg;
-}
-
-.slice:nth-child(1) {
-  --percentage: 30;
-  --slice-end: calc(var(--percentage) * 4.6deg);
-}
-
-.slice:nth-child(2) {
-  --percentage-prev: 30;
-  --percentage: 40;
-  --slice-start: calc(var(--percentage-prev) * 3.6deg);
-  --slice-end: calc(var(--percentage-prev) * 3.6deg + var(--percentage) * 3.6deg);
-}
-
-.slice:nth-child(3) {
-  --percentage-prev: 45;
-  --percentage: 50;
-  --slice-start: calc(var(--percentage-prev) * 3.6deg);
-  --slice-end: calc(var(--percentage-prev) * 3.6deg + var(--percentage) * 3.6deg);
-}
-
-.inner-circle {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: #FFFFFF;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-}
-
-.small-container {
-  position: absolute;
-  top: 30%;
-  left: 95%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  height: fit-content;
-}
-
-.box-container {
-  margin: 10px;
-  padding-right: 20px;
-  padding-left: 20px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-.small-container .first {
-  font-size: 18px;
-  font-family: monospace;
-  text-align: center;
-  background-color: #57C3FF;
-  color: white;
-}
-
-.small-container .second {
-  font-size: 18px;
-  font-family: monospace;
-  text-align: center;
-  background-color: #1C75A6;
-  color: white;
-}
 .submenu {
   display: none;
   list-style-type: none;
@@ -248,4 +122,328 @@ body {
 
 .submenu li {
   margin-top: 10px;
+}
+
+.main-content {
+  position: fixed;
+  width: 400px;
+  max-width: 1200px;
+  padding: 20px;
+  background-color: #f7f8fc;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-left: 365px;
+  left: 0;
+  right: 0;
+  border: 2px solid #ccc; /* Border as per your existing code */
+}
+
+.header {
+  width: 100%;
+  text-align: left; /* Aligns the "SALES STATUS" header to the left */
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Aligns cards to the left */
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  background-color: #e0f3ff; /* Slightly darker blue on hover */
+  border-color: #005b99; /* Darker blue border on hover */
+}
+
+.icon-style {
+  font-size: 16px; /* Adjust this value to make the icon smaller */
+  color: #007acc;
+  border: 2px solid #007acc;
+  padding: 6px; /* Reduce padding if needed */
+  border-radius: 50%;
+  background-color: #e6f4ff;
+  margin-bottom: 8px;
+}
+
+.card:hover .icon-style {
+  color: #005b99; /* Darker blue on hover */
+  border-color: #005b99;
+  background-color: #d0e9ff; /* Darker blue background on hover */
+}
+
+
+.purchase-content {
+  position: fixed;
+  width: 400px;
+  max-width: 1200px;
+  padding: 20px;
+  background-color: #f7f8fc;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-left: 825px;
+  left: 0;
+  right: 0;
+  border: 2px solid #ccc; /* Border as per your existing code */
+}
+
+.header {
+  width: 100%;
+  text-align: left; /* Aligns the "SALES STATUS" header to the left */
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Aligns cards to the left */
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  background-color: #e0f3ff; /* Slightly darker blue on hover */
+  border-color: #005b99; /* Darker blue border on hover */
+}
+
+.icon-style {
+  font-size: 16px; /* Adjust this value to make the icon smaller */
+  color: #007acc;
+  border: 2px solid #007acc;
+  padding: 6px; /* Reduce padding if needed */
+  border-radius: 50%;
+  background-color: #e6f4ff;
+  margin-bottom: 8px;
+}
+
+.card:hover .icon-style {
+  color: #005b99; /* Darker blue on hover */
+  border-color: #005b99;
+  background-color: #d0e9ff; /* Darker blue background on hover */
+}
+
+.Stock-content {
+  position: fixed;
+  width: 200px;
+  max-width: 1200px;
+  padding: 20px;
+  background-color: #f7f8fc;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-left: 1285px;
+  left: 0;
+  right: 0;
+  border: 2px solid #ccc; /* Border as per your existing code */
+}
+
+.header {
+  width: 100%;
+  text-align: left; /* Aligns the "SALES STATUS" header to the left */
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Aligns cards to the left */
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  background-color: #e0f3ff; /* Slightly darker blue on hover */
+  border-color: #005b99; /* Darker blue border on hover */
+}
+
+.icon-style {
+  font-size: 16px; /* Adjust this value to make the icon smaller */
+  color: #007acc;
+  border: 2px solid #007acc;
+  padding: 6px; /* Reduce padding if needed */
+  border-radius: 50%;
+  background-color: #e6f4ff;
+  margin-bottom: 8px;
+}
+
+.card:hover .icon-style {
+  color: #005b99; /* Darker blue on hover */
+  border-color: #005b99;
+  background-color: #d0e9ff; /* Darker blue background on hover */
+}
+
+.Todo-content {
+  position: fixed;
+  width: 315px;
+  max-width: 1200px;
+  height: 265px;
+  padding: 20px;
+  background-color: #f7f8fc;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-left: 1545px;
+  left: 0;
+  right: 0;
+  border: 2px solid #ccc; /* Border as per your existing code */
+}
+
+.header {
+  width: 100%;
+  text-align: left; /* Aligns the "SALES STATUS" header to the left */
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Aligns cards to the left */
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  background-color: #e0f3ff; /* Slightly darker blue on hover */
+  border-color: #005b99; /* Darker blue border on hover */
+}
+
+.icon-style {
+  font-size: 16px; /* Adjust this value to make the icon smaller */
+  color: #007acc;
+  border: 2px solid #007acc;
+  padding: 6px; /* Reduce padding if needed */
+  border-radius: 50%;
+  background-color: #e6f4ff;
+  margin-bottom: 8px;
+}
+
+.card:hover .icon-style {
+  color: #005b99; /* Darker blue on hover */
+  border-color: #005b99;
+  background-color: #d0e9ff; /* Darker blue background on hover */
+}
+
+.linechart-content {
+  position: fixed;
+  width: 860px;
+  max-width: 1200px;
+  height: 465px;
+  padding: 20px;
+  background-color: #f7f8fc;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-left: 365px;
+  margin-top: 325px;
+  left: 0;
+  right: 0;
+  border: 2px solid #ccc; /* Border as per your existing code */
+}
+
+.header {
+  width: 100%;
+  text-align: left; /* Aligns the "SALES STATUS" header to the left */
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Aligns cards to the left */
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  background-color: #e0f3ff; /* Slightly darker blue on hover */
+  border-color: #005b99; /* Darker blue border on hover */
+}
+
+.icon-style {
+  font-size: 16px; /* Adjust this value to make the icon smaller */
+  color: #007acc;
+  border: 2px solid #007acc;
+  padding: 6px; /* Reduce padding if needed */
+  border-radius: 50%;
+  background-color: #e6f4ff;
+  margin-bottom: 8px;
+}
+
+.card:hover .icon-style {
+  color: #005b99; /* Darker blue on hover */
+  border-color: #005b99;
+  background-color: #d0e9ff; /* Darker blue background on hover */
+}
+
+.piechart-content {
+  position: fixed;
+  width: 575px;
+  max-width: 1200px;
+  height: 465px;
+  padding: 20px;
+  background-color: #f7f8fc;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin-left: 1285px;
+  margin-top: 325px;
+  left: 0;
+  right: 0;
+  border: 2px solid #ccc; /* Border as per your existing code */
+}
+
+.header {
+  width: 100%;
+  text-align: left; /* Aligns the "SALES STATUS" header to the left */
+}
+
+#myPieChart{
+  max-height: 400px;
+  max-width: 600px;
+  margin-left: 20px;
+  bottom: 0;
 }

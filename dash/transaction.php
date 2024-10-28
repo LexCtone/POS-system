@@ -264,10 +264,9 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
     <!-- Sidebar on the right -->
     <div class="sidebar">
         <ul class="menu">
-            <li><a href="transaction.php"><i class='fa fa-plus'></i> New Transaction</a></li>
             <li><a href="#" id="addDiscountBtn"><i class='fa fa-percent'></i> Add Discount</a></li>
             <li><a href="#" id="dailySalesBtn"><i class='fa fa-chart-line'></i> Daily Sales</a></li>
-            <li><a href="#" id="userSettingsBtn"><i class='fa fa-cogs'></i> User Settings</a></li>
+          <!--  <li><a href="#" id="userSettingsBtn"><i class='fa fa-cogs'></i> User Settings</a></li>-->
             <li><a href="..\Login.php"><i class='fa fa-sign-out'></i> Logout</a></li>
         </ul>
     </div>
@@ -569,11 +568,10 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
         <span class="close-button">&times;</span>
         <h2>Print Receipt</h2>
         <div id="receiptContent"></div>
-        <button id="printButton">Print</button>
     </div>
 </div>
 
-<!-- User Settings Modal -->
+<!-- User Settings Modal 
 <div id="userSettingsModal" class="modal">
     <div class="modal-content">
         <span class="close-button">&times;</span>
@@ -600,6 +598,7 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
         </form>
     </div>
 </div>
+-->
 
 <!-- Admin Password Modal -->
 <div id="adminPasswordModal" class="modal">
@@ -617,7 +616,7 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
     </div>
 </div>
 
-
+<div>
     <!-- Footer --> 
     <footer class="footer"> 
         <div id="clock" class="time"></div> 
@@ -627,6 +626,8 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
     // Pass server-generated data to JavaScript
     const serverTimestamp = <?php echo $serverTimestamp; ?>;
     </script>
+</div>
+
     <script src="transaction.js"> defer</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>

@@ -534,6 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchProducts(searchValue);
     });
 
+    /*
     function openUserSettingsModal() {
         const userSettingsModal = document.getElementById('userSettingsModal');
         openModal(userSettingsModal);
@@ -559,8 +560,9 @@ document.addEventListener('DOMContentLoaded', function() {
             closeUserSettingsModal();
         }
     });
+*/
 
-
+/*
 // Handle password change functionality
 document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -621,6 +623,8 @@ fetch('change_password.php', {
     console.error('Error:', error);
 });
 });
+*/
+
 
 
     function openSettlePaymentModal() {
@@ -680,13 +684,45 @@ fetch('change_password.php', {
         const cashierName = document.getElementById('cashierName').textContent;
         const currentDate = new Date().toLocaleString();
     
-        let receiptHTML = `
+        // Create a form for customer information
+        const customerInfoForm = `
+            <div id="customerInfoForm" style="font-family: Arial, sans-serif; max-width: 300px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+                <h3 style="text-align: center; margin-bottom: 15px;">Customer Information</h3>
+                <div style="margin-bottom: 10px;">
+                    <label for="customerName" style="display: block; margin-bottom: 5px;">Customer Name:</label>
+                    <input type="text" id="customerName" name="customerName" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label for="customerAddress" style="display: block; margin-bottom: 5px;">Customer Address:</label>
+                    <textarea id="customerAddress" name="customerAddress" rows="2" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;"></textarea>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="phoneNumber" style="display: block; margin-bottom: 5px;">Phone Number:</label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+                </div>
+                <button id="submitCustomerInfo" style="width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer;">Print Receipt</button>
+            </div>
+        `;
+    
+        receiptContent.innerHTML = customerInfoForm;
+    
+        // Add event listener to the submit button
+        document.getElementById('submitCustomerInfo').addEventListener('click', function() {
+            const customerName = document.getElementById('customerName').value || 'N/A';
+            const customerAddress = document.getElementById('customerAddress').value || 'N/A';
+            const phoneNumber = document.getElementById('phoneNumber').value || 'N/A';
+    
+            let receiptHTML = `
             <div style="font-family: Arial, sans-serif; width: 300px; margin: 0 auto; padding: 20px; border: 1px solid #ccc;">
                 <h2 style="text-align: center; margin-bottom: 10px;">Sales Receipt</h2>
                 <p style="margin: 5px 0;"><strong>Transaction No:</strong> ${transactionNo}</p>
                 <p style="margin: 5px 0;"><strong>Date:</strong> ${currentDate}</p>
                 <p style="margin: 5px 0;"><strong>Cashier:</strong> ${cashierName}</p>
-                /* lagyan sya ng text field para sa customer name at customer address */
+                <div style="margin: 10px 0;">
+                    <p style="margin: 5px 0;"><strong>Customer Name:</strong> ${customerName}</p>
+                    <p style="margin: 5px 0;"><strong>Customer Address:</strong> ${customerAddress}</p>
+                    <p style="margin: 5px 0;"><strong>Phone Number:</strong> ${phoneNumber}</p>
+                </div>
                 <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
                     <thead>
@@ -698,28 +734,28 @@ fetch('change_password.php', {
                         </tr>
                     </thead>
                     <tbody>
-        `;
-    
-        if (sales.length === 0) {
-            receiptHTML += `
-                <tr>
-                    <td colspan="4" style="text-align: center; padding: 5px;">No items</td>
-                </tr>
             `;
-        } else {
-            sales.forEach(sale => {
+    
+            if (sales.length === 0) {
                 receiptHTML += `
                     <tr>
-                        <td style="text-align: left; padding: 5px;">${sale.description}</td>
-                        <td style="text-align: right; padding: 5px;">${sale.quantity}</td>
-                        <td style="text-align: right; padding: 5px;">₱${sale.price.toFixed(2)}</td>
-                        <td style="text-align: right; padding: 5px;">₱${sale.total.toFixed(2)}</td>
+                        <td colspan="4" style="text-align: center; padding: 5px;">No items</td>
                     </tr>
                 `;
-            });
-        }
+            } else {
+                sales.forEach(sale => {
+                    receiptHTML += `
+                        <tr>
+                            <td style="text-align: left; padding: 5px;">${sale.description}</td>
+                            <td style="text-align: right; padding: 5px;">${sale.quantity}</td>
+                            <td style="text-align: right; padding: 5px;">₱${sale.price.toFixed(2)}</td>
+                            <td style="text-align: right; padding: 5px;">₱${sale.total.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+            }
     
-        receiptHTML += `
+            receiptHTML += `
                     </tbody>
                 </table>
                 <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
@@ -729,19 +765,10 @@ fetch('change_password.php', {
                 <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;">
                 <p style="text-align: center; margin-top: 20px;">Thank you for your purchase!</p>
             </div>
-        `;
+            `;
     
-        receiptContent.innerHTML = receiptHTML;
-    
-        const printReceiptModal = document.getElementById('printReceiptModal');
-        openModal(printReceiptModal);
-
-    
-        // Set up the event listener for the print button
-        const printButton = document.getElementById('printButton');
-        if (printButton) {
-            printButton.addEventListener('click', function() {
-                const printWindow = window.open('', '', 'width=400,height=600');
+            const printWindow = window.open('', '', 'width=400,height=600');
+            if (printWindow) {
                 printWindow.document.open();
                 printWindow.document.write(`
                     <html>
@@ -769,8 +796,13 @@ fetch('change_password.php', {
                     </html>
                 `);
                 printWindow.document.close();
-            });
-        }
+            } else {
+                console.error('Failed to open print window');
+            }
+        });
+    
+        const printReceiptModal = document.getElementById('printReceiptModal');
+        openModal(printReceiptModal);
     
         // Add event listener to close the modal when clicking outside
         printReceiptModal.addEventListener('click', function(event) {
@@ -779,7 +811,7 @@ fetch('change_password.php', {
             }
         });
     }
-    
+
     window.calculateChange = async function() {
         const totalAmount = parseFloat(document.getElementById('total-amount').textContent.replace('₱', ''));
         const paymentAmount = parseFloat(document.getElementById('payment-amount').value);
