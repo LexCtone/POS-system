@@ -228,9 +228,7 @@ if (isset($_GET['restoreid'])) {
         exit();
     }
 }
-?>   
-
-
+?>  
 <!DOCTYPE html>
 <html lang="en">
 <head>

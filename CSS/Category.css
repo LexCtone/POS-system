@@ -53,14 +53,36 @@ body {
   padding-left: 35px;
 }
 
+
+
+.sidebar ul li a:hover {
+  background-color: #0e394f;
+  padding-left: 35px;
+}
+
+
 /* Add border to selected item */
 .sidebar ul li a.selected {
-  border-left: 5px solid #ffffff;
-  background-color: #0e394f;
   padding-left: 25px; /* Reduced padding to fit within the sidebar width */
   font-weight: bold;
   box-sizing: border-box; /* Ensures padding and border are included in the width calculation */
   width: calc(100% - 0px); /* Adjust width to account for the border */
+}
+
+.selected {
+  position: relative; /* Allow positioning of the dot */
+}
+
+.selected::before {
+  content: ''; /* Required for the pseudo-element */
+  position: absolute; /* Position relative to the parent */
+  left: -15px; /* Adjust to position the dot to the left */
+  top: 50%; /* Center the dot vertically */
+  transform: translateY(-50%); /* Center the dot vertically */
+  width: 10px; /* Dot width */
+  height: 10px; /* Dot height */
+  border-radius: 50%; /* Make it a circle */
+  background-color: #ffffff; /* Dot color */
 }
 
 .sidebar ul a i {

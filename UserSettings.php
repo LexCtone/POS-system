@@ -60,7 +60,9 @@ if (isset($_GET['error'])) {
     </header>
     <ul>
         <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Dashboard</a></li> <!-- Added Dashboard back -->
-        <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a>
+        <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product
+        <i class="fa-solid fa-caret-down" style="font-size: 18px; margin-left: 5px;"></i> <!-- Submenu symbol added -->
+        </a>
             <ul class="submenu">
                 <li><a href="Brand.php"><i class='fa-solid fa-tag'></i> Brand</a></li>
                 <li><a href="Category.php"><i class='fa-solid fa-layer-group'></i> Category</a></li>

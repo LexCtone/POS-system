@@ -332,6 +332,3 @@ form button {
   text-decoration: none; /* Remove underline */
 }
 
-.sidebar ul li:hover .submenu {
-  display: block; /* Show submenu on hover */
-}

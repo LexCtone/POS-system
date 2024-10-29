@@ -52,14 +52,16 @@ if (isset($_SESSION['user_id'])) {
     </header>
     <ul>
         <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Dashboard</a></li> <!-- Added Dashboard back -->
-        <li><a href="Product.php" class="selected"><i class='fas fa-archive' style='font-size:30px'></i>Product</a>
+        <li><a href="Product.php""><i class='fas fa-archive' style='font-size:30px'></i>Product
+        <i class="fa-solid fa-caret-down" style="font-size: 18px; margin-left: 5px;"></i> <!-- Submenu symbol added -->
+        </a>
             <ul class="submenu">
                 <li><a href="Brand.php"><i class='fa-solid fa-tag'></i> Brand</a></li>
                 <li><a href="Category.php"><i class='fa-solid fa-layer-group'></i> Category</a></li>
             </ul>
         </li>
         <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
-        <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
+        <li><a href="StockEntry.php"  class="selected"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
         <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
         <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
         <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>

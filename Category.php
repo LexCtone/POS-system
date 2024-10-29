@@ -39,7 +39,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </header>
     <ul>
         <li><a href="Dashboard.php" class="<?php echo ($current_page == 'Dashboard.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-house' style='font-size:30px'></i>Dashboard</a></li>
-        <li><a href="Product.php" class="<?php echo ($current_page == 'Product.php' || $current_page == 'Brand.php' || $current_page == 'Category.php') ? : ''; ?>"><i class='fas fa-archive' style='font-size:30px'></i>Product</a>
+        <li>
+          <a href="Product.php" class="<?php echo ($current_page == 'Product.php' || $current_page == 'Brand.php' || $current_page == 'Category.php') ? : ''; ?>"><i class='fas fa-archive' style='font-size:30px'></i>Product          <i class="fa-solid fa-caret-down" style="font-size: 18px; margin-left: 5px;"></i> <!-- Submenu symbol added -->
+          </a>
             <ul class="submenu" style="<?php echo ($current_page == 'Brand.php' || $current_page == 'Category.php') ? 'display:block;' : ''; ?>">
                 <li><a href="Brand.php" class="<?php echo ($current_page == 'Brand.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-tag'></i> Brand</a></li>
                 <li><a href="Category.php" class="<?php echo ($current_page == 'Category.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-layer-group'></i> Category</a></li>
