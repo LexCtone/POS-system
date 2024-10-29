@@ -202,6 +202,74 @@ $monthly_sales_json = json_encode(array_values($monthly_sales));
 $monthly_profit_json = json_encode(array_values($monthly_profit));
 $weekly_sales_json = json_encode(array_values($weekly_sales));
 $weekly_profit_json = json_encode(array_values($weekly_profit));
+
+// Fetch total items sold for today
+$query_items_sold = "
+    SELECT SUM(quantity) AS total_items_sold
+    FROM sales
+    WHERE status = 'active' AND DATE(sale_date) = CURDATE()
+";
+$stmt_items_sold = $conn->prepare($query_items_sold);
+$stmt_items_sold->execute();
+$result_items_sold = $stmt_items_sold->get_result();
+$total_items_sold = 0;
+if ($row_items_sold = $result_items_sold->fetch_assoc()) {
+    $total_items_sold = $row_items_sold['total_items_sold'] ?? 0;
+}
+$stmt_items_sold->close();
+
+// Fetch total purchase amount for today
+$query_total_purchase = "
+    SELECT SUM(total) AS total_purchase_amount
+    FROM sales
+    WHERE status = 'active' AND DATE(sale_date) = CURDATE()
+";
+$stmt_total_purchase = $conn->prepare($query_total_purchase);
+$stmt_total_purchase->execute();
+$result_total_purchase = $stmt_total_purchase->get_result();
+$total_purchase_amount = 0;
+if ($row_total_purchase = $result_total_purchase->fetch_assoc()) {
+    $total_purchase_amount = $row_total_purchase['total_purchase_amount'] ?? 0;
+}
+$stmt_total_purchase->close();
+
+// Fetch total canceled orders for the last week
+// Fetch total canceled orders for the last week
+$query_canceled_orders = "
+    SELECT 
+        (SELECT COUNT(*) FROM transaction_voids WHERE void_date >= CURDATE() - INTERVAL 7 DAY) +
+        (SELECT COUNT(*) FROM item_voids WHERE void_date >= CURDATE() - INTERVAL 7 DAY) AS total_canceled_orders
+";
+$result_canceled_orders = $conn->query($query_canceled_orders);
+$total_canceled_orders = 0;
+if ($row_canceled_orders = $result_canceled_orders->fetch_assoc()) {
+    $total_canceled_orders = $row_canceled_orders['total_canceled_orders'] ?? 0;
+}
+
+// Fetch total stock on hand
+$query_stock_on_hand = "
+    SELECT SUM(Quantity) AS total_stock
+    FROM products
+";
+$result_stock_on_hand = $conn->query($query_stock_on_hand);
+$total_stock_on_hand = 0;
+if ($row_stock = $result_stock_on_hand->fetch_assoc()) {
+    $total_stock_on_hand = $row_stock['total_stock'] ?? 0;
+}
+
+// Fetch critical stocks (stocks below 20)
+$query_critical_stocks = "
+    SELECT COUNT(*) AS critical_stock_count
+    FROM products
+    WHERE Quantity <= 10
+";
+$result_critical_stocks = $conn->query($query_critical_stocks);
+$total_critical_stocks = 0;
+if ($row_critical = $result_critical_stocks->fetch_assoc()) {
+    $total_critical_stocks = $row_critical['critical_stock_count'] ?? 0;
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -280,56 +348,96 @@ $weekly_profit_json = json_encode(array_values($weekly_profit));
     <div id="weekly_labels_json" style="display:none;"><?php echo $weekly_labels_json; ?></div>
     </div>
     </div>
-
-
-  <div class="Purchase-overview">
+    <div class="Purchase-overview">
     <main class="purchase-content">
-      <header class="header">
-        <h2 style='text-align: left'>Purchase Overview</h2>
-      </header>
-      <section class="cards">
-        <div class="card">
-          <i class="fas fa-chart-line icon-style"></i> No. of purchase<br>£12,458
-        </div>
-        <div class="card">
-          <i class="fas fa-exclamation-triangle icon-style"></i> Cancel Orders<br>£8,248
-        </div>
-        <div class="card">
-          <i class="fas fa-box icon-style"></i> Purchase Amount<br>£880
-        </div>
-      </section>
+        <header class="header">
+            <h2 style='text-align: left'>Purchase Overview</h2>
+        </header>
+        <section class="cards">
+            <a href="SalesHistory.php" class="card" style="text-decoration: none; color: inherit;">
+                <i class="fas fa-chart-line icon-style"></i> 
+                No. items sold<br>
+                <?php echo number_format($total_items_sold); ?>
+            </a>
+            <a href="CancelledOrder.php" class="card" style="text-decoration: none; color: inherit;">
+                <i class="fas fa-exclamation-triangle icon-style"></i> 
+                Cancelled Order<br>
+                <?php echo number_format($total_canceled_orders); ?>
+            </a>
+            <a href="SalesHistory.php" class="card" style="text-decoration: none; color: inherit;">
+                <i class="fas fa-box icon-style"></i> 
+                Purchase Amount<br>
+                ₱<?php echo number_format($total_purchase_amount, 2); ?>
+            </a>
+        </section>
     </main>
-  </div>
-  <div class="Stock">
+</div>
+
+<div class="Stock">
     <main class="Stock-content">
-      <header class="header">
-        <h2 style='text-align: left'>Stocks</h2>
-      </header>
-      <section class="cards">
-        <div class="card">
-          <i class="fas fa-chart-line icon-style"></i> Stock on hand<br>£12,458
-        </div>
-        <div class="card">
-          <i class="fas fa-chart-line icon-style"></i> Critical Stocks<br>£12,458
-        </div>
-      </section>
+        <header class="header">
+            <h2 style='text-align: left'>Stocks</h2>
+        </header>
+        <section class="cards">
+            <a href="InventoryList.php" class="card" style="text-decoration: none; color: inherit;">
+                <i class="fas fa-chart-line icon-style"></i> 
+                Stock on hand<br>
+                <?php echo number_format($total_stock_on_hand,  ); ?>
+            </a>
+            <a href="CriticalStocks.php" class="card" style="text-decoration: none; color: inherit;">
+                <i class="fas fa-chart-line icon-style"></i> 
+                Critical Stocks<br>
+                <?php echo $total_critical_stocks; ?>
+            </a>
+        </section>
     </main>
-    <div class="Todo">
+</div>
+
+
+<div class="Todo">
     <main class="Todo-content">
-      <header class="header">
-      <h2 style="text-align: left; display: inline-block;">To-do list</h2>
-<button 
-    style="margin-left: 150px; padding: 5px 10px; font-size: 16px; cursor: pointer;" 
-    onclick="addTodo()">
-    Add
-</button>
-
-<ul id="todoList" style="list-style-type: none; padding: 0;"></ul>
-
+        <header class="header">
+            <h2 style="text-align: left; display: inline-block;">To-do list</h2>
+            <button 
+                style="margin-left: 150px; padding: 5px 10px; font-size: 16px; cursor: pointer;" 
+                onclick="addTodo()">
+                Add
+            </button>
+        </header>
+        <ul id="todoList" style="list-style-type: none; padding: 0;"></ul>
+        </main>
+</div>
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetchTodos(); // Fetch existing to-do items when the page loads
+});
+
+function fetchTodos() {
+    fetch('todo.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ action: 'fetch' }) // Fetch action
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            data.data.forEach(task => {
+                addTodoToDOM(task); // Add each task to the DOM
+            });
+        } else {
+            console.error('Error fetching todos:', data.message);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 function addTodo() {
     const todoText = prompt("Enter a new to-do item:");
-    if (todoText) {
+    if (todoText && todoText.length <= 500) { // Ensure the length does not exceed 500
         const todoList = document.getElementById("todoList");
 
         // Create the <li> element
@@ -343,22 +451,103 @@ function addTodo() {
         radioButton.type = "radio";
         radioButton.style.marginRight = "10px";
 
-        // Attach click event to remove the item
-        radioButton.onclick = () => todoList.removeChild(listItem);
+        // Attach click event to remove the item and delete from DB
+        radioButton.onclick = () => {
+            listItem.classList.add('fade-out'); // Add fade-out class
+            setTimeout(() => {
+                removeTodoFromDatabase(todoText); // Remove from database
+                todoList.removeChild(listItem); // Remove from the DOM after animation
+            }, 500); // Match the timeout to the CSS transition duration
+        };
 
         // Set the item text
-        const itemText = document.createElement("span");
-        itemText.textContent = todoText;
+        const taskText = document.createElement("span");
+        taskText.textContent = todoText;
 
         // Append the radio button and text to the <li>
         listItem.appendChild(radioButton);
-        listItem.appendChild(itemText);
+        listItem.appendChild(taskText);
 
         // Append the <li> to the to-do list
         todoList.appendChild(listItem);
+
+        // Save to database
+        saveTodoToDatabase(todoText);
+    } else {
+        alert("Please enter a valid to-do item (up to 500 characters).");
     }
 }
+
+function saveTodoToDatabase(task) {
+    fetch('todo.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tasks: task, action: 'add' }) // Use 'tasks' instead of 'item'
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+function removeTodoFromDatabase(task) {
+    fetch('todo.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tasks: task, action: 'remove' }) // Use 'tasks' instead of 'item'
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Removed:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+function addTodoToDOM(task) {
+    const todoList = document.getElementById("todoList");
+
+    // Create the <li> element
+    const listItem = document.createElement("li");
+    listItem.style.display = "flex";
+    listItem.style.alignItems = "center";
+    listItem.style.marginBottom = "5px";
+
+    // Create the radio button
+    const radioButton = document.createElement("input");
+    radioButton.type = "radio";
+    radioButton.style.marginRight = "10px";
+
+    // Attach click event to remove the item and delete from DB
+    radioButton.onclick = () => {
+        listItem.classList.add('fade-out'); // Add fade-out class
+        setTimeout(() => {
+            removeTodoFromDatabase(task); // Remove from database
+            todoList.removeChild(listItem); // Remove from the DOM after animation
+        }, 500); // Match the timeout to the CSS transition duration
+    };
+
+    // Set the item text
+    const taskText = document.createElement("span");
+    taskText.textContent = task;
+
+    // Append the radio button and text to the <li>
+    listItem.appendChild(radioButton);
+    listItem.appendChild(taskText);
+
+    // Append the <li> to the to-do list
+    todoList.appendChild(listItem);
+}
 </script>
+
       </header>
       <section class="cards">
       </section>
@@ -372,6 +561,7 @@ function addTodo() {
       <div class="chart-container" style="width: 80%; margin: 30px auto;">
     <canvas id="myLineChart"></canvas>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </main>
   </div>

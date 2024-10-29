@@ -2911,3 +2911,131 @@
 [2024-10-30 00:21:32] Executed product update for barcode: 10000001
 [2024-10-30 00:21:32] Executed sale insert for barcode: 10000002
 [2024-10-30 00:21:32] Executed product update for barcode: 10000002
+[2024-10-31 02:47:38] Unauthorized access attempt
+[2024-10-31 02:47:40] Unauthorized access attempt
+[2024-10-31 02:48:21] Received data: Array
+(
+    [invoice] => 20241030095569172
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-31 02:48:21] Executed sale insert for barcode: 10000001
+[2024-10-31 02:48:21] Executed product update for barcode: 10000001
+[2024-10-31 04:09:06] Received data: Array
+(
+    [invoice] => 20241030941247739
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 123
+    [change] => 58
+)
+
+[2024-10-31 04:09:06] Executed sale insert for barcode: 10000001
+[2024-10-31 04:09:06] Executed product update for barcode: 10000001
+[2024-10-30 04:11:43] Received data: Array
+(
+    [invoice] => 20241029690229926
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+            [1] => Array
+                (
+                    [product_id] => 3
+                    [barcode] => 10000003
+                    [description] => Acrylic Thinner Gallon
+                    [price] => 395
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 395
+                )
+
+            [2] => Array
+                (
+                    [product_id] => 4
+                    [barcode] => 10000004
+                    [description] => Builder's Bond - 100 Grams
+                    [price] => 85
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 85
+                )
+
+        )
+
+    [totalAmount] => 545
+    [paymentAmount] => 600
+    [change] => 55
+)
+
+[2024-10-30 04:11:43] Executed sale insert for barcode: 10000001
+[2024-10-30 04:11:43] Executed product update for barcode: 10000001
+[2024-10-30 04:11:43] Executed sale insert for barcode: 10000003
+[2024-10-30 04:11:43] Executed product update for barcode: 10000003
+[2024-10-30 04:11:43] Executed sale insert for barcode: 10000004
+[2024-10-30 04:11:43] Executed product update for barcode: 10000004
+[2024-10-30 04:15:18] Received data: Array
+(
+    [invoice] => 20241029711711972
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 65
+                )
+
+        )
+
+    [totalAmount] => 65
+    [paymentAmount] => 65
+    [change] => 0
+)
+
+[2024-10-30 04:15:18] Executed sale insert for barcode: 10000001
+[2024-10-30 04:15:18] Executed product update for barcode: 10000001

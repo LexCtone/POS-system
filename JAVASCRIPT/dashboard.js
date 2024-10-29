@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderWidth: 4,
-            tension: 0.4, // Makes the line curved
+            tension: 0.5, // Makes the line curved
             fill: true
         },
         {
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
             borderColor: 'rgba(255, 159, 64, 1)',
             backgroundColor: 'rgba(255, 159, 64, 0.2)',
             borderWidth: 4,
-            tension: 0.4, // Makes the line curved
+            tension: 0.5, // Makes the line curved
             fill: true
         }
     ]
@@ -58,7 +58,6 @@ let myLineChart = new Chart(ctxLineChart, {
             x: {
                 title: {
                     display: true,
-                    text: 'Days of the Week' // Update the x-axis title for daily sales
                 }
             },
             y: {
@@ -81,7 +80,7 @@ let myLineChart = new Chart(ctxLineChart, {
 
     // Event listener for "Annual Sales" - to show monthly sales and profit data
     document.getElementById('annual-sales').addEventListener('click', function () {
-        updateChart(monthLabels, monthlySalesData, monthlyProfitData); // Show both sales and profit for each month
+        updateChart(monthLabels, monthlySalesData); // Show both sales and profit for each month
     });
 
     // Event listener for "Annual Profit" - show monthly profit data
@@ -92,7 +91,6 @@ let myLineChart = new Chart(ctxLineChart, {
     // Event listener for "Daily Sales" - show daily sales for the last 7 days
     document.getElementById('daily-sales').addEventListener('click', function () {
         updateChart(weeklyLabels, weeklySalesData, []); // Show daily sales for last 7 days
-        myLineChart.options.scales.x.title.text = 'Daily Sales for Last 7 Days'; // Update the x-axis title
         myLineChart.update();
     });
 
@@ -175,3 +173,4 @@ let myLineChart = new Chart(ctxLineChart, {
 
     const myDashboardPieChart = new Chart(ctxDashboardPieChart, pieConfigDashboard);
 });
+
