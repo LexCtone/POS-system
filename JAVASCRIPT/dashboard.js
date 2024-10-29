@@ -1,84 +1,111 @@
 document.addEventListener("DOMContentLoaded", function () {
     const ctxLineChart = document.getElementById('myLineChart').getContext('2d');
 
-    // Retrieve JSON data for daily sales and profit
-    const dailySalesData = JSON.parse(document.getElementById('daily_sales_json').textContent);
-    const dailyProfitData = JSON.parse(document.getElementById('daily_profit_json').textContent);
-    const dailyLabels = Array.from({ length: 31 }, (_, i) => (i + 1).toString()); // Days of the month (1 to 31)
+    // Define month labels for Annual data
+    const monthLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    // Initial data for Daily Sales Chart
-    let dailyLineChartData = {
-        labels: dailyLabels,  // This will be the days of the month
-        datasets: [{
-            label: 'Daily Sales',
-            data: dailySalesData, // Data for daily sales
+    // Fetch monthly sales and profit data for Annual
+    const monthlySalesData = JSON.parse(document.getElementById('monthly_sales_json').textContent || '[]');
+    const monthlyProfitData = JSON.parse(document.getElementById('monthly_profit_json').textContent || '[]');
+
+    // Fetch weekly sales and profit data for Daily Sales/Profit (7 days)
+    const weeklySalesData = JSON.parse(document.getElementById('weekly_sales_json').textContent || '[]');
+    const weeklyProfitData = JSON.parse(document.getElementById('weekly_profit_json').textContent || '[]');
+    const weeklyLabels = JSON.parse(document.getElementById('weekly_labels_json').textContent || '[]');
+
+    // Fetch annual and daily sales/profit data
+    const annualSales = parseFloat(document.getElementById('annual_sales_json')?.textContent || 0);
+    const annualProfit = parseFloat(document.getElementById('annual_profit_json')?.textContent || 0);
+
+ // Initial data for the chart (set to daily sales and profit by default)
+ const chartData = {
+    labels: weeklyLabels.length > 0 ? weeklyLabels : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], // Use weekly labels
+    datasets: [
+        {
+            label: 'Sales',
+            data: weeklySalesData, // Daily sales data
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderWidth: 2,
-            tension: 0.4,
+            borderWidth: 4,
+            tension: 0.4, // Makes the line curved
             fill: true
-        }, {
-            label: 'Daily Profit',
-            data: dailyProfitData, // Data for daily profit
+        },
+        {
+            label: 'Profit',
+            data: weeklyProfitData, // Daily profit data
             borderColor: 'rgba(255, 159, 64, 1)',
             backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            borderWidth: 2,
-            tension: 0.4,
+            borderWidth: 4,
+            tension: 0.4, // Makes the line curved
             fill: true
-        }]
-    };
+        }
+    ]
+};
 
-    // Chart Configuration for daily sales and profit
-    const dailyLineConfig = {
-        type: 'line',
-        data: dailyLineChartData,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
+// Create the chart
+let myLineChart = new Chart(ctxLineChart, {
+    type: 'line',
+    data: chartData,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top',
+            }
+        },
+        scales: {
+            x: {
+                title: {
                     display: true,
-                    position: 'top',
+                    text: 'Days of the Week' // Update the x-axis title for daily sales
                 }
             },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Days'
-                    }
+            y: {
+                title: {
+                    display: true,
+                    text: 'Amount in ₱'
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Sales / Profit'
-                    },
-                    beginAtZero: true
-                }
+                beginAtZero: true
             }
         }
-    };
+    }
+});
+    // Function to update the chart with specific data
+    function updateChart(labels, dataSales, dataProfit) {
+        myLineChart.data.labels = labels;
+        myLineChart.data.datasets[0].data = dataSales; // Update sales data
+        myLineChart.data.datasets[1].data = dataProfit; // Update profit data
+        myLineChart.update();
+    }
 
-    // Create the chart
-    let myLineChart = new Chart(ctxLineChart, dailyLineConfig);
+    // Event listener for "Annual Sales" - to show monthly sales and profit data
+    document.getElementById('annual-sales').addEventListener('click', function () {
+        updateChart(monthLabels, monthlySalesData, monthlyProfitData); // Show both sales and profit for each month
+    });
 
-    // Event Listeners for your existing buttons (optional)
+    // Event listener for "Annual Profit" - show monthly profit data
+    document.getElementById('annual-profit').addEventListener('click', function () {
+        updateChart(monthLabels, [], monthlyProfitData); // Show monthly profit with empty sales data
+    });
+
+    // Event listener for "Daily Sales" - show daily sales for the last 7 days
     document.getElementById('daily-sales').addEventListener('click', function () {
-        myLineChart.data.datasets[0].data = dailySalesData;
-        myLineChart.data.labels = dailyLabels;
-        myLineChart.data.datasets[0].label = 'Daily Sales';
+        updateChart(weeklyLabels, weeklySalesData, []); // Show daily sales for last 7 days
+        myLineChart.options.scales.x.title.text = 'Daily Sales for Last 7 Days'; // Update the x-axis title
         myLineChart.update();
     });
 
+    // Event listener for "Daily Profit" - show daily profit for the last 7 days
     document.getElementById('daily-profit').addEventListener('click', function () {
-        myLineChart.data.datasets[1].data = dailyProfitData;
-        myLineChart.data.labels = dailyLabels;
-        myLineChart.data.datasets[1].label = 'Daily Profit';
+        updateChart(weeklyLabels, [], weeklyProfitData); // Show daily profit for last 7 days
         myLineChart.update();
     });
+
     // Pie Chart for Dashboard
     const ctxDashboardPieChart = document.getElementById('myPieChart').getContext('2d');
-    const labelsDashboard = safeJSONParse('labels_json_dashboard', []);
-    const pieChartDataDashboard = safeJSONParse('data_json_dashboard', []).map(Number);
+    const labelsDashboard = JSON.parse(document.getElementById('labels_json_dashboard').textContent || '[]');
+    const pieChartDataDashboard = JSON.parse(document.getElementById('data_json_dashboard').textContent || '[]').map(Number);
 
     const pieDataDashboard = {
         labels: labelsDashboard,

@@ -6,7 +6,6 @@ session_start();
 error_reporting(0);
 ini_set('display_errors', 0);
 
-
 // Connect to the database
 include('connect.php');
 
@@ -114,6 +113,48 @@ while ($row = $result_weekly->fetch_assoc()) {
     $weekly_profit[$week] = (float)$row['weekly_profit']; // Ensure it's a float
 }
 
+// Fetch daily sales and profit for the last 7 days, grouped by day of the week
+$query_daily_week = "
+    SELECT DAYNAME(s.sale_date) AS day_name, 
+           SUM(s.total) AS daily_sales, 
+           SUM(s.total - s.discount_amount - (p.cost_price * s.quantity)) AS daily_profit
+    FROM sales s
+    JOIN products p ON s.barcode = p.Barcode
+    WHERE s.status = 'active' 
+    AND s.sale_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+    GROUP BY day_name
+    ORDER BY FIELD(day_name, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+";
+
+$result_daily_week = $conn->query($query_daily_week);
+
+$weekly_sales = [];
+$weekly_profit = [];
+$weekly_labels = [];
+
+// Reset the arrays to ensure correct indexing
+$weekly_sales = array_fill(0, 7, 0);
+$weekly_profit = array_fill(0, 7, 0);
+$weekly_labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+while ($row = $result_daily_week->fetch_assoc()) {
+    $day_name = $row['day_name']; // Get the day name
+    $index = array_search($day_name, $weekly_labels); // Find the index of the day name
+
+    if ($index !== false) { // Ensure the day exists in the labels
+        $weekly_sales[$index] = (float)$row['daily_sales']; // Daily sales as float
+        $weekly_profit[$index] = (float)$row['daily_profit']; // Daily profit as float
+    }
+}
+
+// Encode for JavaScript
+$weekly_sales_json = json_encode($weekly_sales);
+$weekly_profit_json = json_encode($weekly_profit);
+$weekly_labels_json = json_encode($weekly_labels);
+// Encode for JavaScript usage (monthly and weekly)
+$monthly_sales_json = json_encode(array_values($monthly_sales));
+$monthly_profit_json = json_encode(array_values($monthly_profit));
+
 // Fetch the username of the logged-in admin
 $admin_name = "ADMINISTRATOR"; // Default value
 if (isset($_SESSION['user_id'])) {
@@ -128,6 +169,7 @@ if (isset($_SESSION['user_id'])) {
     }
     $stmt->close();
 }
+
 
 // Query to fetch the top 10 selling products for the pie chart
 $query_top_10_dashboard = "
@@ -227,11 +269,15 @@ $weekly_profit_json = json_encode(array_values($weekly_profit));
             </div>
         </section>
     </main>
-    <div id="daily_sales_json" style="display:none;"><?php echo htmlspecialchars($daily_sales_json, ENT_QUOTES, 'UTF-8'); ?></div>
-    <div id="daily_profit_json" style="display:none;"><?php echo htmlspecialchars($daily_profit_json, ENT_QUOTES, 'UTF-8'); ?></div>
-    <div id="daily_labels_json" style="display:none;"><?php echo htmlspecialchars($daily_labels_json, ENT_QUOTES, 'UTF-8'); ?></div>
-    <div id="monthly_sales_json" style="display:none;"><?php echo htmlspecialchars($monthly_sales_json, ENT_QUOTES, 'UTF-8'); ?></div>
-    <div id="monthly_profit_json" style="display:none;"><?php echo htmlspecialchars($monthly_profit_json, ENT_QUOTES, 'UTF-8'); ?></div>
+    <div id="annual_sales_json" style="display:none;"><?php echo $annual_sales; ?></div>
+    <div id="annual_profit_json" style="display:none;"><?php echo $annual_profit; ?></div>
+    <div id="daily_sales_json" style="display:none;"><?php echo $daily_sales; ?></div>
+    <div id="daily_profit_json" style="display:none;"><?php echo $daily_profit; ?></div>
+    <div id="monthly_sales_json" style="display:none;"><?php echo $monthly_sales_json; ?></div>
+    <div id="monthly_profit_json" style="display:none;"><?php echo $monthly_profit_json; ?></div>
+    <div id="weekly_sales_json" style="display:none;"><?php echo $weekly_sales_json; ?></div>
+    <div id="weekly_profit_json" style="display:none;"><?php echo $weekly_profit_json; ?></div>
+    <div id="weekly_labels_json" style="display:none;"><?php echo $weekly_labels_json; ?></div>
     </div>
     </div>
 

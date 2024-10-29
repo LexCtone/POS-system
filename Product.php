@@ -18,7 +18,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 // Fetch and display products
-$sql = "SELECT * FROM products";
+$sql = "SELECT id, Barcode, Description, Brand, Category, Price, cost_price, Quantity FROM products";
 $result = mysqli_query($conn, $sql);
 
 // Fetch brands and categories for dropdowns
@@ -228,7 +228,8 @@ if (isset($_GET['restoreid'])) {
         exit();
     }
 }
-?>
+?>   
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -267,7 +268,7 @@ if (isset($_GET['restoreid'])) {
     </ul>
 </nav>
 
-    <header>    
+<header>    
         <h2 class="ProductHeader">Product List  
             <input id="search-input" type="text" placeholder="Search...">
             <button id="add-product-button"><i class='fas fa-plus'></i></button>
@@ -284,6 +285,7 @@ if (isset($_GET['restoreid'])) {
                     <th scope="col">Brand</th>
                     <th scope="col">Category</th>
                     <th scope="col">Price</th>
+                    <th scope="col">Base Price</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Operation</th>
                 </tr>
@@ -298,6 +300,7 @@ if (isset($_GET['restoreid'])) {
                             <td><?= htmlspecialchars($row['Brand']) ?></td>
                             <td><?= htmlspecialchars($row['Category']) ?></td>
                             <td><?= htmlspecialchars($row['Price']) ?></td>
+                            <td><?= htmlspecialchars($row['cost_price']) ?></td> <!-- New row for cost_price -->
                             <td><?= htmlspecialchars($row['Quantity']) ?></td>
                             <td>
                                 <button class="button update-button" 
@@ -307,6 +310,7 @@ if (isset($_GET['restoreid'])) {
                                         data-brand="<?= htmlspecialchars($row['Brand']) ?>"
                                         data-category="<?= htmlspecialchars($row['Category']) ?>"
                                         data-price="<?= htmlspecialchars($row['Price']) ?>"
+                                        data-cost-price="<?= htmlspecialchars($row['cost_price']) ?>
                                         data-quantity="<?= htmlspecialchars($row['Quantity']) ?>">
                                     Update
                                 </button>
