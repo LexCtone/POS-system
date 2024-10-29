@@ -17,6 +17,8 @@ if (isset($_SESSION['user_id'])) {
     }
     $stmt->close();
 }
+$current_page = basename($_SERVER['PHP_SELF']);
+
 
 ?>
 <!DOCTYPE html>
@@ -36,17 +38,17 @@ if (isset($_SESSION['user_id'])) {
         <br><?php echo htmlspecialchars($admin_name); ?>
     </header>
     <ul>
-        <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Dashboard</a></li> <!-- Added Dashboard back -->
-        <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product</a>
-            <ul class="submenu">
-                <li><a href="Brand.php"><i class='fa-solid fa-tag'></i> Brand</a></li>
-                <li><a href="Category.php" class="selected"><i class='fa-solid fa-layer-group'></i> Category</a></li>
+        <li><a href="Dashboard.php" class="<?php echo ($current_page == 'Dashboard.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-house' style='font-size:30px'></i>Dashboard</a></li>
+        <li><a href="Product.php" class="<?php echo ($current_page == 'Product.php' || $current_page == 'Brand.php' || $current_page == 'Category.php') ? : ''; ?>"><i class='fas fa-archive' style='font-size:30px'></i>Product</a>
+            <ul class="submenu" style="<?php echo ($current_page == 'Brand.php' || $current_page == 'Category.php') ? 'display:block;' : ''; ?>">
+                <li><a href="Brand.php" class="<?php echo ($current_page == 'Brand.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-tag'></i> Brand</a></li>
+                <li><a href="Category.php" class="<?php echo ($current_page == 'Category.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-layer-group'></i> Category</a></li>
             </ul>
         </li>
-        <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
-        <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
-        <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
-        <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
+        <li><a href="Vendor.php" class="<?php echo ($current_page == 'Vendor.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
+        <li><a href="StockEntry.php" class="<?php echo ($current_page == 'StockEntry.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
+        <li><a href="Records.php" class="<?php echo ($current_page == 'Records.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
+        <li><a href="UserSettings.php" class="<?php echo ($current_page == 'UserSettings.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
         <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
 </nav>
@@ -145,3 +147,4 @@ mysqli_close($conn);
 </div>
 </body>
 </html>
+ 

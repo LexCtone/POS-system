@@ -18,7 +18,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 // Fetch and display products
-$sql = "SELECT id, Barcode, Description, Brand, Category, Price, cost_price, Quantity FROM products";
+$sql = "SELECT * FROM products";
 $result = mysqli_query($conn, $sql);
 
 // Fetch brands and categories for dropdowns
@@ -249,18 +249,21 @@ if (isset($_GET['restoreid'])) {
         <br><?php echo htmlspecialchars($admin_name); ?>
     </header>
     <ul>
-        <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Dashboard</a></li> <!-- Added Dashboard back -->
-        <li><a href="Product.php" class="selected"><i class='fas fa-archive' style='font-size:30px'></i>Product</a>
+        <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i> Dashboard</a></li>
+        <li>
+            <a href="Product.php" class="selected"><i class='fas fa-archive' style='font-size:30px'></i> Product
+                <i class="fa-solid fa-caret-down" style="font-size: 18px; margin-left: 5px;"></i> <!-- Submenu symbol added -->
+            </a>
             <ul class="submenu">
                 <li><a href="Brand.php"><i class='fa-solid fa-tag'></i> Brand</a></li>
                 <li><a href="Category.php"><i class='fa-solid fa-layer-group'></i> Category</a></li>
             </ul>
         </li>
-        <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
-        <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
-        <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
-        <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
-        <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
+        <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i> Vendor</a></li>
+        <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i> Stock Entry</a></li>
+        <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i> Records</a></li>
+        <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i> User Settings</a></li>
+        <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i> Logout</a></li>
     </ul>
 </nav>
 
@@ -281,7 +284,6 @@ if (isset($_GET['restoreid'])) {
                     <th scope="col">Brand</th>
                     <th scope="col">Category</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Base Price</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Operation</th>
                 </tr>
@@ -296,7 +298,6 @@ if (isset($_GET['restoreid'])) {
                             <td><?= htmlspecialchars($row['Brand']) ?></td>
                             <td><?= htmlspecialchars($row['Category']) ?></td>
                             <td><?= htmlspecialchars($row['Price']) ?></td>
-                            <td><?= htmlspecialchars($row['cost_price']) ?></td> <!-- New row for cost_price -->
                             <td><?= htmlspecialchars($row['Quantity']) ?></td>
                             <td>
                                 <button class="button update-button" 
@@ -306,7 +307,6 @@ if (isset($_GET['restoreid'])) {
                                         data-brand="<?= htmlspecialchars($row['Brand']) ?>"
                                         data-category="<?= htmlspecialchars($row['Category']) ?>"
                                         data-price="<?= htmlspecialchars($row['Price']) ?>"
-                                        data-cost-price="<?= htmlspecialchars($row['cost_price']) ?>
                                         data-quantity="<?= htmlspecialchars($row['Quantity']) ?>">
                                     Update
                                 </button>
