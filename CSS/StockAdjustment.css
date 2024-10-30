@@ -177,6 +177,8 @@ body {
 #product-table td {
     padding: 12px 15px;
     text-align: center;
+    font-weight: bold;
+    font-size: 18px; /* Increase the font size as needed */
 }
 
 #product-table th {
@@ -361,7 +363,8 @@ body {
     padding: 12px 15px;
     text-align: center;
     border-bottom: 1px solid #e0e0e0;
-    font-size: 15px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 #adjustmentHistoryTable th {

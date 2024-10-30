@@ -221,9 +221,10 @@ body {
 
 #sales-table th, 
 #sales-table td {
-  padding: 20px 15px;
+  padding: 15px 15px;
   text-align: center;
-  font-size: 15.5px;
+  font-weight: bold;
+  font-size: 18px; /* Increase the font size as needed */
 }
 
 #sales-table th {

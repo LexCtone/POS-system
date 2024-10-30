@@ -1,18 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
   let rowId = 1; // Global variable to keep track of row IDs
 
-  // Generate a random 11-digit number
-  // Generate a random number within the range of a signed 32-bit integer
-  const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 100000000 + 1)) + 100000000; // Generates a random 9-digit number
+    // Generate a random 11-digit number
+    const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 100000000 + 1)) + 100000000;
 
-  // Event listener for the generate link
-  document.getElementById('generateLink').addEventListener('click', function (event) {
-    event.preventDefault();
+    // Automatically generate a reference number on page load
     const referenceNoField = document.getElementById('referenceNo');
     if (referenceNoField) {
-      referenceNoField.value = generateRandomNumber();
+        referenceNoField.value = generateRandomNumber();
     }
-  });
+
 
   // Fetch and populate products in the modal
   const fetchProducts = async () => {

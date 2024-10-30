@@ -34,7 +34,7 @@ if (!$result) {
     die("Error: " . $conn->error);
 }
 
-// Include the rest of your HTML here
+$current_date = date('Y-m-d'); // Format: YYYY-MM-DD
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,16 +85,15 @@ if (!$result) {
     <div class="form-group">
         <label for="referenceNo">REFERENCE NO</label>
         <input type="text" id="referenceNo" name="referenceNo" value="" readonly>
-        <a href="#" id="generateLink" class="generate-link">[Generate]</a>
     </div>
         <div class="form-group">
             <label for="contactPerson">CONTACT PERSON</label>
             <input type="text" id="contactPerson" name="contactPerson">
         </div>
         <div class="form-group">
-            <label for="stockInBy">STOCK IN BY</label>
-            <input type="text" id="stockInBy" name="stockInBy">
-        </div>
+            <label disabled for="stockInBy">STOCK IN BY</label>
+            <input type="text" id="stockInBy" name="stockInBy" value="<?php echo htmlspecialchars($admin_name); ?>" readonly>
+            </div>
         <div class="form-group">
             <label for="vendor">VENDOR</label>
             <select id="vendor" name="vendor">
@@ -106,8 +105,8 @@ if (!$result) {
         </div>
         <div class="form-group">
             <label for="stockInDate">STOCK IN DATE</label>
-            <input type="date" id="stockInDate" name="stockInDate">
-        </div>
+            <input type="date" id="stockInDate" name="stockInDate" value="<?php echo $current_date; ?>">
+            </div>
         <div class="form-group">
             <label for="address">ADDRESS</label>
             <input type="text" id="address" name="address" autocomplete="off">
@@ -141,7 +140,6 @@ if (!$result) {
   </table>
 </div>
 
-
 <!-- Save Button -->
 <div class="save-container">
     <button type="button" id="save-button">Save</button>
@@ -149,19 +147,19 @@ if (!$result) {
 <script src="JAVASCRIPT\StockEntry.js"></script>
 </body>
 
-<!-- Modal for Selecting Products -->
 <div id="product-modal" class="modal-overlay">
     <div class="modal-content">
         <span class="close">&times;</span> <!-- This is the close button -->
         <h2>Product List</h2>
-        <table id="productModalTable">
+        <div class="modal-body">
+        <table class="productTable" id="productModalTable">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Barcode</th>
                     <th>Description</th>
                     <th>Quantity</th>
-                    <th></th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -170,6 +168,8 @@ if (!$result) {
         </table>
     </div>
 </div>
+</div>
+
 </html>
 <?php
 // Close the database connection

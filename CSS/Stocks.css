@@ -252,7 +252,6 @@ input[type="date"] {
 #productModalTable {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
   font-family: Arial, sans-serif;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -275,7 +274,10 @@ input[type="date"] {
 /* Table Body Styling */
 #productModalTable td  {
   border-bottom: 1px solid #e0e0e0;
+  padding: 12px 15px;
   text-align: center;
+  font-weight: bold;
+  font-size: 18px; /* Increase the font size as needed */
 }
 
 /* Last column width adjustment */
@@ -290,23 +292,7 @@ input[type="date"] {
   background-color: #f1f1f1;
 }
 
-/* Scrolling for the product table */
-.modal-content {
-  max-height: 500px; /* Limit the height of modal */
-  overflow-y: auto; /* Enable vertical scrolling */
-}
-
-/* Slide-down animation */
-@keyframes slide-down {
-  from {
-    transform: translateY(-20%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
+ 
 
 /* Style for the select button */
 .btn-select {
@@ -465,8 +451,10 @@ input[type="date"] {
 
 #product-table th, 
 #product-table td {
-    padding: 12px 15px;
-    text-align: center;
+  padding: 12px 15px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px; /* Increase the font size as needed */
 }
 
 #product-table th {
@@ -543,11 +531,43 @@ input[type="date"] {
   border: 1px solid #888;
   width: 90%;
   max-width: 1200px;
-  max-height: 80vh;
-  overflow-y: auto;
+  max-height: 75vh; /* Limit the height of the modal */
   position: relative;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.modal-body {
+  max-height: 60vh; /* Set max height for the table body */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 0px; /* Add some padding if needed */
+}
+
+.productTable {
+  width: 100%; /* Full width of the modal body */
+  border-collapse: collapse;
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.productTable th, .productTable td {
+  padding: 12px; /* Add padding for better readability */
+  text-align: center; /* Align text to the left */
+  border-bottom: 1px solid #e0e0e0; /* Add border between rows */
+}
+
+.productTable th {
+  background-color: #1C75A6; /* Header background color */
+  color: white; /* Header text color */
+  z-index: 1; /* Ensure the header stays above other content */
+}
+
+.productTable tr:nth-child(even) {
+  background-color: #f8f8f8; /* Light background for even rows */
+}
+
+.productTable tr:hover {
+  background-color: #e8f4f8; /* Highlight row on hover */
 }
 
 .modal-header {
@@ -589,8 +609,8 @@ input[type="date"] {
 #adjustmentHistoryTable td {
   padding: 12px 15px;
   text-align: center;
-  border-bottom: 1px solid #e0e0e0;
-  font-size: 15px;
+  font-weight: bold;
+  font-size: 18px; /* Increase the font size as needed */
 }
 
 #adjustmentHistoryTable th {

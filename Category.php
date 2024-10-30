@@ -17,9 +17,8 @@ if (isset($_SESSION['user_id'])) {
     }
     $stmt->close();
 }
+
 $current_page = basename($_SERVER['PHP_SELF']);
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,8 +26,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Category List</title>
-  <link rel="stylesheet" type="text/css" href="CSS\Category.css">
-  <script type="text/javascript" src="JAVASCRIPT\category.js" defer></script>
+  <link rel="stylesheet" type="text/css" href="CSS/Category.css">
+  <script type="text/javascript" src="JAVASCRIPT/category.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -40,8 +39,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <ul>
         <li><a href="Dashboard.php" class="<?php echo ($current_page == 'Dashboard.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-house' style='font-size:30px'></i>Dashboard</a></li>
         <li>
-          <a href="Product.php" class="<?php echo ($current_page == 'Product.php' || $current_page == 'Brand.php' || $current_page == 'Category.php') ? : ''; ?>"><i class='fas fa-archive' style='font-size:30px'></i>Product          <i class="fa-solid fa-caret-down" style="font-size: 18px; margin-left: 5px;"></i> <!-- Submenu symbol added -->
-          </a>
+          <a href="Product.php" class="<?php echo ($current_page == 'Product.php' || $current_page == 'Brand.php' || $current_page == 'Category.php') ? 'selected' : ''; ?>"><i class='fas fa-archive' style='font-size:30px'></i>Product<i class="fa-solid fa-caret-down" style="font-size: 18px; margin-left: 5px;"></i></a>
             <ul class="submenu" style="<?php echo ($current_page == 'Brand.php' || $current_page == 'Category.php') ? 'display:block;' : ''; ?>">
                 <li><a href="Brand.php" class="<?php echo ($current_page == 'Brand.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-tag'></i> Brand</a></li>
                 <li><a href="Category.php" class="<?php echo ($current_page == 'Category.php') ? 'selected' : ''; ?>"><i class='fa-solid fa-layer-group'></i> Category</a></li>
@@ -54,99 +52,105 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
 </nav>
-      <header>    
-      <h2 class="ProductHeader">Category List  
-        <input id="search-input" type="text" placeholder="Search...">
-        <button id="search-button"><i class="fas fa-search"></i></button>
+<header>    
+    <h2 class="ProductHeader">Category List  
+        <input id="search-input" type="text" placeholder="Search..." onkeyup="searchCategories()">
         <button id="add-product-button"><i class='fas fa-plus'></i></button>
-     </h2>
-      </header>
-      <div class="content">
+    </h2>
+</header>
+<div class="content">
     <div class="table-container">
         <table class="table" id="category-table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Category</th>
-              <th scope="col">Operation</th>
-            </tr>
-          </thead>
-          <tbody>
-          <?php
-include 'connect.php';
-// Handle delete request
-if (isset($_GET['deleteid'])) {
-    $id_to_delete = $_GET['deleteid'];
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            include 'connect.php';
 
-    // Delete the record
-    $delete_sql = "DELETE FROM categories WHERE id = $id_to_delete";
-    mysqli_query($conn, $delete_sql);
+            // Handle delete request
+            if (isset($_GET['deleteid'])) {
+                $id_to_delete = $_GET['deleteid'];
 
-    // Rearrange IDs after deletion
-    $reset_sql = "SET @num := 0;";
-    mysqli_query($conn, $reset_sql);
+                // Delete the record
+                $delete_sql = "DELETE FROM categories WHERE id = $id_to_delete";
+                mysqli_query($conn, $delete_sql);
 
-    $update_sql = "UPDATE categories SET id = @num := (@num + 1);";
-    mysqli_query($conn, $update_sql);
+                // Redirect back to the category list
+                header('Location: Category.php');
+                exit();
+            }
 
-    // Reset AUTO_INCREMENT to the next available ID
-    $max_id_sql = "SELECT MAX(id) FROM categories";
-    $max_id_result = mysqli_query($conn, $max_id_sql);
-    $max_id_row = mysqli_fetch_array($max_id_result);
-    $max_id = $max_id_row[0] + 1;
+            // Fetch and display categories
+            $sql = "SELECT * FROM categories";
+            $result = mysqli_query($conn, $sql);
+            $row_number = 1; // Initialize row number
+            if ($result) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $category = $row['Category'];
 
-    $alter_sql = "ALTER TABLE categories AUTO_INCREMENT = $max_id";
-    mysqli_query($conn, $alter_sql);
-
-    // Redirect back to the category list
-    header('Location: Category.php');
-    exit();
-}
-
-// Fetch and display categories
-$sql = "SELECT * FROM categories";
-$result = mysqli_query($conn, $sql);
-if ($result) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $id = $row['id'];
-        $category = $row['Category'];
-
-        echo '<tr>
-        <td scope="row">'.$id.'</td>
-        <td>'.$category.'</td>
-        <td>
-            <button class="button update-button" data-id="'.$id.'" data-category="'.htmlspecialchars($category, ENT_QUOTES, 'UTF-8').'"><a href="#" class="text-light">Update</a></button>
-            <button class="button"><a href="?deleteid='.$id.'" class="text-light">Delete</a></button>
-        </td>
-        </tr>';
-    }
-}
-mysqli_close($conn);
-?>
+                    echo '<tr>
+                    <td scope="row">'.$row_number.'</td> <!-- Display row number -->
+                    <td>'.$category.'</td>
+                    <td>
+                        <button class="button update-button" data-id="'.$row['id'].'" data-category="'.htmlspecialchars($category, ENT_QUOTES, 'UTF-8').'"><a href="#" class="text-light">Update</a></button>
+                        <button class="button"><a href="?deleteid='.$row['id'].'" class="text-light">Delete</a></button>
+                    </td>
+                    </tr>';
+                    $row_number++; // Increment row number
+                }
+            }
+            mysqli_close($conn);
+            ?>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal for Adding Category -->
     <div id="category-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h2>Add New Category</h2>
-        <form id="category-form" action="add_category.php" method="post">
-          <label for="category-name">Category Name:</label>
-          <input type="text" id="category-name" name="category-name" required>
-          <button type="submit">Add Category</button>
-        </form>
-      </div>
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Add New Category</h2>
+            <form id="category-form" action="add_category.php" method="post">
+                <label for="category-name">Category Name:</label>
+                <input type="text" id="category-name" name="category-name" required>
+                <button type="submit">Add Category</button>
+            </form>
+        </div>
     </div>
     <!-- Update Category Modal -->
-<div id="update-category-modal" class="modal">
-  <div class="modal-content">
-    <span class="close-button">&times;</span>
-    <h2>Update Category</h2>
-    <form id="update-category-form" action="update_category.php" method="post">
-      <input type="hidden" id="update-category-id" name="category-id">
-      <label for="update-category-name">Category Name:</label>
-      <input type="text" id="update-category-name" name="category-name" required>
-      <button type="submit">Update Category</button>
-    </form>
-  </div>
+    <div id="update-category-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Update Category</h2>
+            <form id="update-category-form" action="update_category.php" method="post">
+                <input type="hidden" id="update-category-id" name="category-id">
+                <label for="update-category-name">Category Name:</label>
+                <input type="text" id="update-category-name" name="category-name" required>
+                <button type="submit">Update Category</button>
+            </form>
+        </div>
+    </div>
 </div>
+
+<script>
+function searchCategories() {
+    const input = document.getElementById('search-input');
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById('category-table');
+    const trs = table.getElementsByTagName('tr');
+
+    for (let i = 1; i < trs.length; i++) { // Start from 1 to skip header
+        const td = trs[i].getElementsByTagName('td')[1]; // Get Category column
+        if (td) {
+            const txtValue = td.textContent || td.innerText;
+            trs[i].style.display = txtValue.toLowerCase().includes(filter) ? '' : 'none';
+        }
+    }
+}
+</script>
 </body>
 </html>
- 

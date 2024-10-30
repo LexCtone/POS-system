@@ -3,3 +3,7 @@
 [2024-10-11 08:15:24] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 50, adjustment_reason: kulang nanaman ng 50, barcode: 10000001, reference: adjustment_reference
 [2024-10-19 10:14:10] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 100, adjustment_reason: ., barcode: 10000001, reference: adjustment_reference
 [2024-10-25 20:03:58] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: -598, adjustment_reason: asd, barcode: 10000001, reference: adjustment_reference
+[2024-10-31 01:58:07] process_adjustment.php: Received data - product_id: 35, adjustment_quantity: 12, adjustment_reason: asd, barcode: 10000035, reference: adjustment_reference
+[2024-10-31 02:08:28] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 9, adjustment_reason: asd, barcode: 10000001, reference: adjustment_reference
+[2024-10-31 02:08:35] process_adjustment.php: Received data - product_id: 2, adjustment_quantity: 4, adjustment_reason: asdasd, barcode: 10000002, reference: adjustment_reference
+[2024-10-31 02:08:42] process_adjustment.php: Received data - product_id: 3, adjustment_quantity: 7, adjustment_reason: asd, barcode: 10000003, reference: adjustment_reference

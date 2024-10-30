@@ -215,6 +215,8 @@ button:hover {
 #product-table td {
   padding: 12px 15px;
   text-align: center;
+  font-weight: bold;
+  font-size: 18px; /* Increase the font size as needed */
 }
 
 #product-table th {

@@ -61,9 +61,7 @@ body {
   font-weight: bold; /* Emphasize the selected item */
 }
 
-.sidebar ul a i {
-  margin-right: 10px;
-}
+
 
 .sidebar ul {
   list-style: none;
@@ -87,7 +85,7 @@ body {
   border-radius: 5px;
   font-size: 16px;
   width: 200px;
-  margin-left: 1000px;
+  margin-left: 999px;
 }
 
 button {

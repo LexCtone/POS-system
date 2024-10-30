@@ -19,7 +19,6 @@ if (isset($_SESSION['user_id'])) {
 }
 
 $current_page = basename($_SERVER['PHP_SELF']);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,8 +26,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brand</title>
-  <link rel="stylesheet" type="text/css" href="CSS\Brand.css">
-  <script type="text/javascript" src="JAVASCRIPT\Brand.js" defer></script>
+  <link rel="stylesheet" type="text/css" href="CSS/Brand.css">
+  <script type="text/javascript" src="JAVASCRIPT/Brand.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -57,95 +56,105 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </ul>
 </nav>
 
-      <header>    
-      <h2 class="ProductHeader">Brand List
-        <input id="search-input" type="text" placeholder="Search...">
-        <button id="search-button"><i class="fas fa-search"></i></button>
+<header>    
+    <h2 class="ProductHeader">Brand List
+        <input id="search-input" type="text" placeholder="Search..." onkeyup="searchBrands()">
         <button id="add-brand-button"><i class='fas fa-plus'></i></button>
-      </h2>
-      </header>
-      <div class="content">
+    </h2>
+</header>
+<div class="content">
     <div class="table-container">
         <table class="table" id="brand-table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Brand</th>
-              <th scope="col">Operation</th>
-            </tr>
-          </thead>
-          <tbody>
-          <?php
-include 'connect.php'; // Ensure this path is correct and the file exists
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            include 'connect.php';
 
-// Handle delete request
-if (isset($_GET['deleteid'])) {
-    $id_to_delete = $_GET['deleteid'];
+            // Handle delete request
+            if (isset($_GET['deleteid'])) {
+                $id_to_delete = $_GET['deleteid'];
 
-    // Delete the record
-    $delete_sql = "DELETE FROM brands WHERE id = $id_to_delete";
-    mysqli_query($conn, $delete_sql);
+                // Delete the record
+                $delete_sql = "DELETE FROM brands WHERE id = $id_to_delete";
+                mysqli_query($conn, $delete_sql);
 
-    // Rearrange IDs after deletion
-    $reorder_sql = "
-        SET @num := 0;
-        UPDATE brands SET id = (@num := @num + 1) ORDER BY id;
-    ";
-    mysqli_multi_query($conn, $reorder_sql);
-    while (mysqli_next_result($conn)) {;} // Flush multi-query results
+                // Redirect back to the brand list
+                header('Location: Brand.php');
+                exit();
+            }
 
-    // Reset AUTO_INCREMENT to the next available ID
-    $alter_sql = "ALTER TABLE brands AUTO_INCREMENT = 1";
-    mysqli_query($conn, $alter_sql);
+            // Fetch and display brands
+            $sql = "SELECT * FROM brands";
+            $result = mysqli_query($conn, $sql);
+            $row_number = 1; // Initialize row number
+            if ($result) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $brand = $row['Brand'];
 
-    // Redirect back to the brand list
-    header('Location: Brand.php');
-    exit();
-}
-
-// Fetch and display brands
-$sql = "SELECT * FROM brands";
-$result = mysqli_query($conn, $sql);
-if ($result) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $id = $row['id'];
-        $brand = $row['Brand'];
-
-        echo '<tr>
-        <td scope="row">'.$id.'</td>
-        <td>'.$brand.'</td>
-        <td>
-            <button class="button update-button" data-id="'.$id.'" data-brand="'.htmlspecialchars($brand, ENT_QUOTES, 'UTF-8').'"><a href="#" class="text-light">Update</a></button>
-            <button class="button"><a href="?deleteid='.$id.'" class="text-light">Delete</a></button>
-        </td>
-        </tr>';
-    }
-}
-mysqli_close($conn);
-?>
+                    echo '<tr>
+                    <td scope="row">'.$row_number.'</td> <!-- Display row number -->
+                    <td>'.$brand.'</td>
+                    <td>
+                        <button class="button update-button" data-id="'.$row['id'].'" data-brand="'.htmlspecialchars($brand, ENT_QUOTES, 'UTF-8').'"><a href="#" class="text-light">Update</a></button>
+                        <button class="button"><a href="?deleteid='.$row['id'].'" class="text-light">Delete</a></button>
+                    </td>
+                    </tr>';
+                    $row_number++; // Increment row number
+                }
+            }
+            mysqli_close($conn);
+            ?>
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal for Adding Brand -->
     <div id="brand-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h2>Add New Brand</h2>
-        <form id="brand-form" action="add_brand.php" method="post">
-          <label for="brand-name">Brand Name:</label>
-          <input type="text" id="brand-name" name="brand-name" required>
-          <button type="submit">Add Brand</button>
-        </form>
-      </div>
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Add New Brand</h2>
+            <form id="brand-form" action="add_brand.php" method="post">
+                <label for="brand-name">Brand Name:</label>
+                <input type="text" id="brand-name" name="brand-name" required>
+                <button type="submit">Add Brand</button>
+            </form>
+        </div>
     </div>
     <!-- Update Brand Modal -->
-<div id="update-brand-modal" class="modal">
-  <div class="modal-content">
-    <span class="close-button">&times;</span>
-    <h2>Update Brand</h2>
-    <form id="update-brand-form" action="update_brand.php" method="post">
-      <input type="hidden" id="update-brand-id" name="brand-id">
-      <label for="update-brand-name">Brand Name:</label>
-      <input type="text" id="update-brand-name" name="brand-name" required>
-      <button type="submit">Update Brand</button>
-    </form>
-  </div>
+    <div id="update-brand-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Update Brand</h2>
+            <form id="update-brand-form" action="update_brand.php" method="post">
+                <input type="hidden" id="update-brand-id" name="brand-id">
+                <label for="update-brand-name">Brand Name:</label>
+                <input type="text" id="update-brand-name" name="brand-name" required>
+                <button type="submit">Update Brand</button>
+            </form>
+        </div>
+    </div>
 </div>
+
+<script>
+function searchBrands() {
+    const input = document.getElementById('search-input');
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById('brand-table');
+    const trs = table.getElementsByTagName('tr');
+
+    for (let i = 1; i < trs.length; i++) { // Start from 1 to skip header
+        const td = trs[i].getElementsByTagName('td')[1]; // Get Brand column
+        if (td) {
+            const txtValue = td.textContent || td.innerText;
+            trs[i].style.display = txtValue.toLowerCase().includes(filter) ? '' : 'none';
+        }
+    }
+}
+</script>
 </body>
 </html>

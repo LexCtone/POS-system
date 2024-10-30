@@ -30,6 +30,11 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Reorder IDs and reset AUTO_INCREMENT
+$conn->query("SET @num := 0;");
+$conn->query("UPDATE stock_adjustment SET id = (@num := @num + 1) ORDER BY adjustment_date;");
+$conn->query("SET @max_id = (SELECT MAX(id) FROM stock_adjustment);");
+
 // Fetch products from the database
 $sql = "SELECT id, Barcode, Description, Category, Quantity as current_quantity, Price, last_update FROM products";
 $result = $conn->query($sql);
@@ -38,8 +43,6 @@ if (!$result) {
     logError("Query error: " . $conn->error);
     die("Error: " . $conn->error);
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

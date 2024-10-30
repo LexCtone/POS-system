@@ -112,7 +112,7 @@ body {
   border-radius: 5px;
   font-size: 16px;
   width: 200px;
-  margin-left: 1000px;
+  margin-left: 988px;
 }
 
 button {
@@ -151,17 +151,20 @@ button i {
   margin-right: 5px;
 }
 
-/* Container styling */
+/* Category Table Container */
 .table-container {
   height: 800px; /* Set the height of the table container */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #ddd; /* Optional: border around the container */
   box-sizing: border-box; 
   border-radius: 4px;
-  margin-top: 25px;/* Include padding and border in the element’s total width and height */
+  margin-top: 25px; /* Include padding and border in the element’s total width and height */
+  margin-bottom: 25px; /* Add margin-bottom for spacing */
 }
+
+/* Category Table */
 #category-table {
-  width: 100%;
+  width: 100%; /* Ensure table takes full width */
   border-collapse: separate;
   border-spacing: 0;
 }
@@ -170,6 +173,8 @@ button i {
 #category-table td {
   padding: 12px 15px;
   text-align: center;
+  font-weight: bold;
+  font-size: 18px; /* Font size */
 }
 
 #category-table th {
@@ -196,7 +201,6 @@ button i {
 #category-table td {
   border-bottom: 1px solid #e0e0e0;
 }
-
 .modal {
   display: none;
   position: fixed;

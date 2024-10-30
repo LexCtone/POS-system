@@ -132,12 +132,12 @@ if ($total_sales_profit_result) {
         <div class="button-container">
             <button class="btn" onclick="location.href='Records.php'">Top Selling</button>
             <button class="btn" onclick="location.href='SalesHistory.php'">Sales History</button>
-            <button class="btn" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
-            <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
             <button class="btn" onclick="location.href='CancelledOrder.php'">Cancelled Order</button>
             <button class="btn" onclick="location.href='StockHistory.php'">Stock In History</button>
             <button class="btn" onclick="location.href='ArchivedProducts.php'">Archived Products</button>
             <button class="btn selected" onclick="location.href='SalesReport.php'">Sales Report</button>
+            <button class="btn" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
+            <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
         </div>
         <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
 
@@ -161,10 +161,10 @@ if ($total_sales_profit_result) {
                       <i class="fa-solid fa-print"></i>
                       <span class="print-preview-text">Print Preview</span>
                     </div>
-                    <div class="total-sales-display" style="background-color: black; color: white; padding: 10px; margin-left: 10px; border-radius: 5px;">
+                    <div class="total-sales-display" style="background-color: black; color: white; padding: 10px; margin-left: 20px; border-radius: 5px;">
                       Total Sales: ₱<?php echo number_format($total_sales, 2); ?>
                   </div>
-                  <div class="total-profit-display" style="background-color: black; color: white; padding: 10px; margin-left: 10px; border-radius: 5px;">
+                  <div class="total-profit-display" style="background-color: black; color: white; padding: 10px; margin-left: 20px; border-radius: 5px;">
                       Total Profit: ₱<?php echo number_format($total_profit, 2); ?>
                   </div>
                 </div>
@@ -205,7 +205,6 @@ if ($total_sales_profit_result) {
 </div>
 </body>
 </html>
-
 <?php
 $stmt->close();
 $conn->close();
