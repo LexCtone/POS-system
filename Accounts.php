@@ -29,7 +29,7 @@ if (isset($_SESSION['user_id'])) {
 </head>
 <body>
   <header>
-    <h2 class="Header">Account</h2>
+    <h2 class="Header">Accounts</h2>
   </header>
   
   <nav class="sidebar">

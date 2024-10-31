@@ -30,7 +30,7 @@ if (isset($_SESSION['user_id'])) {
 </head>
 <body>
   <header>
-    <h2 class="StockHeader">Records</h2>
+    <h2 class="StockHeader">Cancelled Order</h2>
   </header>
   
   <nav class="sidebar">

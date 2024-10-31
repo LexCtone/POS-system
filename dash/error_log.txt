@@ -3039,3 +3039,28 @@
 
 [2024-10-30 04:15:18] Executed sale insert for barcode: 10000001
 [2024-10-30 04:15:18] Executed product update for barcode: 10000001
+[2024-11-01 01:10:03] Received data: Array
+(
+    [invoice] => 20241031441489420
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000001
+                    [description] => 4-in-1 Oil  - 120 ML
+                    [price] => 65
+                    [quantity] => 10
+                    [discount_amount] => 0
+                    [total] => 650
+                )
+
+        )
+
+    [totalAmount] => 650
+    [paymentAmount] => 650
+    [change] => 0
+)
+
+[2024-11-01 01:10:03] Executed sale insert for barcode: 10000001
+[2024-11-01 01:10:03] Executed product update for barcode: 10000001

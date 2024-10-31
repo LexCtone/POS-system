@@ -72,7 +72,7 @@ $conn->close();
 </head>
 <body>
     <header>
-        <h2 class="Header">Account</h2>
+        <h2 class="Header">Activate / Deactivate</h2>
     </header>
   
     <nav class="sidebar">

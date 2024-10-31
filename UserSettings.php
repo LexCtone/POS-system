@@ -51,7 +51,7 @@ if (isset($_GET['error'])) {
 </head>
 <body>
   <header>
-    <h2 class="Header">Account</h2>
+    <h2 class="Header">Create Account</h2>
   </header>
   <nav class="sidebar">
     <header>

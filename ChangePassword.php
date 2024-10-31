@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <header>
-        <h2 class="Header">Account</h2>
+        <h2 class="Header">Change Password</h2>
     </header>
   
     <nav class="sidebar">

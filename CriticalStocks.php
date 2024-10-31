@@ -44,7 +44,7 @@ if (!$result) {
 </head>
 <body>
   <header>
-    <h2 class="StockHeader">Records</h2>
+    <h2 class="StockHeader">Critical Stocks</h2>
   </header>
   
   <nav class="sidebar">

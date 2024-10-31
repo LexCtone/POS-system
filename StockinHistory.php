@@ -28,7 +28,7 @@ if (isset($_SESSION['user_id'])) {
 </head>
 <body>
   <header>
-    <h2 class="StockHeader">Stock In</h2>
+    <h2 class="StockHeader">Stock-in History</h2>
   </header>
   <div class="button-container">
     <button onclick="location.href='StockEntry.php'">Stock Entry</button>
