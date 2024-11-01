@@ -234,7 +234,6 @@ if ($row_total_purchase = $result_total_purchase->fetch_assoc()) {
 $stmt_total_purchase->close();
 
 // Fetch total canceled orders for the last week
-// Fetch total canceled orders for the last week
 $query_canceled_orders = "
     SELECT 
         (SELECT COUNT(*) FROM transaction_voids WHERE void_date >= CURDATE() - INTERVAL 7 DAY) +
@@ -268,10 +267,7 @@ $total_critical_stocks = 0;
 if ($row_critical = $result_critical_stocks->fetch_assoc()) {
     $total_critical_stocks = $row_critical['critical_stock_count'] ?? 0;
 }
-
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -174,7 +174,7 @@ if ($result_stock_on_hand && $row = $result_stock_on_hand->fetch_assoc()) {
 }
 
 // Query for critical items
-$query_critical_items = "SELECT COUNT(*) as critical_items FROM products WHERE Quantity < 10";
+$query_critical_items = "SELECT COUNT(*) as critical_items FROM products WHERE Quantity <= 10";
 $result_critical_items = $conn->query($query_critical_items);
 $critical_items = 0;
 if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {

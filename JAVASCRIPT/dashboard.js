@@ -17,87 +17,86 @@ document.addEventListener("DOMContentLoaded", function () {
     const annualSales = parseFloat(document.getElementById('annual_sales_json')?.textContent || 0);
     const annualProfit = parseFloat(document.getElementById('annual_profit_json')?.textContent || 0);
 
- // Initial data for the chart (set to daily sales and profit by default)
- const chartData = {
-    labels: weeklyLabels.length > 0 ? weeklyLabels : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], // Use weekly labels
-    datasets: [
-        {
-            label: 'Sales',
-            data: weeklySalesData, // Daily sales data
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderWidth: 4,
-            tension: 0.5, // Makes the line curved
-            fill: true
-        },
-        {
-            label: 'Profit',
-            data: weeklyProfitData, // Daily profit data
-            borderColor: 'rgba(255, 159, 64, 1)',
-            backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            borderWidth: 4,
-            tension: 0.5, // Makes the line curved
-            fill: true
-        }
-    ]
-};
-
-// Create the chart
-let myLineChart = new Chart(ctxLineChart, {
-    type: 'line',
-    data: chartData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top',
+    // Initial data for the chart (set to daily sales and profit by default)
+    const chartData = {
+        labels: weeklyLabels.length > 0 ? weeklyLabels : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        datasets: [
+            {
+                label: 'Sales',
+                data: weeklySalesData,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 4,
+                tension: 0.5,
+                fill: true
+            },
+            {
+                label: 'Profit',
+                data: weeklyProfitData,
+                borderColor: 'rgba(255, 159, 64, 1)',
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderWidth: 4,
+                tension: 0.5,
+                fill: true
             }
-        },
-        scales: {
-            x: {
-                title: {
+        ]
+    };
+
+    // Create the chart
+    let myLineChart = new Chart(ctxLineChart, {
+        type: 'line',
+        data: chartData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
                     display: true,
+                    position: 'top',
                 }
             },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Amount in ₱'
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                    }
                 },
-                beginAtZero: true
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Amount in ₱'
+                    },
+                    beginAtZero: true
+                }
             }
         }
-    }
-});
+    });
+
     // Function to update the chart with specific data
-    function updateChart(labels, dataSales, dataProfit) {
+    function updateChart(labels, dataSales = [], dataProfit = []) {
         myLineChart.data.labels = labels;
-        myLineChart.data.datasets[0].data = dataSales; // Update sales data
-        myLineChart.data.datasets[1].data = dataProfit; // Update profit data
+        myLineChart.data.datasets[0].data = dataSales.length > 0 ? dataSales : Array(labels.length).fill(null); // Set to null if data is empty
+        myLineChart.data.datasets[1].data = dataProfit.length > 0 ? dataProfit : Array(labels.length).fill(null); // Set to null if data is empty
         myLineChart.update();
     }
 
     // Event listener for "Annual Sales" - to show monthly sales and profit data
     document.getElementById('annual-sales').addEventListener('click', function () {
-        updateChart(monthLabels, monthlySalesData); // Show both sales and profit for each month
+        updateChart(monthLabels, monthlySalesData, monthlyProfitData); // Show both sales and profit for each month
     });
 
-    // Event listener for "Annual Profit" - show monthly profit data
+    // Event listener for "Annual Profit" - show monthly profit data only
     document.getElementById('annual-profit').addEventListener('click', function () {
-        updateChart(monthLabels, [], monthlyProfitData); // Show monthly profit with empty sales data
+        updateChart(monthLabels, Array(monthLabels.length).fill(null), monthlyProfitData); // Set sales data to null
     });
 
     // Event listener for "Daily Sales" - show daily sales for the last 7 days
     document.getElementById('daily-sales').addEventListener('click', function () {
-        updateChart(weeklyLabels, weeklySalesData, []); // Show daily sales for last 7 days
-        myLineChart.update();
+        updateChart(weeklyLabels, weeklySalesData, Array(weeklyLabels.length).fill(null)); // Set profit data to null
     });
 
     // Event listener for "Daily Profit" - show daily profit for the last 7 days
     document.getElementById('daily-profit').addEventListener('click', function () {
-        updateChart(weeklyLabels, [], weeklyProfitData); // Show daily profit for last 7 days
-        myLineChart.update();
+        updateChart(weeklyLabels, Array(weeklyLabels.length).fill(null), weeklyProfitData); // Set sales data to null
     });
 
     // Pie Chart for Dashboard
@@ -148,7 +147,11 @@ let myLineChart = new Chart(ctxLineChart, {
                     position: 'right',
                     labels: {
                         boxWidth: 20,
-                        padding: 5
+                        padding: 20,
+                        font: {
+                            size: 14, // Set font size here for legend labels
+                            weight: 'bold' // Set font weight here for legend labels
+                        }
                     }
                 },
                 tooltip: {
@@ -160,6 +163,13 @@ let myLineChart = new Chart(ctxLineChart, {
                             const percentage = ((value / total) * 100).toFixed(2);
                             return `${label}: ${value} (${percentage}%)`;
                         }
+                    },
+                    titleFont: {
+                        size: 16, // Set font size here for tooltip title
+                        weight: 'bold' // Set font weight here for tooltip title
+                    },
+                    bodyFont: {
+                        size: 12, // Set font size here for tooltip body
                     }
                 }
             },
@@ -170,6 +180,7 @@ let myLineChart = new Chart(ctxLineChart, {
             }
         }
     };
+    
 
     const myDashboardPieChart = new Chart(ctxDashboardPieChart, pieConfigDashboard);
 });
