@@ -88,42 +88,46 @@ if (!$result) {
     </div>
 </div>
 <div class="content">
-      <div class="table-container">
-       <table class="table" id="critical-table">
-        <thead>
-            <tr>
-              <th>#</th>
-              <th>BARCODE</th>
-              <th>DESCRIPTION</th>
-              <th>PRICE</th>
-              <th>No. OF STOCKS</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            if ($result->num_rows > 0) {
-                $counter = 1;
-                while($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $counter . "</td>";
-                    echo "<td>" . htmlspecialchars($row["Barcode"]) . "</td>";
-                    echo "<td>" . htmlspecialchars($row["Description"]) . "</td>";
-                    echo "<td>₱" . number_format($row["Price"], 2) . "</td>";
-                    echo "<td>" . $row["Quantity"] . "</td>";
-                    echo "</tr>";
-                    $counter++;
-                }
-            } else {
-              echo "<tr><td colspan='5' style='text-align: center;'>No critical stocks found</td></tr>";
-            }
-            ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="table-container">
+  <table class="table" id="critical-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>BARCODE</th>
+      <th>DESCRIPTION</th>
+      <th>PRICE</th>
+      <th>No. OF STOCKS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    if ($result->num_rows > 0) {
+        $counter = 1;
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $counter . "</td>";
+            echo "<td>" . htmlspecialchars($row["Barcode"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["Description"]) . "</td>";
+            echo "<td>₱" . number_format($row["Price"], 2) . "</td>";
+            echo "<td>" . htmlspecialchars($row["Quantity"]) . "</td>";
+            echo "</tr>";
+            $counter++;
+        }
+    } else {
+        echo "<tr><td colspan='5' style='text-align: center;'>No critical stocks found</td></tr>";
+    }
+    ?>
+  </tbody>
+</table>
   </div>
-  <script>
-    // Add any JavaScript you need here
-  </script>
+</div>
+
+
+<script>
+function printTable() {
+    window.print(); // Trigger the print dialog
+}
+</script>
+
 </body>
 </html>

@@ -70,7 +70,7 @@ if (isset($_SESSION['user_id'])) {
       </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
 
-      <div class="form">
+ <div class="form">
   <div class="form-group">
     <label for="startDate" class="date-label">Filter by</label>
     <input type="date" id="startDate" name="startDate" class="date-input">
@@ -90,18 +90,18 @@ if (isset($_SESSION['user_id'])) {
   </div>
 </div>
 <div class="content">
-  <div class="table-container">
-    <table class="table" id="records-table">
-      <thead>
-        <tr id="tableHeader">
-          <!-- Table headers will be dynamically updated -->
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <!-- Table rows will be dynamically updated -->
-      </tbody>
-    </table>
-  </div>
+<div class="table-container">
+  <table class="table" id="records-table">
+    <thead>
+      <tr id="tableHeader">
+        <!-- Table headers will be dynamically updated -->
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Table rows will be dynamically updated -->
+    </tbody>
+  </table>
+</div>
 </div>
 <script type="text/javascript" src="JAVASCRIPT/CancelledOrder.js" defer></script>
 </body>
