@@ -185,7 +185,7 @@ button i {
   border-bottom: 1px solid #e0e0e0;
 }
 
-.modal {
+.modals {
   display: none;
   position: fixed;
   z-index: 1;
@@ -197,7 +197,7 @@ button i {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.modal-contents {
   background-color: #fefefe;
   margin: 5% auto;
   padding: 20px;
@@ -276,7 +276,7 @@ form button {
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-.modal-content {
+.modal-contents {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;

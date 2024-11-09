@@ -98,7 +98,7 @@ button i {
 
 .button-container {
   align-items: left;
-  margin-right: 615px;
+  margin-right: 500px;
   display: flex;
   justify-content: center; /* To horizontally center the buttons */
   margin-top: 35px; /* Add margin as needed */

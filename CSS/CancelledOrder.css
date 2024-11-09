@@ -305,3 +305,84 @@ body {
     border: none; /* Remove borders */
   }
 }
+
+        /* Modal styles */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1000; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+      }
+
+      /* Modal content */
+      .modal-content {
+          background-color: #fefefe; /* White background */
+          margin: 15% auto; /* 15% from the top and centered */
+          padding: 20px;
+          border: 1px solid #888; /* Gray border */
+          width: 350px; /* Could be more or less, depending on screen size */
+          border-radius: 8px; /* Rounded corners */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+      }
+
+      /* Close button */
+      .close {
+          color: #aaa; /* Light gray */
+          float: right; /* Position to the right */
+          font-size: 28px; /* Larger font size */
+          font-weight: bold; /* Bold text */
+      }
+
+      .conf{
+        font-size: 24px;
+        font-weight: bolder;
+      }
+
+      .par{
+        font-size: 18px;
+        margin-left: 10px;
+      }
+
+      .close:hover,
+      .close:focus {
+          color: black; /* Change color on hover */
+          text-decoration: none; /* No underline */
+          cursor: pointer; /* Pointer cursor */
+      }
+
+      /* Button styles */
+      .confirm-btn,
+      .cancel-btn {
+          background-color: #005b99; /* Blue background */
+          border: none; /* No borders */
+          color: white; /* White text */
+          padding: 10px 20px; /* Some padding */
+          text-align: center; /* Centered text */
+          text-decoration: none; /* No underline */
+          display: inline-block; /* Align buttons */
+          font-size: 16px; /* Larger font */
+          margin: 10px 2px; /* Margins around buttons */
+          margin-left: 55px;
+          margin-top: 20px;
+          cursor: pointer; /* Pointer cursor */
+          border-radius: 5px; /* Rounded corners */
+          transition: background-color 0.3s; /* Smooth transition */
+      }
+
+      .cancel-btn {
+          background-color: red; /* Gray background for cancel */
+      }
+
+      .cancel-btn:hover {
+          background-color: maroon; /* Darker gray on hover */
+      }
+
+      .confirmLogout:hover{
+        background-color: lightblue; /* Darker gray on hover */
+      }
+    

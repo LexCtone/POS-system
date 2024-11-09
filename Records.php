@@ -51,7 +51,7 @@ if (isset($_SESSION['user_id'])) {
         <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
         <li><a href="Records.php" class="selected"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
         <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
-        <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
+        <li><a href="Login.php" onclick="return confirmLogout();" style="cursor: pointer;"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
 </nav> 
   <div class="container">
@@ -92,6 +92,7 @@ if (isset($_SESSION['user_id'])) {
         </div>
       </div>
 
+
       <div class="content">
         <!-- Left Column: Table -->
 
@@ -126,5 +127,40 @@ if (isset($_SESSION['user_id'])) {
     </div>
   </div>
 <script type="text/javascript" src="JAVASCRIPT/Records.js" defer></script>
+ <!-- Logout Confirmation Modal -->
+ <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLogoutModal()">&times;</span>
+            <h2 class="conf">Logout Confirmation</h2>
+            <p class="par">Are you sure you want to log out?</p>
+            <button id="confirmLogout" class="confirm-btn">Logout</button>
+            <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+        </div>
+    </div>
+    <script>
+        // Function to show the logout modal
+        function confirmLogout() {
+            document.getElementById("logoutModal").style.display = "block"; // Show the modal
+            return false; // Prevent the default link action
+        }
+
+        // Function to close the logout modal
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none"; // Hide the modal
+        }
+
+        // Confirm logout action
+        document.getElementById("confirmLogout").onclick = function() {
+            window.location.href = "Login.php"; // Redirect to the login page or handle logout
+        };
+
+        // Close the modal if the user clicks anywhere outside of it
+        window.onclick = function(event) {
+            var logoutModal = document.getElementById("logoutModal");
+            if (event.target == logoutModal) {
+                closeLogoutModal();
+            }
+        };
+    </script>
 </body>
 </html>

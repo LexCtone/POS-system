@@ -180,6 +180,7 @@ $critical_items = 0;
 if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
     $critical_items = $row['critical_items'] ? $row['critical_items'] : 0;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -195,9 +196,8 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
     <!-- Header -->
     <div class="header">
         <h1>New Transaction</h1>
-        <div class="sales-box">
-            <span>Total Sales: </span>
-            <strong id="headerTotalSales">₱0.00</strong>
+        <div class="sales-box">        
+        <span>Total Amount:</span> <strong id="headerTotalSales">₱0.00</strong>
         </div>
     </div>
 
@@ -336,21 +336,23 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
         </div>
     </div>
 
-    <!-- Discount Modal -->
-    <div class="modal discount-modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Apply Discount</h2>
-            <p>Product: <span id="discountProductName"></span></p>
-            <label for="discountPercent">Discount Percentage:</label>
-            <input type="number" id="discountPercent" min="0" max="100" step="0.01">
-            <label for="discountAmount">Discount Amount:</label>
-            <input type="text" id="discountAmount" readonly>
-            <label for="totalPrice">Total Price:</label>
-            <input type="text" id="totalPrice" readonly>
-            <button id="confirmDiscount">Apply Discount</button>
-        </div>
+<!-- Discount Modal -->
+<div class="modal discount-modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Apply Discount</h2>
+        <p>Product: <span id="discountProductName"></span></p>
+        <p>Base Price: <strong id="basePrice">₱0.00</span></p> <!-- Added base price here -->
+        <label for="discountPercent">Discount Percentage:</label>
+        <input type="number" id="discountPercent" min="0" max="100" step="0.01">
+        <label for="discountAmount">Discount Amount:</label>
+        <input type="text" id="discountAmount" readonly>
+        <label for="totalPrice">Total Price:</label>
+        <input type="text" id="totalPrice" readonly>
+        <button id="confirmDiscount">Apply Discount</button>
     </div>
+</div>
+
 
     <div id="perPurchaseDiscountModal" class="modal">
     <div class="modal-content">
@@ -553,8 +555,8 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
 </div>
 
 <!-- Modal Structure -->
-<div id="transactionModal" class=" modal transaction-modal">
-    <div class="transaction-modal-content">
+<div id="transactionModal" class="details-modal">
+    <div class="details-modal-content">
         <span class="close-button">&times;</span>
         <h2>Transaction Details</h2>
         <div id="transactionDetailsContent">
@@ -562,6 +564,7 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
         </div>
     </div>
 </div>
+
 
 <div id="printReceiptModal" class="modal">
     <div class="modal-content">
@@ -615,6 +618,54 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
         </form>
     </div>
 </div>
+<style>
+        /* Styles for the custom alert modal */
+        .custom-alert {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+
+        .alert-content {
+            background-color: white; /* White background */
+            padding: 20px;
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            text-align: center; /* Centered text */
+            width: 300px; /* Fixed width */
+        }
+
+        .alert-title {
+            font-size: 18px; /* Title font size */
+            margin-bottom: 10px; /* Space below title */
+        }
+
+        .alert-message {
+            margin-bottom: 20px; /* Space below message */
+        }
+
+        .alert-button {
+            background-color: #005b99; /* Button color */
+            color: white; /* White text */
+            border: none; /* No borders */
+            padding: 10px 20px; /* Some padding */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+        .alert-button:hover {
+            background-color: #004080; /* Darker blue on hover */
+        }
+    </style>
+
 
 <div>
     <!-- Footer --> 
@@ -622,13 +673,60 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
         <div id="clock" class="time"></div> 
         <div id="date" class="date"></div> 
     </footer>
-    <script>
-    // Pass server-generated data to JavaScript
-    const serverTimestamp = <?php echo $serverTimestamp; ?>;
-    </script>
 </div>
 
     <script src="transaction.js"> defer</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Custom Alert Modal -->
+<div id="customAlert" class="custom-alert">
+    <div class="alert-content">
+        <div class="alert-title" id="alertTitle">Success</div>
+        <div class="alert-message" id="alertMessage">Transaction completed successfully!</div>
+        <button class="alert-button" onclick="closeCustomAlert()">OK</button>
+    </div>
+</div>
+
+<script src="transaction.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// JavaScript for custom alert modal
+function showCustomAlert(message, title) {
+    document.getElementById('alertMessage').innerText = message;
+    document.getElementById('alertTitle').innerText = title;
+    document.getElementById('customAlert').style.display = 'flex'; // Show modal as flex to center it
+}
+
+function closeCustomAlert() {
+    document.getElementById('customAlert').style.display = 'none'; // Hide modal
+}
+
+// Close the modal if the user clicks anywhere outside of it
+window.onclick = function(event) {
+    var modal = document.getElementById('customAlert');
+    if (event.target == modal) {
+        closeCustomAlert();
+    }
+};
+
+// Modify your existing function to call showCustomAlert
+async function settlePayment() {
+    try {
+        await saveTransaction(totalAmount, paymentAmount, change);
+        printReceipt(totalAmount, paymentAmount, change);
+        showCustomAlert('Transaction completed successfully!', 'Success');
+        
+        // Close the settle payment modal
+        closeModal('settle_payment');
+
+        // Clear the transaction table and generate new transaction number
+        clearTransactionTable();
+        generateTransactionNo();
+    } catch (error) {
+        console.error('Error saving transaction:', error);
+        showCustomAlert('An error occurred while saving the transaction. Receipt printing failed.', 'Error');
+    }
+}
+</script>
 </body>
 </html>

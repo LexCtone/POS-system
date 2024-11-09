@@ -50,7 +50,8 @@ $current_date = date('Y-m-d'); // Format: YYYY-MM-DD
     <h2 class="StockHeader">Stock Entry</h2>
 </header>
 <div class="button-container">
-<button onclick="location.href='StockEntry.php'" class="selected">Stock Entry</button>
+    <button onclick="location.href='StockEntry.php'" class="selected">Stock Entry</button>
+    <button onclick="location.href='PurchaseOrder.php'">Orders</button> 
     <button onclick="location.href='StockinHistory.php'">Stock in History</button> 
     <button onclick="location.href='StockAdjustment.php'">Stock Adjustments</button> 
 </div>
@@ -61,9 +62,9 @@ $current_date = date('Y-m-d'); // Format: YYYY-MM-DD
         <br><?php echo htmlspecialchars($admin_name); ?>
     </header>
     <ul>
-        <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Dashboard</a></li> <!-- Added Dashboard back -->
+        <li><a href="Dashboard.php"><i class='fa-solid fa-house' style='font-size:30px'></i>Dashboard</a></li>
         <li><a href="Product.php"><i class='fas fa-archive' style='font-size:30px'></i>Product
-        <i class="fa-solid fa-caret-down" style="font-size: 18px; margin-left: 5px;"></i> <!-- Submenu symbol added -->
+        <i class="fa-solid fa-caret-down" style="font-size: 18px; margin-left: 5px;"></i>
         </a>
             <ul class="submenu">
                 <li><a href="Brand.php"><i class='fa-solid fa-tag'></i> Brand</a></li>
@@ -74,7 +75,7 @@ $current_date = date('Y-m-d'); // Format: YYYY-MM-DD
         <li><a href="StockEntry.php" class="selected"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
         <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
         <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
-        <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
+        <li><a href="Login.php" onclick="return confirmLogout();" style="cursor: pointer;"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
 </nav> 
 </nav>
@@ -93,7 +94,7 @@ $current_date = date('Y-m-d'); // Format: YYYY-MM-DD
         <div class="form-group">
             <label disabled for="stockInBy">STOCK IN BY</label>
             <input type="text" id="stockInBy" name="stockInBy" value="<?php echo htmlspecialchars($admin_name); ?>" readonly>
-            </div>
+        </div>
         <div class="form-group">
             <label for="vendor">VENDOR</label>
             <select id="vendor" name="vendor">
@@ -106,72 +107,208 @@ $current_date = date('Y-m-d'); // Format: YYYY-MM-DD
         <div class="form-group">
             <label for="stockInDate">STOCK IN DATE</label>
             <input type="date" id="stockInDate" name="stockInDate" value="<?php echo $current_date; ?>">
-            </div>
+        </div>
         <div class="form-group">
             <label for="address">ADDRESS</label>
             <input type="text" id="address" name="address" autocomplete="off">
         </div>
+        <div class="form-group">
+    <label for="poReference">Purchase Order Reference</label>
+    <select class="form-control" id="poReference" name="poReference">
+        <option value="">Select Purchase Order</option>
+        <?php
+        // Fetch purchase orders using mysqli connection
+        $sql = "SELECT po_number FROM purchase_orders"; // Adjust this if you have a specific condition for filtering
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value='" . htmlspecialchars($row['po_number']) . "'>" . htmlspecialchars($row['po_number']) . "</option>";
+            }
+        } else {
+            echo "<option value='' disabled>No available purchase orders</option>";
+        }
+
+        // Close the connection
+        $conn->close();
+        ?>
+    </select>
+</div>
         <div class="form-group-browse">
             <a href="#" class="browse-products-link">[Click Here To Browse Product]</a>
         </div>
     </div>
 </div>
 
+<style>
+        /* Modal styles */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1000; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+      }
+
+      /* Modal content */
+      .modal-content {
+          background-color: #fefefe; /* White background */
+          margin: 15% auto; /* 15% from the top and centered */
+          padding: 20px;
+          border: 1px solid #888; /* Gray border */
+          width: 350px; /* Could be more or less, depending on screen size */
+          border-radius: 8px; /* Rounded corners */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+      }
+
+      /* Close button */
+      .close {
+          color: #aaa; /* Light gray */
+          float: right; /* Position to the right */
+          font-size: 28px; /* Larger font size */
+          font-weight: bold; /* Bold text */
+      }
+
+      .conf{
+        font-size: 24px;
+        font-weight: bolder;
+      }
+
+      .par{
+        font-size: 18px;
+        margin-left: 10px;
+      }
+
+      .close:hover,
+      .close:focus {
+          color: black; /* Change color on hover */
+          text-decoration: none; /* No underline */
+          cursor: pointer; /* Pointer cursor */
+      }
+
+      /* Button styles */
+      .confirm-btn,
+      .cancel-btn {
+          background-color: #005b99; /* Blue background */
+          border: none; /* No borders */
+          color: white; /* White text */
+          padding: 10px 20px; /* Some padding */
+          text-align: center; /* Centered text */
+          text-decoration: none; /* No underline */
+          display: inline-block; /* Align buttons */
+          font-size: 16px; /* Larger font */
+          margin: 10px 2px; /* Margins around buttons */
+          margin-left: 55px;
+          margin-top: 20px;
+          cursor: pointer; /* Pointer cursor */
+          border-radius: 5px; /* Rounded corners */
+          transition: background-color 0.3s; /* Smooth transition */
+      }
+
+      .cancel-btn {
+          background-color: red; /* Gray background for cancel */
+      }
+
+      .cancel-btn:hover {
+          background-color: maroon; /* Darker gray on hover */
+      }
+
+      .confirmLogout:hover{
+        background-color: lightblue; /* Darker gray on hover */
+      }
+    </style>
 <!-- Table below the modal to show selected products -->
 <div class="content">
-<div class="table-container">
-  <table class="table" id="product-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>REF#</th>
-        <th>BARCODE</th>
-        <th>Description</th>
-        <th>QTY</th>
-        <th>STOCK IN DATE</th>
-        <th>STOCK IN BY</th>
-        <th>VENDOR</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Rows will be populated dynamically via JavaScript -->
-    </tbody>
-  </table>
-</div>
-
-<!-- Save Button -->
-<div class="save-container">
-    <button type="button" id="save-button">Save</button>
-  </div>
-<script src="JAVASCRIPT\StockEntry.js"></script>
-</body>
-
-<div id="product-modal" class="modal-overlay">
-    <div class="modal-content">
-        <span class="close">&times;</span> <!-- This is the close button -->
-        <h2>Product List</h2>
-        <div class="modal-body">
-        <table class="productTable" id="productModalTable">
+    <div class="table-container">
+        <table class="table" id="product-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Barcode</th>
+                    <th>#</th>  
+                    <th>REF#</th>
+                    <th>BARCODE</th>
                     <th>Description</th>
-                    <th>Quantity</th>
+                    <th>QTY</th>
+                    <th>STOCK IN DATE</th>
+                    <th>STOCK IN BY</th>
+                    <th>VENDOR</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Product rows will be inserted here -->
+                <!-- Rows will be populated dynamically via JavaScript -->
             </tbody>
         </table>
     </div>
-</div>
+
+    <!-- Save Button -->
+    <div class="save-container">
+        <button type="button" id="save-button">Save</button>
+    </div>
 </div>
 
+<script src="JAVASCRIPT/StockEntry.js"></script>
+
+<div id="product-modal" class="modal-overlay">
+    <div class="modal-contents">
+        <span class="close">&times;</span>
+        <h2>Product List</h2>
+        <div class="modal-body">
+            <table class="productTable" id="productModalTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Barcode</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Product rows will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+  <!-- Logout Confirmation Modal -->
+  <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLogoutModal()">&times;</span>
+            <h2 class="conf">Logout Confirmation</h2>
+            <p class="par">Are you sure you want to log out?</p>
+            <button id="confirmLogout" class="confirm-btn">Logout</button>
+            <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to show the logout modal
+        function confirmLogout() {
+            document.getElementById("logoutModal").style.display = "block"; // Show the modal
+            return false; // Prevent the default link action
+        }
+
+        // Function to close the logout modal
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none"; // Hide the modal
+        }
+
+        // Confirm logout action
+        document.getElementById("confirmLogout").onclick = function() {
+            window.location.href = "Login.php"; // Redirect to the login page or handle logout
+        };
+
+        // Close the modal if the user clicks anywhere outside of it
+        window.onclick = function(event) {
+            var logoutModal = document.getElementById("logoutModal");
+            if (event.target == logoutModal) {
+                closeLogoutModal();
+            }
+        };
+    </script>
+</body>
 </html>
-<?php
-// Close the database connection
-$conn->close();
-?>

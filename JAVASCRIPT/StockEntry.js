@@ -1,15 +1,77 @@
 document.addEventListener('DOMContentLoaded', () => {
   let rowId = 1; // Global variable to keep track of row IDs
 
-    // Generate a random 11-digit number
-    const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 100000000 + 1)) + 100000000;
-
-    // Automatically generate a reference number on page load
-    const referenceNoField = document.getElementById('referenceNo');
-    if (referenceNoField) {
-        referenceNoField.value = generateRandomNumber();
+  function loadPODetails(poNumber) {
+    if (!poNumber) {
+        console.error('No PO number provided');
+        return;
     }
+    
+    console.log('Fetching PO details for:', poNumber);
+  
+    fetch('get_po_details.php?po=' + encodeURIComponent(poNumber))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Received PO details:', data);
 
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            // Auto-fill vendor
+            const vendorSelect = document.getElementById('vendor');
+            if (vendorSelect && data.vendor) {
+                const option = Array.from(vendorSelect.options).find(opt => opt.textContent === data.vendor);
+                if (option) {
+                    vendorSelect.value = option.value;
+                    vendorSelect.dispatchEvent(new Event('change'));
+                }
+            }
+            
+            // Clear existing items
+            const table = document.getElementById('product-table').getElementsByTagName('tbody')[0];
+            table.innerHTML = '';
+            
+            // Add PO items to the table
+            if (data.items && Array.isArray(data.items)) {
+                data.items.forEach(item => {
+                    const row = table.insertRow();
+                    row.innerHTML = `
+                        <td>${rowId++}</td>
+                        <td>${document.getElementById('referenceNo').value}</td>
+                        <td>${item.barcode || ''}</td>
+                        <td>${item.description || ''}</td> <!-- Display the description here -->
+                        <td><input type="number" class="product-quantity" value="${item.quantity || 0}" min="0" max="${item.quantity || 0}"></td>
+                        <td>${document.getElementById('stockInDate').value}</td>
+                        <td>${document.getElementById('stockInBy').value}</td>
+                        <td>${vendorSelect ? vendorSelect.options[vendorSelect.selectedIndex].text : ''}</td>
+                        <td><button class="remove-button">Remove</button></td>
+                    `;
+                });
+                
+                addRemoveButtonListeners();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error loading PO details: ' + error.message);
+        });
+}
+
+
+  // Generate a random 11-digit number
+  const generateRandomNumber = () => Math.floor(Math.random() * (999999999 - 100000000 + 1)) + 100000000;
+
+  // Automatically generate a reference number on page load
+  const referenceNoField = document.getElementById('referenceNo');
+  if (referenceNoField) {
+    referenceNoField.value = generateRandomNumber();
+  }
 
   // Fetch and populate products in the modal
   const fetchProducts = async () => {
@@ -37,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.appendChild(row);
       });
   
-      // Add event listeners for select buttons
       addSelectButtonListeners();
   
     } catch (error) {
@@ -63,35 +124,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Add selected product to the stock entry table
   const selectProduct = (productId, Barcode, description, quantity) => {
-    const referenceNo = document.getElementById('referenceNo').value;
-    const stockInBy = document.getElementById('stockInBy').value;
-    const stockInDate = document.getElementById('stockInDate').value;
-    const vendor = document.getElementById('vendor').options[document.getElementById('vendor').selectedIndex].text;
-  
     const tableBody = document.querySelector('#product-table tbody');
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
       <td>${rowId++}</td>
-      <td>${referenceNo}</td>
+      <td>${document.getElementById('referenceNo').value}</td>
       <td>${Barcode}</td>
-      <td>${description}</td>
-      <td><input type="number" class="product-quantity" value="${quantity}" min="0"></td> <!-- Editable quantity -->
-      <td>${stockInDate}</td>
-      <td>${stockInBy}</td>
-      <td>${vendor}</td>
+      <td>${description || 'N/A'}</td> <!-- Ensure description is displayed -->
+      <td><input type="number" class="product-quantity" value="${quantity}" min="0"></td>
+      <td>${document.getElementById('stockInDate').value}</td>
+      <td>${document.getElementById('stockInBy').value}</td>
+      <td>${document.getElementById('vendor').options[document.getElementById('vendor').selectedIndex].text}</td>
       <td><button class="remove-button">Remove</button></td>
     `;
     tableBody.appendChild(newRow);
-  
-    // Add visual feedback to the button
-    const selectButton = document.querySelector(`button[data-id='${productId}']`);
-    selectButton.disabled = true; // Disable the button after selection
-    selectButton.innerText = 'Selected'; // Change button text
-  
-    addRemoveButtonListeners(); // Re-add event listeners for remove buttons
+    addRemoveButtonListeners();
   };
+  
 
   // Add event listeners to remove buttons
   const addRemoveButtonListeners = () => {
@@ -111,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const description = this.getAttribute('data-description');
         const quantity = this.getAttribute('data-quantity');
         selectProduct(productId, Barcode, description, quantity);
-        document.getElementById('product-modal').style.display = 'none'; // Close the modal after selection
+        document.getElementById('product-modal').style.display = 'none';
       });
     });
   };
@@ -119,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Remove a row
   const removeRow = (button) => {
     button.closest('tr').remove();
-    updateRowIds(); // Update row IDs after removal
+    updateRowIds();
   };
 
   // Update row IDs
@@ -134,8 +184,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Clear the table after a successful save
   const clearProductTable = () => {
     const tableBody = document.querySelector('#product-table tbody');
-    tableBody.innerHTML = ''; // Clear all rows
-    rowId = 1; // Reset row ID counter
+    tableBody.innerHTML = '';
+    rowId = 1;
   };
 
   // Save table data
@@ -144,46 +194,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const stockInBy = document.getElementById('stockInBy').value;
     const vendor = document.getElementById('vendor').value;
     const stockInDate = document.getElementById('stockInDate').value;
+    
+    const saveToPurchaseOrder = confirm("Do you want to save this entry as a Purchase Order?");
 
     const products = [];
     const rows = document.querySelectorAll('#product-table tbody tr');
     rows.forEach(row => {
-      const cells = row.querySelectorAll('td');
-      const product = {
-        Barcode: cells[2].innerText,
-        description: cells[3].innerText,
-        quantity: parseInt(row.querySelector('.product-quantity').value, 10) // Get the value from the input field
-      };
-      products.push(product);
+        const cells = row.querySelectorAll('td');
+        const product = {
+            Barcode: cells[2].innerText,
+            description: cells[3].innerText,
+            quantity: parseInt(row.querySelector('.product-quantity').value, 10)
+        };
+        products.push(product);
     });
 
     const data = {
-      referenceNo,
-      stockInBy,
-      vendor,
-      stockInDate,
-      products
+        referenceNo,
+        stockInBy,
+        vendor,
+        stockInDate,
+        products,
+        saveToPurchaseOrder
     };
 
     fetch('process_stock_entry.php', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     .then(response => response.json())
     .then(result => {
-      if (result.success) {
-        alert(result.success);
-        clearProductTable(); // Clear the table after saving
-      } else {
-        alert(result.error);
-      }
+        if (result.success) {
+            alert(result.success);
+            clearProductTable();
+        } else {
+            alert(result.error);
+        }
     })
     .catch(error => {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again.');
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
     });
   });
 
@@ -222,5 +275,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target == modal) {
       document.body.removeChild(modal);
     }
+  }
+
+  // Add event listener for PO reference select
+  const poReferenceSelect = document.getElementById('poReference');
+  
+  if (poReferenceSelect) {
+    poReferenceSelect.addEventListener('change', (event) => {
+      const poNumber = event.target.value;
+      console.log('Selected PO:', poNumber);
+      if (poNumber) {
+        loadPODetails(poNumber);
+      }
+    });
+  } else {
+    console.error('Element with ID "poReference" not found');
   }
 });

@@ -262,7 +262,7 @@ if (isset($_GET['restoreid'])) {
         <li><a href="StockEntry.php"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i> Stock Entry</a></li>
         <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i> Records</a></li>
         <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i> User Settings</a></li>
-        <li><a href="Login.php"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i> Logout</a></li>
+        <li><a href="Login.php" onclick="return confirmLogout();" style="cursor: pointer;"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px ; margin-right: 10px;'></i>Logout</a></li>
     </ul>
 </nav>
 
@@ -322,8 +322,8 @@ if (isset($_GET['restoreid'])) {
     </div>
 
     <!-- Add Product Modal -->
-    <div id="product-modal" class="modal">
-        <div class="modal-content">
+    <div id="product-modal" class="modals">
+        <div class="modal-contents">
             <span class="close-button">&times;</span>
             <h2>Add New Product</h2>
             <form id="product-form" action="add_product.php" method="post">
@@ -359,8 +359,8 @@ if (isset($_GET['restoreid'])) {
     </div>
 
     <!-- Update Product Modal -->
-    <div id="update-product-modal" class="modal">
-        <div class="modal-content">
+    <div id="update-product-modal" class="modals">
+        <div class="modal-contents">
             <span class="close-button">&times;</span>
             <h2>Update Product</h2>
             <form id="update-product-form" action="update_product.php" method="post">
@@ -397,6 +397,137 @@ if (isset($_GET['restoreid'])) {
             </form>
         </div>
     </div>
+
+    <style>
+        /* Modal styles */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1000; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+      }
+
+      /* Modal content */
+      .modal-content {
+          background-color: #fefefe; /* White background */
+          margin: 15% auto; /* 15% from the top and centered */
+          padding: 20px;
+          border: 1px solid #888; /* Gray border */
+          width: 375px; /* Could be more or less, depending on screen size */
+          border-radius: 8px; /* Rounded corners */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+      }
+
+      /* Close button */
+      .close {
+          color: #aaa; /* Light gray */
+          float: right; /* Position to the right */
+          font-size: 28px; /* Larger font size */
+          font-weight: bold; /* Bold text */
+      }
+
+      .conf{
+        font-size: 24px;
+        font-weight: bolder;
+      }
+
+      .par{
+        font-size: 18px;
+      }
+
+      .close:hover,
+      .close:focus {
+          color: black; /* Change color on hover */
+          text-decoration: none; /* No underline */
+          cursor: pointer; /* Pointer cursor */
+      }
+
+      /* Button styles */
+      .confirm-btn,
+      .cancel-btn {
+          background-color: #005b99; /* Blue background */
+          border: none; /* No borders */
+          color: white; /* White text */
+          padding: 10px 20px; /* Some padding */
+          text-align: center; /* Centered text */
+          text-decoration: none; /* No underline */
+          display: inline-block; /* Align buttons */
+          font-size: 16px; /* Larger font */
+          margin: 10px 2px; /* Margins around buttons */
+          margin-left: 55px;
+          margin-top: 20px;
+          cursor: pointer; /* Pointer cursor */
+          border-radius: 5px; /* Rounded corners */
+          transition: background-color 0.3s; /* Smooth transition */
+      }
+
+      .cancel-btn {
+          background-color: red; /* Gray background for cancel */
+      }
+
+      .cancel-btn:hover {
+          background-color: maroon; /* Darker gray on hover */
+      }
+
+      .confirmLogout:hover{
+        background-color: lightblue; /* Darker gray on hover */
+      }
+   
+    </style>
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLogoutModal()">&times;</span>
+            <h2 class="conf">Logout Confirmation</h2>
+            <p class="par">Are you sure you want to log out?</p>
+            <button id="confirmLogout" class="confirm-btn">Logout</button>
+            <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to show the update product modal
+        function openUpdateProductModal() {
+            document.getElementById("update-product-modal").style.display = "block"; // Show the modal
+        }
+
+        // Function to close the update product modal
+        function closeUpdateProductModal() {
+            document.getElementById("update-product-modal").style.display = "none"; // Hide the modal
+        }
+
+        // Function to show the logout modal
+        function confirmLogout() {
+            document.getElementById("logoutModal").style.display = "block"; // Show the modal
+            return false; // Prevent the default link action
+        }
+
+        // Function to close the logout modal
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none"; // Hide the modal
+        }
+
+        // Close the modal if the user clicks anywhere outside of it
+        window.onclick = function(event) {
+            var updateModal = document.getElementById("update-product-modal");
+            var logoutModal = document.getElementById("logoutModal");
+            if (event.target == updateModal) {
+                closeUpdateProductModal();
+            } else if (event.target == logoutModal) {
+                closeLogoutModal();
+            }
+        };
+
+        // Confirm logout action
+        document.getElementById("confirmLogout").onclick = function() {
+            window.location.href = "Login.php"; // Redirect to the login page or handle logout
+        };
+    </script>
 </body>
 </html>
 <?php

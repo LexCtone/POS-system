@@ -194,7 +194,7 @@ button i {
   border-bottom: 1px solid #e0e0e0;
 }
 
-.modal {
+.modals {
   display: none;
   position: fixed;
   z-index: 1;
@@ -206,7 +206,7 @@ button i {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.modal-contents {
   background-color: #fefefe;
   margin: 5% auto;
   padding: 20px;

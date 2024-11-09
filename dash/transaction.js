@@ -355,26 +355,54 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function openDiscountModal(row) {
-        const productName = row.cells[1].textContent;
-        const originalPrice = parseFloat(row.dataset.originalPrice);
-        const quantity = parseInt(row.querySelector('.quantity-input').value);
-        const discountPercentInput = document.getElementById('discountPercent');
-        const discountAmountInput = document.getElementById('discountAmount');
-        const totalPriceInput = document.getElementById('totalPrice');
+function openDiscountModal(row) {
+    const productName = row.cells[1].textContent;  // Get the product name
+    const barcode = row.dataset.barcode;  // Assuming barcode is stored in the dataset of the row
+    const originalPrice = parseFloat(row.dataset.originalPrice);
+    const quantity = parseInt(row.querySelector('.quantity-input').value);
+    const discountPercentInput = document.getElementById('discountPercent');
+    const discountAmountInput = document.getElementById('discountAmount');
+    const totalPriceInput = document.getElementById('totalPrice');
+    const basePriceDisplay = document.getElementById('basePrice');  // Element for displaying base price
 
-        document.getElementById('discountProductName').textContent = productName;
-        totalPriceInput.value = (originalPrice * quantity).toFixed(2);
-        discountPercentInput.value = row.dataset.discountPercent || '';
-        discountAmountInput.value = '';
+    // Display the product name and total price in the modal
+    document.getElementById('discountProductName').textContent = productName;
+    totalPriceInput.value = (originalPrice * quantity).toFixed(2);
+    discountPercentInput.value = row.dataset.discountPercent || '';
+    discountAmountInput.value = '';
 
-        openModal(discountModal);
+    // Fetch the base price from the server
+    fetch(`getBasePrice.php?barcode=${barcode}`)
+        .then(response => response.json())
+        .then(data => {
+            // Ensure basePrice is a number and handle null or invalid data
+            let basePrice = parseFloat(data.basePrice);  // Convert basePrice to a float
 
-        const confirmDiscountBtn = document.getElementById('confirmDiscount');
-        confirmDiscountBtn.onclick = () => applyDiscount(row);
+            // If basePrice is not a valid number, set it to 0
+            if (isNaN(basePrice)) {
+                basePrice = 0;
+            }
 
-        discountPercentInput.addEventListener('input', () => calculateDiscount(originalPrice, quantity));
-    }
+            // Display the base price with two decimal places
+            basePriceDisplay.textContent = `₱${basePrice.toFixed(2)}`;
+        })
+        .catch(error => {
+            console.error('Error fetching base price:', error);
+            basePriceDisplay.textContent = '₱0.00';  // Set a default value if fetching fails
+        });
+
+    // Open the modal
+    openModal(discountModal);
+
+    // Set the confirm discount button functionality
+    const confirmDiscountBtn = document.getElementById('confirmDiscount');
+    confirmDiscountBtn.onclick = () => applyDiscount(row);
+
+    // Update discount calculations on input change
+    discountPercentInput.addEventListener('input', () => calculateDiscount(originalPrice, quantity));
+}
+
+    
 
     function calculateDiscount(price, quantity) {
         const discountPercent = parseFloat(document.getElementById('discountPercent').value) || 0;

@@ -81,7 +81,7 @@ body {
 
 .button-container {
     align-items: left;
-    margin-right: 350px;
+    margin-right: 225px;
     display: flex;
     justify-content: center;
     margin-top: 35px;
@@ -118,9 +118,6 @@ body {
     margin-right: 5px;
 }
 
-.modals {
-    margin-top: 20px;
-}
 
 .horizontal-form {
   display: grid;
@@ -266,7 +263,7 @@ body {
     border: 1px solid #f5c6cb;
 }
 
-.modal {
+.modals {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -278,7 +275,7 @@ body {
     background-color: rgba(0,0,0,0.4);
 }
 
-.modal-content {
+.modal-contents {
     background-color: #fefefe;
     margin: 5% auto;
     padding: 20px;
