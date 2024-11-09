@@ -60,8 +60,8 @@ if (!$result) {
     </header>
 
     <div class="button-container">
-        <button onclick="location.href='StockEntry.php'">Stock Entry</button>
-        <button onclick="location.href='PurchaseOrder.php'">Orders</button>
+    <button onclick="location.href='PurchaseOrder.php'">Purchase Order</button>
+    <button onclick="location.href='StockEntry.php'">Orders</button> 
         <button onclick="location.href='StockinHistory.php'">Stock in History</button> 
         <button onclick="location.href='StockAdjustment.php'"class="selected">Stock Adjustments</button> 
         <button id="showAdjustmentHistoryBtn">Show Adjustment History</button>
@@ -83,7 +83,7 @@ if (!$result) {
             </ul>
         </li>
         <li><a href="Vendor.php"><i class='fa-solid fa-user' style='font-size:30px'></i>Vendor</a></li>
-        <li><a href="StockEntry.php"  class="selected"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Stock Entry</a></li>
+        <li><a href="Purchase Order.php"  class="selected"><i class='fa-solid fa-arrow-trend-up' style='font-size:30px'></i>Purchase Order</a></li>
         <li><a href="Records.php"><i class='fa-solid fa-database' style='font-size:30px'></i>Records</a></li>
         <li><a href="UserSettings.php"><i class='fa-solid fa-gear' style='font-size:30px'></i>User Settings</a></li>
         <li><a href="Login.php" onclick="return confirmLogout();" style="cursor: pointer;"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
