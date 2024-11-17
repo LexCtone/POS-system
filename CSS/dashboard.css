@@ -129,6 +129,7 @@ body {
   flex-wrap: wrap;
   justify-content: flex-start; /* Aligns cards to the left */
   gap: 20px;
+  
 }
 
 .card {
@@ -341,7 +342,7 @@ body {
   position: fixed;
   width: 860px;
   max-width: 1200px;
-  height: 465px;
+  height: 455px;
   padding: 20px;
   background-color: #f7f8fc;
   display: flex;
@@ -411,7 +412,7 @@ button {
   position: fixed;
   width: 575px;
   max-width: 1200px;
-  height: 465px;
+  height: 455px;
   padding: 20px;
   background-color: #f7f8fc;
   display: flex;

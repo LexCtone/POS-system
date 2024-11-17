@@ -26,12 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product-id'])) {
     $brand = trim($_POST['brand']);
     $category = trim($_POST['category']);
     $price = trim($_POST['price']);
+    $cost_price = trim($_POST['cost_price']); // Get cost_price
 
     // Validate input
-    if (!empty($barcode) && !empty($description) && !empty($brand) && !empty($category) && is_numeric($price)) {
-        // Update the product in the database
-        $stmt = $conn->prepare("UPDATE products SET Barcode = ?, Description = ?, Brand = ?, Category = ?, Price = ? WHERE id = ?");
-        $stmt->bind_param('ssssdi', $barcode, $description, $brand, $category, $price, $productId);
+    if (!empty($barcode) && !empty($description) && !empty($brand) && !empty($category) && is_numeric($price) && is_numeric($cost_price)) {
+        // Update the product in the database with cost_price
+        $stmt = $conn->prepare("UPDATE products SET Barcode = ?, Description = ?, Brand = ?, Category = ?, Price = ?, cost_price = ? WHERE id = ?");
+        $stmt->bind_param('ssssddi', $barcode, $description, $brand, $category, $price, $cost_price, $productId);
 
         if ($stmt->execute()) {
             sendJsonResponse(true, 'Product updated successfully');
@@ -41,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product-id'])) {
 
         $stmt->close();
     } else {
-        sendJsonResponse(false, 'All fields are required and price must be numeric');
+        sendJsonResponse(false, 'All fields are required and price/cost price must be numeric');
     }
 } else {
     sendJsonResponse(false, 'Invalid request method or missing product ID');

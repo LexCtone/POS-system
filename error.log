@@ -7,3 +7,5 @@
 [2024-10-31 02:08:28] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 9, adjustment_reason: asd, barcode: 10000001, reference: adjustment_reference
 [2024-10-31 02:08:35] process_adjustment.php: Received data - product_id: 2, adjustment_quantity: 4, adjustment_reason: asdasd, barcode: 10000002, reference: adjustment_reference
 [2024-10-31 02:08:42] process_adjustment.php: Received data - product_id: 3, adjustment_quantity: 7, adjustment_reason: asd, barcode: 10000003, reference: adjustment_reference
+[2024-11-12 17:02:56] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 20, adjustment_reason: sablay eh, barcode: 200110212312, reference: adjustment_reference
+[2024-11-12 18:23:44] process_adjustment.php: Received data - product_id: 188, adjustment_quantity: 100, adjustment_reason: Forgotten Entry, barcode: 10000232, reference: adjustment_reference

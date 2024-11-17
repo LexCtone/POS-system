@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('No PO number provided');
         return;
     }
+
+    
     
     console.log('Fetching PO details for:', poNumber);
   
@@ -291,4 +293,5 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     console.error('Element with ID "poReference" not found');
   }
+  
 });

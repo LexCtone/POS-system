@@ -24,7 +24,14 @@ if (!isset($conn) || $conn->connect_error) {
 }
 
 // Fetch products with quantity below 20
-$query = "SELECT id, Barcode, Description, Price, Quantity FROM products WHERE Quantity < 20 ORDER BY Quantity ASC";
+// Updated query to fetch additional details like Brand, Category, and Vendor
+$query = "SELECT p.id, p.Barcode, p.Description, p.Price, p.Quantity, p.cost_price, 
+                 p.Brand, p.Category, v.id AS vendor_id, v.vendor AS Vendor
+          FROM products p
+          LEFT JOIN vendor v ON p.vendor_id = v.id
+          WHERE p.Quantity < 20
+          ORDER BY p.Quantity ASC";
+
 $result = $conn->query($query);
 
 if (!$result) {
@@ -87,6 +94,8 @@ if (!$result) {
         <span class="print-preview-text">Print Preview</span>
     </div>
 </div>
+</div>
+
 <div class="content">
   <div class="table-container">
   <table class="table" id="critical-table">
@@ -95,8 +104,13 @@ if (!$result) {
       <th>#</th>
       <th>BARCODE</th>
       <th>DESCRIPTION</th>
+      <th>BRAND</th> <!-- Added column for Brand -->
+      <th>CATEGORY</th> <!-- Added column for Category -->
       <th>PRICE</th>
+      <th>BASE PRICE</th> <!-- Added column for Base Price -->
       <th>No. OF STOCKS</th>
+      <th>VENDOR</th> <!-- Added column for Vendor -->
+      <th>ACTION</th> <!-- Added column for Action -->
     </tr>
   </thead>
   <tbody>
@@ -104,21 +118,46 @@ if (!$result) {
     if ($result->num_rows > 0) {
         $counter = 1;
         while ($row = $result->fetch_assoc()) {
+            // Check if vendor_id exists and fetch vendor details if it does
+            $vendor_name = isset($row['Vendor']) ? htmlspecialchars($row['Vendor']) : 'Unknown Vendor'; // Fallback to "Unknown Vendor" if not set
+            $vendor_id = isset($row['vendor_id']) ? $row['vendor_id'] : ''; // Ensure vendor_id exists
+
             echo "<tr>";
             echo "<td>" . $counter . "</td>";
             echo "<td>" . htmlspecialchars($row["Barcode"]) . "</td>";
             echo "<td>" . htmlspecialchars($row["Description"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["Brand"]) . "</td>"; 
+            echo "<td>" . htmlspecialchars($row["Category"]) . "</td>";  
             echo "<td>₱" . number_format($row["Price"], 2) . "</td>";
+            echo "<td>₱" . number_format($row["cost_price"], 2) . "</td>";  
             echo "<td>" . htmlspecialchars($row["Quantity"]) . "</td>";
+            echo "<td>" . $vendor_name . "</td>"; // Display the vendor name or fallback to "Unknown Vendor"
+            
+            // PO Button Form
+            ?>
+            <td>
+                <form action="PurchaseOrder.php" method="get">
+                    <input type="hidden" name="product_id" value="<?php echo $row['id']; ?>"> <!-- Product ID -->
+                    <input type="hidden" name="vendor_id" value="<?php echo $row['vendor_id']; ?>"> <!-- Vendor ID -->
+                    <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($row['Description']); ?>"> <!-- Product Name -->
+                    <input type="hidden" name="cost_price" value="<?php echo htmlspecialchars($row['cost_price']); ?>"> <!-- Cost Price -->
+                    <input type="hidden" name="brand" value="<?php echo htmlspecialchars($row['Brand']); ?>"> <!-- Brand -->
+                    <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['Category']); ?>"> <!-- Category -->
+                    <button type="submit" class="po-button">PO</button> <!-- PO Button -->
+                </form>
+            </td>
+            <?php
             echo "</tr>";
             $counter++;
         }
     } else {
-        echo "<tr><td colspan='5' style='text-align: center;'>No critical stocks found</td></tr>";
+        echo "<tr><td colspan='9' style='text-align: center;'>No critical stocks found</td></tr>";
     }
     ?>
   </tbody>
 </table>
+
+
   </div>
 </div>
 </div>

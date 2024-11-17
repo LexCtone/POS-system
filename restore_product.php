@@ -21,19 +21,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             throw new Exception("Product not found for restoration.");
         }
 
-        // Check if a product with the same ID already exists in the products table
-        $check_sql = "SELECT id FROM products WHERE id = ?";
+        // Check if a product with the same Barcode already exists in the products table
+        $check_sql = "SELECT id FROM products WHERE Barcode = ?";
         $check_stmt = $conn->prepare($check_sql);
-        $check_stmt->bind_param('i', $id);
+        $check_stmt->bind_param('s', $product['Barcode']);
         $check_stmt->execute();
-        if ($check_stmt->get_result()->num_rows > 0) {
-            throw new Exception("A product with this ID already exists in the active products.");
+        $existing_product = $check_stmt->get_result()->fetch_assoc();
+
+        if ($existing_product) {
+            // A product with the same barcode already exists, don't allow restore
+            throw new Exception("A product with this barcode already exists in the active products.");
         }
 
-        // Insert the product back into the products table with the same ID
-        $insert_sql = "INSERT INTO products (id, Barcode, Description, Brand, Category, Price, Quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // Insert the product back into the products table (restoring it)
+        // Don't include the ID; let MySQL auto-increment the ID
+        $insert_sql = "INSERT INTO products (Barcode, Description, Brand, Category, Price, Quantity) 
+                       VALUES (?, ?, ?, ?, ?, ?)";
         $insert_stmt = $conn->prepare($insert_sql);
-        $insert_stmt->bind_param('issssdi', $product['id'], $product['Barcode'], $product['Description'], $product['Brand'], $product['Category'], $product['Price'], $product['Quantity']);
+        $insert_stmt->bind_param('ssssdi', $product['Barcode'], $product['Description'], $product['Brand'], 
+                                $product['Category'], $product['Price'], $product['Quantity']);
         
         if (!$insert_stmt->execute()) {
             throw new Exception("Error restoring product: " . $insert_stmt->error);

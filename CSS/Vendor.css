@@ -315,3 +315,34 @@ form button {
   margin-top: 10px;
 }
 
+#update-email {
+  margin-bottom: 20px;
+  height: 30px;
+  width: 435px;
+}
+
+#update-contact-number {
+ width: 105px; 
+}
+
+#update-contact-person {
+  width: 225px; 
+}
+
+#email {
+  margin-bottom: 20px;
+  height: 30px;
+  width: 435px;
+}
+
+#contact-number {
+ width: 105px; 
+}
+
+#contact-person {
+  width: 225px; 
+}
+
+#vendor-name {
+  margin-top: 20px;
+}

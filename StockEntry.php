@@ -243,6 +243,26 @@ $current_date = date('Y-m-d'); // Format: YYYY-MM-DD
             </tbody>
         </table>
     </div>
+    
+                <!-- Success Alert for Purchase Order Save -->
+<div id="successAlert" style="display: none;" class="alert alert-success" role="alert">
+  <p>Purchase Order created successfully!</p>
+</div>
+
+<!-- Success Alert for Purchase Order Save -->
+<div id="successAlert" style="display: none;" class="alert alert-success" role="alert">
+    <p>Purchase Order created successfully!</p>
+</div>
+
+<!-- Custom Confirmation Alert -->
+<div id="confirmSaveAlert" class="custom-alert">
+    <div class="alert-content">
+        <p>Do you want to save this entry as a Purchase Order?</p>
+        <button id="confirmSaveButton" class="confirm-btn">Yes</button>
+        <button id="cancelSaveButton" class="cancel-btn">No</button>
+    </div>
+</div>
+
 
     <!-- Save Button -->
     <div class="save-container">
@@ -310,5 +330,7 @@ $current_date = date('Y-m-d'); // Format: YYYY-MM-DD
             }
         };
     </script>
+
+    
 </body>
 </html>

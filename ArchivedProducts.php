@@ -79,7 +79,7 @@ if (isset($_SESSION['user_id'])) {
               <i class="fa fa-refresh"></i>
               <span class="load-data-text">Load Data</span>
             </button>
-            <div class="print-preview-button" onclick="window.print()">
+            <div class="print-preview-button" onclick="printTable()">
               <i class="fa-solid fa-print"></i>
               <span class="print-preview-text">Print Preview</span>
             </div>
@@ -219,5 +219,12 @@ if (isset($_SESSION['user_id'])) {
             window.location.href = "Login.php"; // Redirect to the login page or handle logout
         };
     </script>
+    <script>
+    function printTable() {
+    document.body.classList.add('print-mode');
+    window.print();
+    document.body.classList.remove('print-mode');
+}
+</script>
 </body>
 </html>

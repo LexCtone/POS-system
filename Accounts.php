@@ -73,7 +73,7 @@ if (isset($_SESSION['user_id'])) {
                             <th>Name</th>
                             <th>Username</th>
                             <th>Email</th>
-                            <th>Password</th> <!-- Added Password column -->
+                      <!--  <th>Password</th> Added Password column -->
                             <th>Role</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -102,7 +102,7 @@ if (isset($_SESSION['user_id'])) {
             <td class="editable" data-field="name">${account.name}</td>
             <td class="editable" data-field="username">${account.username}</td>
             <td class="editable" data-field="email">${account.email}</td>
-            <td>${account.password}</td> <!-- Display decrypted password -->
+       <!-- <td>${account.password}</td>  Display decrypted password -->
             <td>${account.role}</td>
             <td>${account.status}</td>
             <td>

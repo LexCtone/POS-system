@@ -316,22 +316,24 @@ if ($row_critical = $result_critical_stocks->fetch_assoc()) {
         </header>
         <section class="cards">
             <div class="card" id="annual-sales">
-                <i class="fas fa-chart-line icon-style"></i> 
+            <i class="fas fa-calendar-alt icon-style"></i>
+
                 Annual Sales<br>
                 ₱<?php echo number_format($annual_sales, 2); ?> <!-- PHP variable for Annual Sales -->
             </div>
             <div class="card" id="annual-profit">
-                <i class="fas fa-exclamation-triangle icon-style"></i> 
+            <i class="fas fa-money-bill-wave icon-style"></i>
+
                 Annual Profit<br>
                 ₱<?php echo number_format($annual_profit, 2); ?> <!-- PHP variable for Annual Profit -->
             </div>
             <div class="card" id="daily-sales">
-                <i class="fas fa-box icon-style"></i> 
+            <i class="fas fa-clock icon-style"></i>
                 Daily Sales<br>
                 ₱<?php echo number_format($daily_sales, 2); ?> <!-- PHP variable for Daily Sales -->
             </div>
             <div class="card" id="daily-profit">
-                <i class="fas fa-archive icon-style"></i> 
+            <i class="fas fa-money-bill-wave icon-style"></i> 
                 Daily Profit<br>
                 ₱<?php echo number_format($daily_profit, 2); ?> <!-- PHP variable for Daily Profit -->
             </div>
@@ -355,17 +357,17 @@ if ($row_critical = $result_critical_stocks->fetch_assoc()) {
         </header>
         <section class="cards">
             <a href="SalesHistory.php" class="card" style="text-decoration: none; color: inherit;">
-                <i class="fas fa-chart-line icon-style"></i> 
+            <i class="fas fa-check icon-style"></i> 
                 No. items sold<br>
                 <?php echo number_format($total_items_sold); ?>
             </a>
             <a href="CancelledOrder.php" class="card" style="text-decoration: none; color: inherit;">
-                <i class="fas fa-exclamation-triangle icon-style"></i> 
+            <i class="fas fa-ban icon-style"></i> 
                 Cancelled Order<br>
                 <?php echo number_format($total_canceled_orders); ?>
             </a>
             <a href="SalesHistory.php" class="card" style="text-decoration: none; color: inherit;">
-                <i class="fas fa-box icon-style"></i> 
+            <i class="fas fa-shopping-cart icon-style"></i>
                 Purchase Amount<br>
                 ₱<?php echo number_format($total_purchase_amount, 2); ?>
             </a>
@@ -385,7 +387,7 @@ if ($row_critical = $result_critical_stocks->fetch_assoc()) {
                 <?php echo number_format($total_stock_on_hand,  ); ?>
             </a>
             <a href="CriticalStocks.php" class="card" style="text-decoration: none; color: inherit;">
-                <i class="fas fa-chart-line icon-style"></i> 
+            <i class="fas fa-exclamation-triangle icon-style"></i> 
                 Critical Stocks<br>
                 <?php echo $total_critical_stocks; ?>
             </a>

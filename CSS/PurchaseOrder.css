@@ -568,3 +568,62 @@ td {
   font-size: 0.9em;
   margin-top: 5px;
 }
+
+/* Alert Styles */
+#successAlert {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  padding: 15px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+#successAlert p {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+#successAlert .close,
+#successAlert .ok-button {
+  background-color: transparent;
+  border: none;
+  color: #155724;
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+
+#successAlert .ok-button {
+  float: none;
+  font-size: 14px;
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 3px;
+  margin-top: 10px;
+}
+
+#successAlert .ok-button:hover {
+  background-color: #218838;
+}
+
+/* Optional: Add animation for smoother appearance */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#successAlert.show {
+  display: block;
+  animation: fadeIn 0.3s;
+}

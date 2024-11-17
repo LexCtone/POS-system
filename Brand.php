@@ -74,42 +74,45 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </thead>
             <tbody>
             <?php
-            include 'connect.php';
+                include 'connect.php';
 
-            // Handle delete request
-            if (isset($_GET['deleteid'])) {
-                $id_to_delete = $_GET['deleteid'];
+                // Handle delete request
+                if (isset($_GET['deleteid'])) {
+                    $id_to_delete = $_GET['deleteid'];
 
-                // Delete the record
-                $delete_sql = "DELETE FROM brands WHERE id = $id_to_delete";
-                mysqli_query($conn, $delete_sql);
+                    // Delete the record
+                    $delete_sql = "DELETE FROM brands WHERE id = $id_to_delete";
+                    mysqli_query($conn, $delete_sql);
 
-                // Redirect back to the brand list
-                header('Location: Brand.php');
-                exit();
-            }
-
-            // Fetch and display brands
-            $sql = "SELECT * FROM brands";
-            $result = mysqli_query($conn, $sql);
-            $row_number = 1; // Initialize row number
-            if ($result) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $brand = $row['Brand'];
-
-                    echo '<tr>
-                    <td scope="row">'.$row_number.'</td> <!-- Display row number -->
-                    <td>'.$brand.'</td>
-                    <td>
-                        <button class="button update-button" data-id="'.$row['id'].'" data-brand="'.htmlspecialchars($brand, ENT_QUOTES, 'UTF-8').'"><a href="#" class="text-light">Update</a></button>
-                        <button class="button"><a href="?deleteid='.$row['id'].'" class="text-light">Delete</a></button>
-                    </td>
-                    </tr>';
-                    $row_number++; // Increment row number
+                    // Redirect back to the brand list
+                    header('Location: Brand.php');
+                    exit();
                 }
-            }
-            mysqli_close($conn);
-            ?>
+
+                // Fetch and display brands
+                $sql = "SELECT * FROM brands";
+                $result = mysqli_query($conn, $sql);
+                $row_number = 1; // Initialize row number
+                if ($result && mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $brand = $row['Brand'];
+
+                        echo '<tr>
+                        <td scope="row">'.$row_number.'</td> <!-- Display row number -->
+                        <td>'.$brand.'</td>
+                        <td>
+                            <button class="button update-button" data-id="'.$row['id'].'" data-brand="'.htmlspecialchars($brand, ENT_QUOTES, 'UTF-8').'"><a href="#" class="text-light">Update</a></button>
+                            <button class="button"><a href="?deleteid='.$row['id'].'" class="text-light">Delete</a></button>
+                        </td>
+                        </tr>';
+                        $row_number++; // Increment row number
+                    }
+                } else {
+                    echo '<tr><td colspan="3" style="text-align: center; font-size: 18px; color: #555;">No brands found.</td></tr>';
+                }
+                mysqli_close($conn);
+                ?>
+
             </tbody>
         </table>
     </div>

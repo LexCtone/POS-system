@@ -386,3 +386,24 @@ body {
         background-color: lightblue; /* Darker gray on hover */
       }
     
+      #toggleView {
+        background-color: #1C75A6;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        margin-left: 20px;
+      }
+  
+      #toggleView:active {
+        background-color: #1C75A6;
+        transform: scale(0.98);
+      }
+  
+      #toggleView:focus {
+        outline: none;
+      }
+  

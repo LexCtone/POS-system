@@ -185,13 +185,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Automatically focus the barcode input field when the page loads
+    barcodeInput.focus(); // This will make sure the barcode input field is focused immediately when the page loads
+
+    // Listen for the Enter key press event on the barcode input field
     barcodeInput.addEventListener('keypress', async (event) => {
         if (event.key === 'Enter') {
-            event.preventDefault();
-            const barcode = barcodeInput.value.trim();
+            event.preventDefault(); // Prevent the default behavior
+            const barcode = barcodeInput.value.trim(); // Get the barcode value
             if (barcode) {
-                await fetchProduct(barcode);
-                barcodeInput.value = '';
+                await fetchProduct(barcode); // Fetch product data based on the barcode
+                barcodeInput.value = ''; // Clear the input field after scanning
             }
         }
     });
@@ -426,66 +430,108 @@ function openDiscountModal(row) {
         closeModal(discountModal);
     }
 
-    function openPerPurchaseDiscountModal() {
-        const totalAmount = parseFloat(headerTotalSalesElement.textContent.replace('₱', ''));
-        document.getElementById('perPurchaseTotalAmount').textContent = `₱${totalAmount.toFixed(2)}`;
-        document.getElementById('perPurchaseDiscountPercent').value = '';
-        document.getElementById('perPurchaseDiscountAmount').value = '';
-        document.getElementById('perPurchaseFinalAmount').textContent = `₱${totalAmount.toFixed(2)}`;
-        openModal(perPurchaseDiscountModal);
+async function openPerPurchaseDiscountModal() {
+    // Get the total amount in the cart
+    const totalAmount = parseFloat(headerTotalSalesElement.textContent.replace('₱', ''));
+    document.getElementById('perPurchaseTotalAmount').textContent = `₱${totalAmount.toFixed(2)}`;
+
+    // Calculate the total base price of all products in the cart
+    let totalBasePrice = 0;
+    const rows = tableBody.querySelectorAll('tr');
+    
+    // Fetch the base price of each product
+    for (const row of rows) {
+        const barcode = row.dataset.barcode;
+        const quantity = parseInt(row.querySelector('.quantity-input').value);
+        const basePriceData = await fetchBasePrice(barcode);
+        const basePrice = basePriceData.basePrice;
+        totalBasePrice += basePrice * quantity;  // Multiply by quantity to get the total base price
     }
 
-    function calculatePerPurchaseDiscount() {
-        const totalAmount = parseFloat(headerTotalSalesElement.textContent.replace('₱', ''));
-        const discountPercent = parseFloat(document.getElementById('perPurchaseDiscountPercent').value) || 0;
-        
-        if (discountPercent < 0 || discountPercent > 100) {
-            alert('Please enter a valid discount percentage between 0 and 100.');
-            return;
+    document.getElementById('perPurchaseTotalBasePrice').textContent = `₱${totalBasePrice.toFixed(2)}`;
+    
+    // Reset the discount inputs
+    document.getElementById('perPurchaseDiscountPercent').value = '';
+    document.getElementById('perPurchaseDiscountAmount').value = '';
+    document.getElementById('perPurchaseFinalAmount').textContent = `₱${totalAmount.toFixed(2)}`;
+
+    openModal(perPurchaseDiscountModal);
+}
+
+// Fetch the base price of a product based on barcode
+async function fetchBasePrice(barcode) {
+    try {
+        const response = await fetch(`getBasePrice.php?barcode=${barcode}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch base price');
         }
+        const data = await response.json();
+        return data; // { basePrice: 12.50 }
+    } catch (error) {
+        console.error('Error fetching base price:', error);
+        return { basePrice: 0 }; // Fallback value in case of error
+    }
+}
 
-        const discountAmount = (totalAmount * discountPercent) / 100;
-        const finalAmount = totalAmount - discountAmount;
+// Update discount calculation based on the percentage
+document.getElementById('perPurchaseDiscountPercent').addEventListener('input', calculatePerPurchaseDiscount);
 
-        document.getElementById('perPurchaseDiscountAmount').value = discountAmount.toFixed(2);
-        document.getElementById('perPurchaseFinalAmount').textContent = `₱${finalAmount.toFixed(2)}`;
+function calculatePerPurchaseDiscount() {
+    const discountPercent = parseFloat(document.getElementById('perPurchaseDiscountPercent').value) || 0;
+
+    // Calculate the discount amount based on the total base price
+    const totalBasePrice = parseFloat(document.getElementById('perPurchaseTotalBasePrice').textContent.replace('₱', ''));
+
+    const discountAmount = (totalBasePrice * discountPercent) / 100;
+    const finalAmount = totalBasePrice - discountAmount;
+
+    // Update the fields with calculated discount and final amount
+    document.getElementById('perPurchaseDiscountAmount').value = discountAmount.toFixed(2);
+    document.getElementById('perPurchaseFinalAmount').textContent = `₱${finalAmount.toFixed(2)}`;
+}
+
+document.getElementById('applyPerPurchaseDiscount').addEventListener('click', applyPerPurchaseDiscount);
+
+function applyPerPurchaseDiscount() {
+    const discountAmount = parseFloat(document.getElementById('perPurchaseDiscountAmount').value) || 0;
+
+    if (discountAmount <= 0) {
+        alert('Please enter a valid discount amount.');
+        return;
     }
 
-    function applyPerPurchaseDiscount() {
-        const discountAmount = parseFloat(document.getElementById('perPurchaseDiscountAmount').value) || 0;
-    
-        if (discountAmount <= 0) {
-            alert('Please enter a valid discount amount.');
-            return;
-        }
-    
-        const rows = tableBody.querySelectorAll('tr');
-        let totalBeforeDiscount = 0;
-    
-        rows.forEach(row => {
-            const totalCell = row.querySelector('.total-cell');
-            const rowTotal = parseFloat(totalCell.textContent.replace('₱', ''));
-            totalBeforeDiscount += rowTotal;
-        });
-    
-        rows.forEach(row => {
-            const totalCell = row.querySelector('.total-cell');
-            const discountAmountCell = row.querySelector('.discount-amount-cell');
-            const rowTotal = parseFloat(totalCell.textContent.replace('₱', ''));
-            const proportion = rowTotal / totalBeforeDiscount;
-            const rowDiscount = discountAmount * proportion;
-            const newRowTotal = rowTotal - rowDiscount;
-    
-            const currentDiscount = parseFloat(discountAmountCell.textContent.replace('₱', ''));
-            const newDiscount = currentDiscount + rowDiscount;
-    
-            discountAmountCell.textContent = `₱${newDiscount.toFixed(2)}`;
-            totalCell.textContent = `₱${newRowTotal.toFixed(2)}`;
-        });
-    
-        updateTotalSales();
-        closeModal(perPurchaseDiscountModal);
-    }
+    // Apply the discount proportionally to each row
+    const rows = tableBody.querySelectorAll('tr');
+    let totalBeforeDiscount = 0;
+
+    // Calculate the total amount before applying the discount
+    rows.forEach(row => {
+        const totalCell = row.querySelector('.total-cell');
+        const rowTotal = parseFloat(totalCell.textContent.replace('₱', ''));
+        totalBeforeDiscount += rowTotal;
+    });
+
+    // Apply discount proportionally to each row
+    rows.forEach(row => {
+        const totalCell = row.querySelector('.total-cell');
+        const discountAmountCell = row.querySelector('.discount-amount-cell');
+        const rowTotal = parseFloat(totalCell.textContent.replace('₱', ''));
+        const proportion = rowTotal / totalBeforeDiscount;
+        const rowDiscount = discountAmount * proportion;
+        const newRowTotal = rowTotal - rowDiscount;
+
+        const currentDiscount = parseFloat(discountAmountCell.textContent.replace('₱', ''));
+        const newDiscount = currentDiscount + rowDiscount;
+
+        discountAmountCell.textContent = `₱${newDiscount.toFixed(2)}`;
+        totalCell.textContent = `₱${newRowTotal.toFixed(2)}`;
+    });
+
+    // Update the total sales and final amount
+    updateTotalSales();
+    closeModal(perPurchaseDiscountModal);
+}
+
 
     document.getElementById('perPurchaseDiscountPercent').addEventListener('input', calculatePerPurchaseDiscount);
     document.getElementById('applyPerPurchaseDiscount').addEventListener('click', applyPerPurchaseDiscount);
@@ -1051,86 +1097,80 @@ fetch('change_password.php', {
         }
     });
     
-    function handleCancelOrder(event) {
-        event.preventDefault();
-        
-        function getElementValue(id) {
-            const element = document.getElementById(id);
-            if (!element) {
-                console.error(`Element with id '${id}' not found`);
-                return null;
-            }
-            return element.value;
-        }
-    
-        const saleId = getElementValue('id');
-        const productCode = getElementValue('productCode');
-        const cancelQtyElement = document.getElementById('cancelQty');
-        const cancelQty = cancelQtyElement ? parseInt(cancelQtyElement.value) : null;
-        const maxQty = cancelQtyElement ? parseInt(cancelQtyElement.getAttribute('max')) : null;
-        const cancelReason = getElementValue('cancelReason');
-        const addToInventoryElement = document.getElementById('addToInventory');
-        const addToInventory = addToInventoryElement ? addToInventoryElement.value === 'yes' : false;
-        const voidBy = getElementValue('voidBy');
-        
-        // Get the cashier's name instead of their title
-        const cashierNameElement = document.getElementById('cashierName');
-        const cancelledBy = cashierNameElement ? cashierNameElement.textContent.trim() : 'Unknown Cashier';
-    
-        console.log('Gathered form data:', { saleId, productCode, cancelQty, maxQty, cancelReason, addToInventory, voidBy, cancelledBy });
-    
-        if (!cancelQty || cancelQty < 1 || (maxQty !== null && cancelQty > maxQty)) {
-            alert(`Please enter a valid cancel quantity${maxQty !== null ? ` between 1 and ${maxQty}` : ''}.`);
-            return;
-        }
-        
-        if (!cancelReason) {
-            alert('Please provide a reason for the cancellation.');
-            return;
-        }
-        
-        if (!saleId || !productCode) {
-            alert('Missing Sale ID or Product Code.');
-            return;
-        }
-        
-        const requestData = {
-            saleId: parseInt(saleId),
-            productCode: productCode,
-            cancelQty: cancelQty,
-            voidBy: voidBy,
-            cancelledBy: cancelledBy, // This now contains the cashier's name
-            cancelReason: cancelReason,
-            addToInventory: addToInventory
-        };
-    
-        // Send the request to the server
-        fetch('void_item.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Item voided successfully.');
-                closeModal('cancelOrderModal');
-                if (typeof filterSales === 'function') {
-                    filterSales();
-                }
-            } else {
-                throw new Error(data.message || 'Failed to void item');
-            }
-        })
-        .catch(error => {
-            console.error('Error voiding item:', error);
-            alert('An error occurred while voiding the item. Please try again.');
-        });
+   let isAlertShown = false;
+
+function handleCancelOrder(event) {
+    event.preventDefault();
+
+    // Exit if the alert is already shown
+    if (isAlertShown) return;
+
+    // Perform validation checks first
+    const saleId = document.getElementById('id')?.value;
+    const productCode = document.getElementById('productCode')?.value;
+    const cancelQtyElement = document.getElementById('cancelQty');
+const cancelQty = cancelQtyElement ? parseInt(cancelQtyElement.value) : 1; // Default to 1 if missing
+    const maxQty = cancelQtyElement ? parseInt(cancelQtyElement.getAttribute('max')) : null;
+    const cancelReason = document.getElementById('cancelReason')?.value;
+
+    // Early return if validations fail
+    if (!cancelQty || cancelQty < 1 || (maxQty !== null && cancelQty > maxQty)) {
+        alert(`Please enter a valid cancel quantity${maxQty !== null ? ` between 1 and ${maxQty}` : ''}.`);
+        return;
     }
-    
-    document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
+
+    if (!cancelReason) {
+        alert('Please provide a reason for the cancellation.');
+        return;
+    }
+
+    if (!saleId || !productCode) {
+        alert('Missing Sale ID or Product Code.');
+        return;
+    }
+
+    // Set the flag after all validation checks pass
+    isAlertShown = true;
+
+    const requestData = {
+        saleId: parseInt(saleId),
+        productCode: productCode,
+        cancelQty: cancelQty || 1, // Use 1 as a fallback if cancelQty is missing
+        voidBy: document.getElementById('voidBy')?.value,
+        cancelledBy: document.getElementById('cashierName')?.textContent.trim() || 'Unknown Cashier',
+        cancelReason: cancelReason,
+        addToInventory: document.getElementById('addToInventory')?.value === 'yes',
+    };
+
+    fetch('void_item.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Item voided successfully.');
+            closeModal('cancelOrderModal');
+            if (typeof filterSales === 'function') {
+                filterSales();
+            }
+        } else {
+            throw new Error(data.message || 'Failed to void item');
+        }
+    })
+    .catch(error => {
+        console.error('Error voiding item:', error);
+        alert('An error occurred while voiding the item. Please try again.');
+    })
+    .finally(() => {
+        isAlertShown = false;
+    });
+}
+
+document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
 
     function displayTransactionView(transactions, container) {
         transactions.forEach((transaction, index) => {
@@ -1298,7 +1338,6 @@ fetch('change_password.php', {
         const cancelOrderModal = document.getElementById('cancelOrderModal');
         const cancelTransactionModal = document.getElementById('cancelTransactionModal');
 
-        document.querySelector('#cancelOrderModal .cancel-modal-btn').addEventListener('click', handleCancelOrder);
         document.querySelector('#cancelTransactionModal .cancel-modal-btn').addEventListener('click', handleCancelTransaction);
 
         document.querySelectorAll('#cancelOrderModal .close, #cancelTransactionModal .close').forEach(closeBtn => {

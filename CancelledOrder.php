@@ -121,7 +121,7 @@ if (isset($_SESSION['user_id'])) {
         <span class="print-preview-text">Print Preview</span>
     </div>
     <div>
-  <label for="toggleView">View:</label>
+  <label for="toggleView"></label>
   <button id="toggleView">Switch to Transaction View</button>
 </div>
   </div>

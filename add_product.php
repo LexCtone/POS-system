@@ -13,12 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $brand = trim($_POST['brand']);
     $category = trim($_POST['category']);
     $price = trim($_POST['price']);
+    $cost_price = trim($_POST['cost_price']); // New cost_price field
 
     // Validate input
-    if (!empty($barcode) && !empty($description) && !empty($brand) && !empty($category) && is_numeric($price)) {
+    if (!empty($barcode) && !empty($description) && !empty($brand) && !empty($category) && is_numeric($price) && is_numeric($cost_price)) {
         // Insert into the database
-        $stmt = $conn->prepare("INSERT INTO products (Barcode, Description, Brand, Category, Price, Quantity) VALUES (?, ?, ?, ?, ?, 0)");
-        $stmt->bind_param('sssss', $barcode, $description, $brand, $category, $price);
+        $stmt = $conn->prepare("INSERT INTO products (Barcode, Description, Brand, Category, Price, cost_price, Quantity) VALUES (?, ?, ?, ?, ?, ?, 0)");
+        $stmt->bind_param('ssssdi', $barcode, $description, $brand, $category, $price, $cost_price);
 
         if ($stmt->execute()) {
             echo 'Product added successfully';
@@ -28,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt->close();
     } else {
-        echo 'All fields are required and price must be numeric';
+        echo 'All fields are required, and price/cost price must be numeric';
     }
 }
 

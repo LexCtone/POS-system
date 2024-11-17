@@ -111,6 +111,7 @@ if (isset($_GET['error'])) {
           <div class="form-group">
             <label for="new-password">Password</label>
             <input type="password" id="new-password" name="new-password" required>
+            <small id="password-length-error" style="color: red; display: none; margin-left: 10px;">Password must be at least 8 characters long.</small>
           </div>
           <div class="form-group">
             <label for="retype-password">Re-Type Password</label>
@@ -175,7 +176,18 @@ if (isset($_GET['error'])) {
         var newPassword = document.getElementById('new-password').value;
         var retypePassword = document.getElementById('retype-password').value;
         var passwordError = document.getElementById('password-error');
-
+        var passwordLengthError = document.getElementById('password-length-error'); // New error element for password length
+    
+        // Check if password meets minimum length requirement
+        if (newPassword.length < 8) {
+            passwordLengthError.style.display = 'block'; // Display password length error
+            passwordError.style.display = 'none'; // Hide password mismatch error if length is invalid
+            return false; // Prevent form submission
+        } else {
+            passwordLengthError.style.display = 'none'; // Hide password length error if valid
+        }
+    
+        // Check if passwords match
         if (newPassword !== retypePassword) {
             passwordError.style.display = 'block';
             return false; // Prevent form submission
@@ -184,11 +196,11 @@ if (isset($_GET['error'])) {
             return true; // Allow form submission
         }
     }
-
+    
     function checkUsername(callback) {
         var username = document.getElementById('username').value;
         var usernameError = document.getElementById('username-error');
-
+    
         if (username.length > 0) {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'check_username.php', true);
@@ -208,11 +220,11 @@ if (isset($_GET['error'])) {
             callback(true); // No username, assume valid for now
         }
     }
-
+    
     function checkEmail(callback) {
         var email = document.getElementById('email').value;
         var emailError = document.getElementById('email-error');
-
+    
         if (email.length > 0) {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'check_username.php', true);
@@ -232,10 +244,10 @@ if (isset($_GET['error'])) {
             callback(true); // No email, assume valid for now
         }
     }
-
+    
     document.getElementById('password-form').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent form submission by default
-
+    
         // First check username availability
         checkUsername(function(isUsernameValid) {
             if (isUsernameValid) {
@@ -248,24 +260,24 @@ if (isset($_GET['error'])) {
                 });
             }
         });
-        
-            // Display message if it exists
-            <?php if (!empty($message)): ?>
-            const messageContainer = document.getElementById('message-container');
-            const messageElement = document.createElement('div');
-            messageElement.className = 'message <?php echo strpos($message, 'Error') !== false ? 'error' : 'success'; ?>';
-            messageElement.textContent = '<?php echo addslashes($message); ?>';
-            messageContainer.appendChild(messageElement);
-              //fade out animation not working//
-            // Remove message after 5 seconds with fade-out animation
-            setTimeout(() => {
-                messageElement.classList.add('fadeOut');
-                messageElement.addEventListener('animationend', () => {
-                    messageElement.remove();
-                });
-            }, 2000);
-            <?php endif; ?>
-        });
+    
+        // Display message if it exists
+        <?php if (!empty($message)): ?>
+        const messageContainer = document.getElementById('message-container');
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message <?php echo strpos($message, 'Error') !== false ? 'error' : 'success'; ?>';
+        messageElement.textContent = '<?php echo addslashes($message); ?>';
+        messageContainer.appendChild(messageElement);
+    
+        // Remove message after 5 seconds with fade-out animation
+        setTimeout(() => {
+            messageElement.classList.add('fadeOut');
+            messageElement.addEventListener('animationend', () => {
+                messageElement.remove();
+            });
+        }, 2000);
+        <?php endif; ?>
+    });
 </script>
 </body>
 </html>

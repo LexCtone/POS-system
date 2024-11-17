@@ -159,11 +159,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="form-group">
                         <label for="new-password">New Password</label>
                         <input type="password" id="new-password" name="new-password" required>
+                        <small id="password-length-error" style="color: red; display: none; margin-left: 10px;">Password must be at least 8 characters long.</small>
                     </div>
                     <div class="form-group">
                         <label for="retype-password">Re-Type New Password</label>
                         <input type="password" id="retype-password" name="retype-password" required>
-                        <small id="password-error" style="color: red; display: none;">Passwords do not match.</small>
+                        <small id="password-error" style="color: red; display: none; margin-left: 10px;">Passwords do not match.</small>
                     </div>
                     <div class="button-group">
                         <button type="submit" class="save-btn">Save</button>
@@ -188,12 +189,23 @@ if (!empty($debug_info)): ?>
             var newPassword = document.getElementById('new-password').value;
             var retypePassword = document.getElementById('retype-password').value;
             var passwordError = document.getElementById('password-error');
+            var passwordLengthError = document.getElementById('password-length-error'); // New error element for password length
 
+            // Check if password is at least 8 characters
+            if (newPassword.length < 8) {
+                event.preventDefault();
+                passwordLengthError.style.display = 'block'; // Show length error
+                passwordError.style.display = 'none'; // Hide mismatch error if length is invalid
+            } else {
+                passwordLengthError.style.display = 'none'; // Hide length error if valid
+            }
+
+            // Check if passwords match
             if (newPassword !== retypePassword) {
                 event.preventDefault();
-                passwordError.style.display = 'block';
+                passwordError.style.display = 'block'; // Show mismatch error
             } else {
-                passwordError.style.display = 'none';
+                passwordError.style.display = 'none'; // Hide mismatch error if passwords match
             }
         });
     </script>

@@ -18,7 +18,24 @@ if (isset($_SESSION['user_id'])) {
 }
 
 // Fetch and display products
-$sql = "SELECT id, Barcode, Description, Brand, Category, Price, cost_price, Quantity FROM products";
+$sql = "
+    SELECT 
+        p.id, 
+        p.Barcode, 
+        p.Description, 
+        p.Brand, 
+        p.Category, 
+        p.Price, 
+        p.cost_price, 
+        p.Quantity, 
+        COALESCE(v.vendor, 'Unknown') AS Vendor
+    FROM 
+        products p
+    LEFT JOIN 
+        vendor v
+    ON 
+        p.vendor_id = v.id";
+
 $result = mysqli_query($conn, $sql);
 
 // Fetch brands and categories for dropdowns
@@ -38,64 +55,54 @@ if (isset($_GET['archiveid'])) {
     $conn->begin_transaction();
 
     try {
-        // Fetch product details from the products table
-        $product_query = "SELECT id, Barcode, Description, Brand, Category, Price, Quantity FROM products WHERE id = ?";
+        // Fetch product details
+        $product_query = "SELECT id, Barcode, Description, Brand, Category, Price, cost_price, Quantity FROM products WHERE id = ?";
         $stmt = $conn->prepare($product_query);
         $stmt->bind_param('i', $id_to_archive);
         $stmt->execute();
         $result = $stmt->get_result();
         $product = $result->fetch_assoc();
-
+    
         if (!$product) {
             throw new Exception("Product not found for archiving.");
         }
-
-        // Fetch vendor details and Reference_Number from stock_in_history
+    
+        // Fetch vendor details and Reference_Number
         $vendor_query = "SELECT vendor, reference FROM stock_in_history WHERE Barcode = ? ORDER BY reference DESC LIMIT 1";
         $vendor_stmt = $conn->prepare($vendor_query);
         $vendor_stmt->bind_param('s', $product['Barcode']);
         $vendor_stmt->execute();
         $vendor_result = $vendor_stmt->get_result();
         $vendor_row = $vendor_result->fetch_assoc();
-
+    
         $vendor_name = $vendor_row ? $vendor_row['vendor'] : 'Unknown';
         $reference_number = $vendor_row ? $vendor_row['reference'] : 'Unknown';
-
+    
         // Get the current admin who is archiving the product
         $archived_by = isset($_SESSION['username']) ? $_SESSION['username'] : 'Unknown';
-
-        // Insert the product into archived_products (ID is preserved)
-        $archived_product_sql = "INSERT INTO archived_products (id, Barcode, reference, Description, Brand, Category, Price, Quantity, Vendor, archived_by) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+        // Insert the product into archived_products
+        $archived_product_sql = "INSERT INTO archived_products (id, Barcode, reference, Description, Brand, Category, Price, cost_price, Quantity, Vendor, archived_by) 
+                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $archived_stmt = $conn->prepare($archived_product_sql);
-        $archived_stmt->bind_param('isssssddss', 
+        $archived_stmt->bind_param(
+            'isssssddsss',
             $product['id'],
-            $product['Barcode'], 
+            $product['Barcode'],
             $reference_number,
-            $product['Description'], 
-            $product['Brand'], 
-            $product['Category'], 
+            $product['Description'],
+            $product['Brand'],
+            $product['Category'],
             $product['Price'],
+            $product['cost_price'],
             $product['Quantity'],
             $vendor_name,
             $archived_by
         );
-
+    
         if (!$archived_stmt->execute()) {
             throw new Exception("Error archiving product: " . $archived_stmt->error);
         }
-
-        // Move stock adjustment records to archived_stock_adjustment table
-        $move_adjustments_sql = "INSERT INTO archived_stock_adjustment 
-                                 SELECT * FROM stock_adjustment 
-                                 WHERE product_id = ?";
-        $move_adjustments_stmt = $conn->prepare($move_adjustments_sql);
-        $move_adjustments_stmt->bind_param('i', $id_to_archive);
-        
-        if (!$move_adjustments_stmt->execute()) {
-            throw new Exception("Error moving stock adjustments: " . $move_adjustments_stmt->error);
-        }
-
     
         
     // Function to rearrange IDs in the products table
@@ -185,19 +192,21 @@ if (isset($_GET['restoreid'])) {
         }
 
         // Insert the product back into products table with a new ID
-        $restore_product_sql = "INSERT INTO products (Barcode, Description, Brand, Category, Price, Quantity, Vendor) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $restore_product_sql = "INSERT INTO products (Barcode, Description, Brand, Category, Price, cost_price, Quantity, Vendor) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $restore_stmt = $conn->prepare($restore_product_sql);
         $restore_stmt->bind_param(
-            'ssssdis',
+            'ssssdis',  // Update this to match the new parameter list (now including cost_price)
             $archived_product['Barcode'],
             $archived_product['Description'],
             $archived_product['Brand'],
             $archived_product['Category'],
             $archived_product['Price'],
+            $archived_product['cost_price'],  // Add cost_price here
             $archived_product['Quantity'],
             $archived_product['Vendor']
         );
+
 
         if (!$restore_stmt->execute()) {
             throw new Exception("Error restoring product: " . $restore_stmt->error);
@@ -275,128 +284,159 @@ if (isset($_GET['restoreid'])) {
     <div class="content">
     <div class="table-container">
         <table class="table" id="product-table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Barcode</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Brand</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Base Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Operation</th>
-                </tr>
-            </thead>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Barcode</th>
+                <th scope="col">Description</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Category</th>
+                <th scope="col">Price</th>
+                <th scope="col">Base Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Vendor</th>
+                <th scope="col">Operation</th>
+            </tr>
+        </thead>
             <tbody>
-                <?php if ($result): ?>
-                    <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                        <tr>
-                            <td scope="row"><?= $row['id'] ?></td>
-                            <td><?= htmlspecialchars($row['Barcode']) ?></td>
-                            <td><?= htmlspecialchars($row['Description']) ?></td>
-                            <td><?= htmlspecialchars($row['Brand']) ?></td>
-                            <td><?= htmlspecialchars($row['Category']) ?></td>
-                            <td><?= htmlspecialchars($row['Price']) ?></td>
-                            <td><?= htmlspecialchars($row['cost_price']) ?></td> <!-- New row for cost_price -->
-                            <td><?= htmlspecialchars($row['Quantity']) ?></td>
-                            <td>
-                                <button class="button update-button" 
-                                        data-id="<?= $row['id'] ?>" 
-                                        data-barcode="<?= htmlspecialchars($row['Barcode']) ?>" 
-                                        data-description="<?= htmlspecialchars($row['Description']) ?>"
-                                        data-brand="<?= htmlspecialchars($row['Brand']) ?>"
-                                        data-category="<?= htmlspecialchars($row['Category']) ?>"
-                                        data-price="<?= htmlspecialchars($row['Price']) ?>"
-                                        data-cost-price="<?= htmlspecialchars($row['cost_price']) ?>
-                                        data-quantity="<?= htmlspecialchars($row['Quantity']) ?>">
-                                    Update
-                                </button>
-                                <button class="button"><a href="?archiveid=<?= $row['id'] ?>" class="text-light">Archive</a></button>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
-                <?php endif; ?>
-            </tbody>
+    <?php if ($result && mysqli_num_rows($result) > 0): ?>
+        <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <tr>
+                <td><?= $row['id'] ?></td>
+                <td><?= htmlspecialchars($row['Barcode']) ?></td>
+                <td><?= htmlspecialchars($row['Description']) ?></td>
+                <td><?= htmlspecialchars($row['Brand']) ?></td>
+                <td><?= htmlspecialchars($row['Category']) ?></td>
+                <td><?= htmlspecialchars($row['Price']) ?></td>
+                <td><?= htmlspecialchars($row['cost_price']) ?></td>
+                <td><?= htmlspecialchars($row['Quantity']) ?></td>
+                <td><?= htmlspecialchars($row['Vendor'] ?? 'Unknown') ?></td>
+                <td>
+                    <button class="button update-button" 
+                            data-id="<?= $row['id'] ?>" 
+                            data-barcode="<?= htmlspecialchars($row['Barcode']) ?>" 
+                            data-description="<?= htmlspecialchars($row['Description']) ?>"
+                            data-brand="<?= htmlspecialchars($row['Brand']) ?>"
+                            data-category="<?= htmlspecialchars($row['Category']) ?>"
+                            data-price="<?= htmlspecialchars($row['Price']) ?>"
+                            data-cost-price="<?= htmlspecialchars($row['cost_price']) ?>"
+                            data-quantity="<?= htmlspecialchars($row['Quantity']) ?>"
+                            data-vendor="<?= htmlspecialchars($row['Vendor']) ?>">
+                        Update
+                    </button>
+                    <button class="button"><a href="?archiveid=<?= $row['id'] ?>" class="text-light">Archive</a></button>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="10" style="text-align: center; font-size: 18px; color: #555;">
+                No products found.
+            </td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
         </table>
     </div>
 
-    <!-- Add Product Modal -->
-    <div id="product-modal" class="modals">
-        <div class="modal-contents">
-            <span class="close-button">&times;</span>
-            <h2>Add New Product</h2>
-            <form id="product-form" action="add_product.php" method="post">
-                <label for="barcode">Barcode:</label>
-                <input type="text" id="barcode" name="barcode" required>
-                <label for="description">Description:</label>
-                <input type="text" id="description" name="description" required>
-                <label for="brand">Brand:</label>
-                <select id="brand" name="brand" required>
-                    <option value="" disabled selected>Select Brand</option>
-                    <?php mysqli_data_seek($brand_result, 0); ?>
-                    <?php while ($brand = mysqli_fetch_assoc($brand_result)): ?>
-                        <option value="<?= htmlspecialchars($brand['Brand']) ?>">
-                            <?= htmlspecialchars($brand['Brand']) ?>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-                <label for="category">Category:</label>
-                <select id="category" name="category" required>
-                    <option value="" disabled selected>Select Category</option>
-                    <?php mysqli_data_seek($category_result, 0); ?>
-                    <?php while ($category = mysqli_fetch_assoc($category_result)): ?>
-                        <option value="<?= htmlspecialchars($category['Category']) ?>">
-                            <?= htmlspecialchars($category['Category']) ?>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-                <label for="price">Price:</label>
-                <input type="number" id="price" name="price" step="0.01" required>
-                <button type="submit">Add Product</button>
-            </form>
-        </div>
-    </div>
+<!-- Add Product Modal -->
+<div id="product-modal" class="modals">
+    <div class="modal-contents">
+        <span class="close-button">&times;</span>
+        <h2>Add New Product</h2>
+        <form id="product-form" action="add_product.php" method="post">
+            <label for="barcode">Barcode:</label>
+            <input type="text" id="barcode" name="barcode" required>
 
-    <!-- Update Product Modal -->
-    <div id="update-product-modal" class="modals">
-        <div class="modal-contents">
-            <span class="close-button">&times;</span>
-            <h2>Update Product</h2>
-            <form id="update-product-form" action="update_product.php" method="post">
-                <input type="hidden" id="update-product-id" name="product-id">
-                <label for="update-barcode">Barcode:</label>
-                <input type="text" id="update-barcode" name="barcode" required>
-                <label for="update-description">Description:</label>
-                <input type="text" id="update-description" name="description" required>
-                <label for="update-brand">Brand:</label>
-                <select id="update-brand" name="brand" required>
-                    <option value="" disabled selected>Select Brand</option>
-                    <?php mysqli_data_seek($brand_result_update, 0); ?>
-                    <?php while ($brand = mysqli_fetch_assoc($brand_result_update)): ?>
-                        <option value="<?= htmlspecialchars($brand['Brand']) ?>">
-                            <?= htmlspecialchars($brand['Brand']) ?>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-                <label for="update-category">Category:</label>
-                <select id="update-category" name="category" required>
-                    <option value="" disabled selected>Select Category</option>
-                    <?php mysqli_data_seek($category_result_update, 0); ?>
-                    <?php while ($category = mysqli_fetch_assoc($category_result_update)): ?>
-                        <option value="<?= htmlspecialchars($category['Category']) ?>">
-                            <?= htmlspecialchars($category['Category']) ?>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-                <label for="update-price">Price:</label>
-                <input type="number" id="update-price" name="price" step="0.01" required>
-                <div id="update-form-feedback" class="form-feedback"></div>
-                <div id="update-loading" class="loading-indicator" style="display: none;">Updating...</div>
-                <button type="submit">Update Product</button>
-            </form>
-        </div>
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" required>
+
+            <label for="brand">Brand:</label>
+            <select id="brand" name="brand" required>
+                <option value="" disabled selected>Select Brand</option>
+                <?php mysqli_data_seek($brand_result, 0); ?>
+                <?php while ($brand = mysqli_fetch_assoc($brand_result)): ?>
+                    <option value="<?= htmlspecialchars($brand['Brand']) ?>">
+                        <?= htmlspecialchars($brand['Brand']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="" disabled selected>Select Category</option>
+                <?php mysqli_data_seek($category_result, 0); ?>
+                <?php while ($category = mysqli_fetch_assoc($category_result)): ?>
+                    <option value="<?= htmlspecialchars($category['Category']) ?>">
+                        <?= htmlspecialchars($category['Category']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+
+            <!-- New cost_price field -->
+            <label for="cost_price">Cost Price:</label>
+            <input type="number" id="cost_price" name="cost_price" step="0.01" required>
+
+            <button type="submit">Add Product</button>
+        </form>
     </div>
+</div>
+
+
+<!-- Update Product Modal -->
+<div id="update-product-modal" class="modals">
+    <div class="modal-contents">
+        <span class="close-button">&times;</span>
+        <h2>Update Product</h2>
+        <form id="update-product-form" action="update_product.php" method="post">
+            <input type="hidden" id="update-product-id" name="product-id">
+
+            <label for="update-barcode">Barcode:</label>
+            <input type="text" id="update-barcode" name="barcode" required>
+
+            <label for="update-description">Description:</label>
+            <input type="text" id="update-description" name="description" required>
+
+            <label for="update-brand">Brand:</label>
+            <select id="update-brand" name="brand" required>
+                <option value="" disabled selected>Select Brand</option>
+                <?php mysqli_data_seek($brand_result_update, 0); ?>
+                <?php while ($brand = mysqli_fetch_assoc($brand_result_update)): ?>
+                    <option value="<?= htmlspecialchars($brand['Brand']) ?>">
+                        <?= htmlspecialchars($brand['Brand']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+
+            <label for="update-category">Category:</label>
+            <select id="update-category" name="category" required>
+                <option value="" disabled selected>Select Category</option>
+                <?php mysqli_data_seek($category_result_update, 0); ?>
+                <?php while ($category = mysqli_fetch_assoc($category_result_update)): ?>
+                    <option value="<?= htmlspecialchars($category['Category']) ?>">
+                        <?= htmlspecialchars($category['Category']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+
+            <label for="update-price">Price:</label>
+            <input type="number" id="update-price" name="price" step="0.01" required>
+
+            <!-- New cost_price field -->
+            <label for="update-cost-price">Cost Price:</label>
+            <input type="number" id="update-cost-price" name="cost_price" step="0.01" required>
+
+            <div id="update-form-feedback" class="form-feedback"></div>
+            <div id="update-loading" class="loading-indicator" style="display: none;">Updating...</div>
+            <button type="submit">Update Product</button>
+        </form>
+    </div>
+</div>
+
 
     <style>
         /* Modal styles */

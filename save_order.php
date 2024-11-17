@@ -16,6 +16,9 @@ if (!$data) {
     exit;
 }
 
+// Debugging: Check the received data
+// print_r($data);  // Uncomment this to see what is received, comment out in production
+
 try {
     // Start transaction
     $conn->begin_transaction();
@@ -28,6 +31,9 @@ try {
     $totalAmount = array_reduce($data['items'], function($carry, $item) {
         return $carry + floatval($item['total']);
     }, 0);
+
+    // Debugging: Check calculated total
+    // echo "Total Amount: " . $totalAmount;  // Uncomment this for debugging
 
     $stmt->bind_param("ssiss", 
         $data['poNumber'],

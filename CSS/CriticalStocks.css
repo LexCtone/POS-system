@@ -105,7 +105,7 @@ body {
 .container button {
   padding: 10px 20px;
   background-color: #ffffff;
-  color: rgb(0, 0, 0);
+  color: rgb(2 2 2);
   cursor: pointer;
   margin: 0;
   font-size: 20px;
@@ -149,7 +149,7 @@ body {
   border: 1px solid #ddd; /* Optional: border around the container */
   box-sizing: border-box; 
   border-radius: 4px;
-  margin-top: 25px;/* Include padding and border in the element’s total width and height */
+  margin-left: 370px;
 }
 #critical-table {
   width: 100%;
@@ -352,4 +352,26 @@ body {
       .confirmLogout:hover{
         background-color: lightblue; /* Darker gray on hover */
       }
+      .po-button {
+        background-color: red; /* Default background color */
+        color: white; /* Button text color */
+        border: none; /* No border */
+        padding: 8px 16px; /* Add spacing for better size */
+        cursor: pointer; /* Pointer cursor on hover */
+        border-radius: 5px; /* Rounded corners */
+        font-weight: bold; /* Bold text */
+        font-size: 14px; /* Font size */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+        text-align: center; /* Center the text */
+    }
+    
+    .po-button:hover {
+        background-color: darkred; /* Darker red on hover */
+        transform: scale(1.05); /* Slightly enlarge the button on hover */
+    }
+    
+    .po-button:active {
+        background-color: #a93226; /* Even darker red on active/click */
+        transform: scale(0.95); /* Slightly shrink the button on click for feedback */
+    }
     

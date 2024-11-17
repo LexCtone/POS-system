@@ -31,6 +31,27 @@ if (isset($_SESSION['user_id'])) {
     $stmt->close();
 }
 
+// Retrieve GET parameters
+$product_id = isset($_GET['product_id']) ? $_GET['product_id'] : '';
+$vendor_id = isset($_GET['vendor_id']) ? $_GET['vendor_id'] : '';
+$product_name = isset($_GET['product_name']) ? $_GET['product_name'] : '';
+$cost_price = isset($_GET['cost_price']) ? $_GET['cost_price'] : '';
+$brand = isset($_GET['brand']) ? $_GET['brand'] : '';
+$category = isset($_GET['category']) ? $_GET['category'] : '';
+
+// Fetch vendor name based on vendor_id
+$vendor_name = 'Unknown Vendor';
+if ($vendor_id) {
+    $vendor_query = "SELECT vendor FROM vendor WHERE id = ?";
+    $vendor_stmt = $conn->prepare($vendor_query);
+    $vendor_stmt->bind_param("i", $vendor_id);
+    $vendor_stmt->execute();
+    $vendor_result = $vendor_stmt->get_result();
+    if ($vendor_result->num_rows > 0) {
+        $vendor_name = $vendor_result->fetch_assoc()['vendor'];
+    }
+    $vendor_stmt->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,15 +103,13 @@ if (isset($_SESSION['user_id'])) {
             <!-- PO Number Field -->
             <div class="form-group">
                 <label for="poNumber">PO Number</label>
-                <input type="text" class="form-control" id="poNumber" 
-                       value="PO-<?php echo date('Ymd-'); ?><?php echo rand(1000,9999); ?>" readonly>
+                <input type="text" class="form-control" id="poNumber" value="PO-<?php echo date('Ymd-'); ?><?php echo rand(1000,9999); ?>" readonly>
             </div>
 
             <!-- Order Date Field -->
             <div class="form-group">
                 <label for="orderDate">Order Date</label>
-                <input type="date" class="form-control" id="orderDate" 
-                       value="<?php echo date('Y-m-d'); ?>" required>
+                <input type="date" class="form-control" id="orderDate" value="<?php echo date('Y-m-d'); ?>" required>
             </div>
 
             <!-- Vendor Selection Field -->
@@ -99,7 +118,8 @@ if (isset($_SESSION['user_id'])) {
                 <select class="form-control" id="vendor" required>
                     <option value="">Select Vendor</option>
                     <?php while ($vendor = $vendorResult->fetch_assoc()): ?>
-                        <option value="<?php echo htmlspecialchars($vendor['id']); ?>">
+                        <option value="<?php echo htmlspecialchars($vendor['id']); ?>"
+                            <?php if($vendor['id'] == $vendor_id) echo "selected"; ?>>
                             <?php echo htmlspecialchars($vendor['vendor']); ?>
                         </option>
                     <?php endwhile; ?>
@@ -111,6 +131,7 @@ if (isset($_SESSION['user_id'])) {
                 <label for="deliveryDate">Expected Delivery Date</label>
                 <input type="date" class="form-control" id="deliveryDate" required>
             </div>
+
         </div>
 
         <!-- Items Table -->
@@ -137,6 +158,7 @@ if (isset($_SESSION['user_id'])) {
                                 while ($product = $productResult->fetch_assoc()): 
                                 ?>
                                     <option value="<?php echo htmlspecialchars($product['id']); ?>"
+                                            <?php if($product['id'] == $product_id) echo "selected"; ?>
                                             data-cost="<?php echo htmlspecialchars($product['cost_price']); ?>"
                                             data-brand="<?php echo htmlspecialchars($product['Brand']); ?>"
                                             data-category="<?php echo htmlspecialchars($product['Category']); ?>">
@@ -145,9 +167,9 @@ if (isset($_SESSION['user_id'])) {
                                 <?php endwhile; ?>
                             </select>
                         </td>
-                        <td class="brand"></td>
-                        <td class="category"></td>
-                        <td><input type="number" class="form-control cost-price" min="0" step="0.01" required></td>
+                        <td class="brand"><?php echo $brand; ?></td>
+                        <td class="category"><?php echo $category; ?></td>
+                        <td><input type="number" class="form-control cost-price" value="<?php echo $cost_price; ?>" readonly required></td>
                         <td><input type="number" class="form-control quantity" min="1" required></td>
                         <td class="total">0.00</td>
                         <td><button type="button" class="btn btn-danger remove-row">Remove</button></td>
@@ -155,12 +177,17 @@ if (isset($_SESSION['user_id'])) {
                 </tbody>
             </table>
         </div>
-
+        
+        <div id="successAlert" style="display: none;" class="alert alert-success" role="alert">
+  <p>Purchase Order created successfully!</p>
+  </button>
+</div>
         <!-- Grand Total Section -->
         <div class="total-section">
             <strong>Grand Total: ₱</strong>
             <span id="grandTotal">0.00</span>
         </div>
+        
         <button type="button" class="btn" id="addRow" style="margin-top: 10px;">Add Item</button>
 
         <!-- Submit Button -->
@@ -170,110 +197,127 @@ if (isset($_SESSION['user_id'])) {
     </form>
 </div>
 
+<script>
+// Store products data in JavaScript
+const products = <?php echo json_encode($products); ?>;
 
+// Function to update grand total
+function updateGrandTotal() {
+    const totals = Array.from(document.querySelectorAll('.total'))
+        .map(cell => parseFloat(cell.textContent) || 0);
+    const grandTotal = totals.reduce((sum, value) => sum + value, 0);
+    document.getElementById('grandTotal').textContent = grandTotal.toFixed(2);
+}
 
-    <script>
-        // Store products data in JavaScript
-        const products = <?php echo json_encode($products); ?>;
+// Wait for DOM to fully load
+document.addEventListener('DOMContentLoaded', function() {
+    // Attach row events
+    function attachRowEvents(row) {
+        const productSelect = row.querySelector('.product-select');
+        const costInput = row.querySelector('.cost-price');
+        const quantityInput = row.querySelector('.quantity');
+        const totalCell = row.querySelector('.total');
+        const brandCell = row.querySelector('.brand');
+        const categoryCell = row.querySelector('.category');
+        const removeButton = row.querySelector('.remove-row');
 
-        function attachRowEvents(row) {
-            const productSelect = row.querySelector('.product-select');
-            const costInput = row.querySelector('.cost-price');
-            const quantityInput = row.querySelector('.quantity');
-            const totalCell = row.querySelector('.total');
-            const brandCell = row.querySelector('.brand');
-            const categoryCell = row.querySelector('.category');
-            const removeButton = row.querySelector('.remove-row');
-
+        // Ensure that the productSelect element exists before adding event listener
+        if (productSelect) {
             productSelect.addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
-                const product = products.find(p => p.id === selectedOption.value);
+                const product = products.find(p => p.id == selectedOption.value);
                 if (product) {
                     costInput.value = product.cost_price;
                     brandCell.textContent = product.Brand;
                     categoryCell.textContent = product.Category;
-                    updateTotal();
-                }
-            });
-
-            function updateTotal() {
-                const quantity = parseFloat(quantityInput.value) || 0;
-                const cost = parseFloat(costInput.value) || 0;
-                totalCell.textContent = (quantity * cost).toFixed(2);
-                updateGrandTotal();
-            }
-
-            costInput.addEventListener('input', updateTotal);
-            quantityInput.addEventListener('input', updateTotal);
-            
-            removeButton.addEventListener('click', function() {
-                if (document.querySelectorAll('#itemsTable tbody tr').length > 1) {
-                    row.remove();
-                    updateGrandTotal();
-                }
-            });
-        }
-
-        function updateGrandTotal() {
-            const totals = Array.from(document.querySelectorAll('.total'))
-                .map(cell => parseFloat(cell.textContent) || 0);
-            const grandTotal = totals.reduce((sum, value) => sum + value, 0);
-            document.getElementById('grandTotal').textContent = grandTotal.toFixed(2);
-        }
-
-        document.getElementById('addRow').addEventListener('click', function() {
-            const tbody = document.querySelector('#itemsTable tbody');
-            const newRow = tbody.rows[0].cloneNode(true);
-            newRow.querySelectorAll('input, select').forEach(input => input.value = '');
-            newRow.querySelector('.total').textContent = '0.00';
-            newRow.querySelector('.brand').textContent = '';
-            newRow.querySelector('.category').textContent = '';
-            tbody.appendChild(newRow);
-            attachRowEvents(newRow);
-        });
-
-        // Attach events to the initial row
-        attachRowEvents(document.querySelector('#itemsTable tbody tr'));
-
-        // Form submission
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                poNumber: document.getElementById('poNumber').value,
-                orderDate: document.getElementById('orderDate').value,
-                vendor: document.getElementById('vendor').value,
-                deliveryDate: document.getElementById('deliveryDate').value,
-                items: Array.from(document.querySelectorAll('#itemsTable tbody tr')).map(row => ({
-                    product_id: row.querySelector('.product-select').value,
-                    quantity: row.querySelector('.quantity').value,
-                    cost_price: row.querySelector('.cost-price').value,
-                    total: row.querySelector('.total').textContent
-                }))
-            };
-
-            fetch('save_order.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    alert('Purchase Order created successfully!');
-                    window.location.reload();
+                    updateTotal(); // Update total after changing the product
                 } else {
-                    alert('Error creating Purchase Order: ' + (data.message || 'Unknown error'));
+                    brandCell.textContent = '';
+                    categoryCell.textContent = '';
+                    costInput.value = '';
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error creating Purchase Order. Please try again.');
             });
+        } else {
+            console.error("Product select element not found in the row.");
+        }
+
+        // Update total when cost or quantity changes
+        function updateTotal() {
+            const quantity = parseFloat(quantityInput.value) || 0; // Default to 0 if invalid
+            const cost = parseFloat(costInput.value) || 0; // Default to 0 if invalid
+            totalCell.textContent = (quantity * cost).toFixed(2); // Calculate total
+            updateGrandTotal(); // Update the grand total
+        }
+
+        costInput.addEventListener('input', updateTotal); // Update total when cost price changes
+        quantityInput.addEventListener('input', updateTotal); // Update total when quantity changes
+
+        // Remove row
+        removeButton.addEventListener('click', function() {
+            if (document.querySelectorAll('#itemsTable tbody tr').length > 1) {
+                row.remove(); // Remove the current row
+                updateGrandTotal(); // Update the grand total after removing the row
+            }
         });
-    </script>
+    }
+
+    // Add new row for manual entry
+    document.getElementById('addRow').addEventListener('click', function() {
+        const tbody = document.querySelector('#itemsTable tbody');
+        const newRow = tbody.rows[0].cloneNode(true);
+        newRow.querySelectorAll('input, select').forEach(input => input.value = ''); // Clear all values
+        newRow.querySelector('.total').textContent = '0.00'; // Reset total
+        newRow.querySelector('.brand').textContent = ''; // Reset brand
+        newRow.querySelector('.category').textContent = ''; // Reset category
+        tbody.appendChild(newRow);
+        attachRowEvents(newRow); // Attach events for new row
+    });
+
+    // Attach events to the initial row
+    attachRowEvents(document.querySelector('#itemsTable tbody tr'));
+});
+
+// Handle form submission
+document.getElementById('orderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        poNumber: document.getElementById('poNumber').value,
+        orderDate: document.getElementById('orderDate').value,
+        vendor: document.getElementById('vendor').value,
+        deliveryDate: document.getElementById('deliveryDate').value,
+        items: Array.from(document.querySelectorAll('#itemsTable tbody tr')).map(row => ({
+            product_id: row.querySelector('.product-select').value,
+            quantity: parseInt(row.querySelector('.quantity').value),  // Ensure this is an integer
+            cost_price: parseFloat(row.querySelector('.cost-price').value),  // Ensure this is a float
+            total: parseFloat(row.querySelector('.total').textContent)  // Ensure this is a float
+        }))
+    };
+
+    fetch('save_order.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('successAlert').style.display = 'block';
+            document.getElementById('orderForm').reset();
+            document.querySelectorAll('#itemsTable tbody tr:not(:first-child)').forEach(row => row.remove());
+            updateGrandTotal();
+        } else {
+            alert('Error creating Purchase Order: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error creating Purchase Order. Please try again.');
+    });
+});
+
+</script>
+
     
        <style>
         /* Modal styles */
@@ -356,6 +400,7 @@ if (isset($_SESSION['user_id'])) {
         background-color: lightblue; /* Darker gray on hover */
       }
     </style>
+
  <!-- Logout Confirmation Modal -->
  <div id="logoutModal" class="modal">
         <div class="modal-content">
@@ -366,6 +411,7 @@ if (isset($_SESSION['user_id'])) {
             <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
         </div>
     </div>
+    
     <script>
         // Function to show the logout modal
         function confirmLogout() {

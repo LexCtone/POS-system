@@ -267,7 +267,7 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
             <li><a href="#" id="addDiscountBtn"><i class='fa fa-percent'></i> Add Discount</a></li>
             <li><a href="#" id="dailySalesBtn"><i class='fa fa-chart-line'></i> Daily Sales</a></li>
           <!--  <li><a href="#" id="userSettingsBtn"><i class='fa fa-cogs'></i> User Settings</a></li>-->
-            <li><a href="..\Login.php"><i class='fa fa-sign-out'></i> Logout</a></li>
+            <li><a href="#" id="logoutBtn"><i class='fa fa-sign-out'></i> Logout</a></li>
         </ul>
     </div>
 
@@ -354,11 +354,12 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
 </div>
 
 
-    <div id="perPurchaseDiscountModal" class="modal">
+<div id="perPurchaseDiscountModal" class="modal">
     <div class="modal-content">
         <span class="close-button">&times;</span>
         <h2>Apply Per-Purchase Discount</h2>
         <p>Total Amount: <span id="perPurchaseTotalAmount"></span></p>
+        <p>Total Base Price: <span id="perPurchaseTotalBasePrice">₱0.00</span></p>
         <div>
             <label for="perPurchaseDiscountPercent">Discount Percentage:</label>
             <input type="number" id="perPurchaseDiscountPercent" min="0" max="100" step="0.01">
@@ -371,6 +372,7 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
         <button id="applyPerPurchaseDiscount">Apply Discount</button>
     </div>
 </div>
+
 
 <!-- Daily Sales Modal -->
 <div id="dailySalesModal" class="modal daily-sales-modal">
@@ -582,7 +584,7 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
         <form id="changePasswordForm">
             <div>
                 <label for="username">Username:</label>
-                <input type="text" id="username" value="<?php echo htmlspecialchars($_SESSION['username']); ?>" readonly>
+                <input type="text" id="username" value="" readonly>
             </div>
             <div>
                 <label for="currentPassword">Current Password:</label>
@@ -602,70 +604,48 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
     </div>
 </div>
 -->
-
-<!-- Admin Password Modal -->
-<div id="adminPasswordModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeAdminPasswordModal()">&times;</span>
-        <h2>Enter Admin Password</h2>
-        <form id="adminPasswordForm">
-            <div>
-                <label for="adminPasswordInput">Admin Password:</label>
-                <input type="password" id="adminPasswordInput" required>
-            </div>
-            <p id="adminPasswordError" class="error-message" style="display: none; color: red;"></p>
-            <button type="submit">Submit</button>
-        </form>
+ <!-- Logout Confirmation Modal -->
+<div id="logoutModal" class="modals">
+    <div class="modal-contents">
+        <span class="close" onclick="closeLogoutModal()">&times;</span>
+        <h2 class="conf">Logout Confirmation</h2>
+        <p class="par">Are you sure you want to log out?</p>
+        <button id="confirmLogout" class="confirm-btn">Logout</button>
+        <button class="cancel-btn" onclick="closeLogoutModal()">Cancel</button>
     </div>
 </div>
-<style>
-        /* Styles for the custom alert modal */
-        .custom-alert {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-        }
 
-        .alert-content {
-            background-color: white; /* White background */
-            padding: 20px;
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
-            text-align: center; /* Centered text */
-            width: 300px; /* Fixed width */
-        }
 
-        .alert-title {
-            font-size: 18px; /* Title font size */
-            margin-bottom: 10px; /* Space below title */
+    <script>
+             // Function to show the logout modal
+        function confirmLogout() {
+            document.getElementById("logoutModal").style.display = "block"; // Show the modal
         }
-
-        .alert-message {
-            margin-bottom: 20px; /* Space below message */
+        
+        // Function to close the logout modal
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none"; // Hide the modal
         }
-
-        .alert-button {
-            background-color: #005b99; /* Button color */
-            color: white; /* White text */
-            border: none; /* No borders */
-            padding: 10px 20px; /* Some padding */
-            border-radius: 5px; /* Rounded corners */
-            cursor: pointer; /* Pointer cursor */
-            transition: background-color 0.3s; /* Smooth transition */
-        }
-
-        .alert-button:hover {
-            background-color: #004080; /* Darker blue on hover */
-        }
-    </style>
-
+        
+        // Close the logout modal if the user clicks anywhere outside of it
+        window.onclick = function(event) {
+            var modal = document.getElementById("logoutModal");
+            if (event.target == modal) {
+                modal.style.display = "none";  // Close the modal if clicked outside
+            }
+        };
+        
+        // Handle logout action - When confirmed, log out and redirect to the login page
+        document.getElementById("confirmLogout").onclick = function() {
+            window.location.href = "../Login.php"; // Redirect to the login page or handle logout
+        };
+        
+        // Add event listener to the logout button in the sidebar
+        document.getElementById("logoutBtn").addEventListener("click", function(event) {
+            event.preventDefault();  // Prevent the default action of the link (which is redirecting)
+            confirmLogout();         // Show the logout confirmation modal
+        });
+    </script>
 
 <div>
     <!-- Footer --> 
@@ -678,55 +658,5 @@ if ($result_critical_items && $row = $result_critical_items->fetch_assoc()) {
     <script src="transaction.js"> defer</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <!-- Custom Alert Modal -->
-<div id="customAlert" class="custom-alert">
-    <div class="alert-content">
-        <div class="alert-title" id="alertTitle">Success</div>
-        <div class="alert-message" id="alertMessage">Transaction completed successfully!</div>
-        <button class="alert-button" onclick="closeCustomAlert()">OK</button>
-    </div>
-</div>
-
-<script src="transaction.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-// JavaScript for custom alert modal
-function showCustomAlert(message, title) {
-    document.getElementById('alertMessage').innerText = message;
-    document.getElementById('alertTitle').innerText = title;
-    document.getElementById('customAlert').style.display = 'flex'; // Show modal as flex to center it
-}
-
-function closeCustomAlert() {
-    document.getElementById('customAlert').style.display = 'none'; // Hide modal
-}
-
-// Close the modal if the user clicks anywhere outside of it
-window.onclick = function(event) {
-    var modal = document.getElementById('customAlert');
-    if (event.target == modal) {
-        closeCustomAlert();
-    }
-};
-
-// Modify your existing function to call showCustomAlert
-async function settlePayment() {
-    try {
-        await saveTransaction(totalAmount, paymentAmount, change);
-        printReceipt(totalAmount, paymentAmount, change);
-        showCustomAlert('Transaction completed successfully!', 'Success');
-        
-        // Close the settle payment modal
-        closeModal('settle_payment');
-
-        // Clear the transaction table and generate new transaction number
-        clearTransactionTable();
-        generateTransactionNo();
-    } catch (error) {
-        console.error('Error saving transaction:', error);
-        showCustomAlert('An error occurred while saving the transaction. Receipt printing failed.', 'Error');
-    }
-}
-</script>
 </body>
 </html>
