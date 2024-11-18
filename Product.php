@@ -17,6 +17,12 @@ if (isset($_SESSION['user_id'])) {
     $stmt->close();
 }
 
+// Fetch the highest barcode
+$barcode_query = "SELECT MAX(CAST(Barcode AS UNSIGNED)) AS max_barcode FROM products";
+$barcode_result = mysqli_query($conn, $barcode_query);
+$max_barcode_row = mysqli_fetch_assoc($barcode_result);
+$next_barcode = $max_barcode_row['max_barcode'] ? $max_barcode_row['max_barcode'] + 1 : 1000001; // Default to 1000001 if no barcodes exist
+
 // Fetch and display products
 $sql = "
     SELECT 
@@ -248,7 +254,6 @@ if (isset($_GET['restoreid'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon"> <!-- Adjust path if necessary -->
     <script type="text/javascript" src="JAVASCRIPT/Product.js" defer></script>
-    
 </head>
 <body>
 <nav class="sidebar">
@@ -347,10 +352,11 @@ if (isset($_GET['restoreid'])) {
         <h2>Add New Product</h2>
         <form id="product-form" action="add_product.php" method="post">
             <label for="barcode">Barcode:</label>
-            <input type="text" id="barcode" name="barcode" required>
+            <input type="text" id="barcode" name="barcode" value="<?= $next_barcode ?>" readonly>
+            <label for="generatedBarcode">Generated Barcode:</label>
+            <input type="text" id="generatedBarcode" name="generatedBarcode" readonly> <!-- Generated barcode in input -->
 
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description" required>
+        <form id="product-form" action="add_product.php" method="post">
 
             <label for="brand">Brand:</label>
             <select id="brand" name="brand" required>
@@ -377,7 +383,6 @@ if (isset($_GET['restoreid'])) {
             <label for="price">Price:</label>
             <input type="number" id="price" name="price" step="0.01" required>
 
-            <!-- New cost_price field -->
             <label for="cost_price">Cost Price:</label>
             <input type="number" id="cost_price" name="cost_price" step="0.01" required>
 
@@ -385,6 +390,7 @@ if (isset($_GET['restoreid'])) {
         </form>
     </div>
 </div>
+
 
 
 <!-- Update Product Modal -->
@@ -568,6 +574,10 @@ if (isset($_GET['restoreid'])) {
             window.location.href = "Login.php"; // Redirect to the login page or handle logout
         };
     </script>
+<script>
+  const nextBarcode = <?= $next_barcode ?>;
+</script>
+
 </body>
 </html>
 <?php

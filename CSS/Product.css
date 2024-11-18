@@ -330,3 +330,20 @@ form button {
   text-decoration: none; /* Remove underline */
 }
 
+@font-face {
+  font-family: 'LibreBarcode39ExtendedText-Regular';
+  src: url('../fonts/LibreBarcode39ExtendedText-Regular.ttf');  /* Going up one level from the CSS folder */
+}
+
+.barcode {
+  font-family: 'LibreBarcode39ExtendedText-Regular', sans-serif;  /* Apply the Libre Barcode font */
+  font-size: 2000px;  /* Adjust font size */
+}
+
+#generatedBarcode {
+  font-family: 'LibreBarcode39ExtendedText-Regular', sans-serif;
+  font-size: 72px;  /* Adjust size for readability */
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+}
