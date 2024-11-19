@@ -2,15 +2,16 @@
 session_start();
 include 'connect.php';
 
-// Fetch vendors from database
+// Fetch vendors from the database
 $vendorQuery = "SELECT id, vendor FROM vendor ORDER BY vendor";
 $vendorResult = $conn->query($vendorQuery);
 
-// Fetch products from database
-$productQuery = "SELECT id, Barcode, Description, Brand, Category, Price, cost_price FROM products ORDER BY Description";
+// Fetch all products for initialization
+$productQuery = "SELECT id, Barcode, Description, Brand, Category, Price, cost_price, vendor_id 
+                 FROM products ORDER BY Description";
 $productResult = $conn->query($productQuery);
 
-// Store products in array for JavaScript use
+// Store products in an array for JavaScript use
 $products = [];
 while ($row = $productResult->fetch_assoc()) {
     $products[] = $row;
@@ -31,13 +32,13 @@ if (isset($_SESSION['user_id'])) {
     $stmt->close();
 }
 
-// Retrieve GET parameters
+// Retrieve GET parameters with defaults
 $product_id = isset($_GET['product_id']) ? $_GET['product_id'] : '';
-$vendor_id = isset($_GET['vendor_id']) ? $_GET['vendor_id'] : '';
+$vendor_id = isset($_GET['vendor_id']) ? $_GET['vendor_id'] : null; // Default to null
 $product_name = isset($_GET['product_name']) ? $_GET['product_name'] : '';
-$cost_price = isset($_GET['cost_price']) ? $_GET['cost_price'] : '';
-$brand = isset($_GET['brand']) ? $_GET['brand'] : '';
-$category = isset($_GET['category']) ? $_GET['category'] : '';
+$cost_price = isset($_GET['cost_price']) ? $_GET['cost_price'] : '0.00'; // Default to 0.00
+$brand = isset($_GET['brand']) ? $_GET['brand'] : ''; // Default to "Unknown"
+$category = isset($_GET['category']) ? $_GET['category'] : ''; // Default to "Unknown"
 
 // Fetch vendor name based on vendor_id
 $vendor_name = 'Unknown Vendor';
@@ -53,6 +54,7 @@ if ($vendor_id) {
     $vendor_stmt->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,9 +65,14 @@ if ($vendor_id) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <header>
-        <h2 class="StockHeader">Purchase Orders</h2>
-    </header>
+<header>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Purchase Orders</span>
+        </div>
+    </h2>
+</header>
+
     <nav>
 <nav class="sidebar">
     <header>
@@ -198,20 +205,47 @@ if ($vendor_id) {
 </div>
 
 <script>
-// Store products data in JavaScript
-const products = <?php echo json_encode($products); ?>;
+document.addEventListener('DOMContentLoaded', function () {
+    // DOM elements
+    const vendorSelect = document.getElementById('vendor');
+    const tableBody = document.querySelector('#itemsTable tbody');
+    const addRowButton = document.getElementById('addRow');
+    const orderForm = document.getElementById('orderForm');
+    const grandTotalElement = document.getElementById('grandTotal');
 
-// Function to update grand total
-function updateGrandTotal() {
-    const totals = Array.from(document.querySelectorAll('.total'))
-        .map(cell => parseFloat(cell.textContent) || 0);
-    const grandTotal = totals.reduce((sum, value) => sum + value, 0);
-    document.getElementById('grandTotal').textContent = grandTotal.toFixed(2);
-}
+    // Store all products fetched from PHP
+    const allProducts = <?php echo json_encode($products); ?>;
 
-// Wait for DOM to fully load
-document.addEventListener('DOMContentLoaded', function() {
-    // Attach row events
+    // Update product dropdown based on selected vendor
+    vendorSelect.addEventListener('change', function () {
+        const vendorId = this.value;
+
+        // Clear all product dropdowns in the table
+        tableBody.querySelectorAll('.product-select').forEach(productSelect => {
+            productSelect.innerHTML = '<option value="">Select Product</option>';
+        });
+
+        // Filter products based on vendor
+        const filteredProducts = allProducts.filter(product => product.vendor_id == vendorId);
+        if (filteredProducts.length === 0) {
+            alert('No products available for the selected vendor.');
+        }
+
+        // Populate product dropdowns in the table
+        tableBody.querySelectorAll('.product-select').forEach(productSelect => {
+            filteredProducts.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = product.Description;
+                option.dataset.cost = product.cost_price;
+                option.dataset.brand = product.Brand;
+                option.dataset.category = product.Category;
+                productSelect.appendChild(option);
+            });
+        });
+    });
+
+    // Attach events to rows
     function attachRowEvents(row) {
         const productSelect = row.querySelector('.product-select');
         const costInput = row.querySelector('.cost-price');
@@ -221,98 +255,102 @@ document.addEventListener('DOMContentLoaded', function() {
         const categoryCell = row.querySelector('.category');
         const removeButton = row.querySelector('.remove-row');
 
-        // Ensure that the productSelect element exists before adding event listener
-        if (productSelect) {
-            productSelect.addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                const product = products.find(p => p.id == selectedOption.value);
-                if (product) {
-                    costInput.value = product.cost_price;
-                    brandCell.textContent = product.Brand;
-                    categoryCell.textContent = product.Category;
-                    updateTotal(); // Update total after changing the product
-                } else {
-                    brandCell.textContent = '';
-                    categoryCell.textContent = '';
-                    costInput.value = '';
-                }
-            });
-        } else {
-            console.error("Product select element not found in the row.");
-        }
+        // Update fields when product is selected
+        productSelect.addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption && selectedOption.dataset) {
+                costInput.value = selectedOption.dataset.cost || '';
+                brandCell.textContent = selectedOption.dataset.brand || '';
+                categoryCell.textContent = selectedOption.dataset.category || '';
+                updateRowTotal(); // Update total when product changes
+            }
+        });
 
         // Update total when cost or quantity changes
-        function updateTotal() {
-            const quantity = parseFloat(quantityInput.value) || 0; // Default to 0 if invalid
-            const cost = parseFloat(costInput.value) || 0; // Default to 0 if invalid
-            totalCell.textContent = (quantity * cost).toFixed(2); // Calculate total
-            updateGrandTotal(); // Update the grand total
+        function updateRowTotal() {
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const cost = parseFloat(costInput.value) || 0;
+            totalCell.textContent = (quantity * cost).toFixed(2);
+            updateGrandTotal();
         }
 
-        costInput.addEventListener('input', updateTotal); // Update total when cost price changes
-        quantityInput.addEventListener('input', updateTotal); // Update total when quantity changes
+        costInput.addEventListener('input', updateRowTotal);
+        quantityInput.addEventListener('input', updateRowTotal);
 
         // Remove row
-        removeButton.addEventListener('click', function() {
-            if (document.querySelectorAll('#itemsTable tbody tr').length > 1) {
-                row.remove(); // Remove the current row
-                updateGrandTotal(); // Update the grand total after removing the row
+        removeButton.addEventListener('click', function () {
+            if (tableBody.querySelectorAll('tr').length > 1) {
+                row.remove();
+                updateGrandTotal();
             }
         });
     }
 
-    // Add new row for manual entry
-    document.getElementById('addRow').addEventListener('click', function() {
-        const tbody = document.querySelector('#itemsTable tbody');
-        const newRow = tbody.rows[0].cloneNode(true);
-        newRow.querySelectorAll('input, select').forEach(input => input.value = ''); // Clear all values
-        newRow.querySelector('.total').textContent = '0.00'; // Reset total
-        newRow.querySelector('.brand').textContent = ''; // Reset brand
-        newRow.querySelector('.category').textContent = ''; // Reset category
-        tbody.appendChild(newRow);
-        attachRowEvents(newRow); // Attach events for new row
+    // Add new row
+    addRowButton.addEventListener('click', function () {
+        const newRow = tableBody.rows[0].cloneNode(true);
+
+        // Reset values in the new row
+        newRow.querySelectorAll('input, select').forEach(input => {
+            input.value = '';
+        });
+        newRow.querySelector('.total').textContent = '0.00';
+        newRow.querySelector('.brand').textContent = '';
+        newRow.querySelector('.category').textContent = '';
+
+        tableBody.appendChild(newRow);
+        attachRowEvents(newRow); // Attach events to the new row
     });
 
+    // Update grand total
+    function updateGrandTotal() {
+        const totals = Array.from(document.querySelectorAll('.total')).map(cell =>
+            parseFloat(cell.textContent) || 0
+        );
+        const grandTotal = totals.reduce((sum, value) => sum + value, 0);
+        grandTotalElement.textContent = grandTotal.toFixed(2);
+    }
+
     // Attach events to the initial row
-    attachRowEvents(document.querySelector('#itemsTable tbody tr'));
-});
+    attachRowEvents(tableBody.querySelector('tr'));
 
-// Handle form submission
-document.getElementById('orderForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = {
-        poNumber: document.getElementById('poNumber').value,
-        orderDate: document.getElementById('orderDate').value,
-        vendor: document.getElementById('vendor').value,
-        deliveryDate: document.getElementById('deliveryDate').value,
-        items: Array.from(document.querySelectorAll('#itemsTable tbody tr')).map(row => ({
-            product_id: row.querySelector('.product-select').value,
-            quantity: parseInt(row.querySelector('.quantity').value),  // Ensure this is an integer
-            cost_price: parseFloat(row.querySelector('.cost-price').value),  // Ensure this is a float
-            total: parseFloat(row.querySelector('.total').textContent)  // Ensure this is a float
-        }))
-    };
+    // Handle form submission
+    orderForm.addEventListener('submit', function (e) {
+        e.preventDefault();
 
-    fetch('save_order.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            document.getElementById('successAlert').style.display = 'block';
-            document.getElementById('orderForm').reset();
-            document.querySelectorAll('#itemsTable tbody tr:not(:first-child)').forEach(row => row.remove());
-            updateGrandTotal();
-        } else {
-            alert('Error creating Purchase Order: ' + (data.message || 'Unknown error'));
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error creating Purchase Order. Please try again.');
+        const formData = {
+            poNumber: document.getElementById('poNumber').value,
+            orderDate: document.getElementById('orderDate').value,
+            vendor: vendorSelect.value,
+            deliveryDate: document.getElementById('deliveryDate').value,
+            items: Array.from(tableBody.querySelectorAll('tr')).map(row => ({
+                product_id: row.querySelector('.product-select').value,
+                quantity: parseInt(row.querySelector('.quantity').value),
+                cost_price: parseFloat(row.querySelector('.cost-price').value),
+                total: parseFloat(row.querySelector('.total').textContent),
+            })),
+        };
+
+        fetch('save_order.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Purchase Order created successfully!');
+                    orderForm.reset();
+                    tableBody.querySelectorAll('tr:not(:first-child)').forEach(row => row.remove());
+                    updateGrandTotal();
+                } else {
+                    alert('Error creating Purchase Order: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while creating the Purchase Order.');
+            });
     });
 });
 

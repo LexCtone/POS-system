@@ -14,16 +14,32 @@ body {
   top: 0;
   left: 0;
 }
-.ProductHeader {
-  background-color: #1C75A6;
+.PageHeader {
+  background-color: #1C75A6; /* Consistent blue background */
   color: white;
-  padding: 35px;
-  margin-left: 350px;
-  margin-top: 0;
+  padding: 24.5px;
+  margin: 0;
+  display: flex;
   align-items: center;
-  justify-content: space-between;
+  margin-left: 350px; /* Consistent left margin */
+  justify-content: center;
+  flex-direction: column; /* For smaller screen stacking */
 }
 
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 20px;
+  text-align: left;
+}
 
 .sidebar header {
   font-size: 28px;
@@ -117,6 +133,7 @@ body {
   left: 0;
   right: 0;
   border: 2px solid #ccc; /* Border as per your existing code */
+  margin-top: 20px;
 }
 
 .header {
@@ -174,6 +191,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin-left: 825px;
+  margin-top: 20px;
   left: 0;
   right: 0;
   border: 2px solid #ccc; /* Border as per your existing code */
@@ -231,6 +249,7 @@ body {
   flex-direction: column;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  margin-top: 20px;
   margin-left: 1285px;
   left: 0;
   right: 0;
@@ -291,6 +310,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin-left: 1545px;
+  margin-top: 20px;
   left: 0;
   right: 0;
   border: 2px solid #ccc; /* Border as per your existing code */
@@ -342,7 +362,7 @@ body {
   position: fixed;
   width: 860px;
   max-width: 1200px;
-  height: 455px;
+  height: 470px;
   padding: 20px;
   background-color: #f7f8fc;
   display: flex;
@@ -350,7 +370,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin-left: 365px;
-  margin-top: 325px;
+  margin-top: 345px;
   left: 0;
   right: 0;
   border: 2px solid #ccc; /* Border as per your existing code */
@@ -412,7 +432,7 @@ button {
   position: fixed;
   width: 575px;
   max-width: 1200px;
-  height: 455px;
+  height: 470px;
   padding: 20px;
   background-color: #f7f8fc;
   display: flex;
@@ -420,7 +440,7 @@ button {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin-left: 1285px;
-  margin-top: 325px;
+  margin-top: 345px;
   left: 0;
   right: 0;
   border: 2px solid #ccc; /* Border as per your existing code */

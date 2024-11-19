@@ -5,13 +5,34 @@ body {
     font-family: monospace;
 }
 
-.StockHeader {
-    background-color: #1C75A6;
+.PageHeader {
+    background-color: #1C75A6; /* Consistent blue background */
     color: white;
-    padding: 35px;
-    margin-left: 350px;
-    margin-top: 0;
-}
+    padding: 24.5px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    margin-left: 350px; /* Consistent left margin */
+    justify-content: center;
+    flex-direction: column; /* For smaller screen stacking */
+  }
+  
+  .flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+  }
+  
+  .header-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 20px;
+    text-align: left;
+  }
+  
+  
 
 .sidebar {
     position: fixed;

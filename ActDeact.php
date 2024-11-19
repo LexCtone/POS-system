@@ -72,7 +72,13 @@ $conn->close();
 </head>
 <body>
     <header>
-        <h2 class="Header">Activate / Deactivate</h2>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Activate / Deactivate</span>
+        </div>
+    </h2>
+</header>
+</h2>
     </header>
   
     <nav class="sidebar">

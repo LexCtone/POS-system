@@ -28,9 +28,14 @@ if (isset($_SESSION['user_id'])) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <header>
-    <h2 class="Header">Accounts</h2>
-  </header>
+<header>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Accounts</span>
+        </div>
+    </h2>
+</header>
+
   
   <nav class="sidebar">
     <header>

@@ -93,9 +93,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <header>
-        <h2 class="Header">Change Password</h2>
-    </header>
+<header>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Change Password</span>
+        </div>
+    </h2>
+</header>
+
   
     <nav class="sidebar">
     <header>

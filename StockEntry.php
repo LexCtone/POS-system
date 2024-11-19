@@ -47,8 +47,13 @@ $current_date = date('Y-m-d'); // Format: YYYY-MM-DD
 </head>
 <body>
 <header>
-    <h2 class="StockHeader">Purchase Order</h2>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Orders</span>
+        </div>
+    </h2>
 </header>
+
 <div class="button-container">
     <button onclick="location.href='PurchaseOrder.php'">Purchase Order</button>
     <button onclick="location.href='StockEntry.php'" class="selected">Orders</button> 

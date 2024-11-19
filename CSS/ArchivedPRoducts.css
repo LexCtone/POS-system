@@ -88,22 +88,39 @@ body {
   border: 2px solid #1c75a6; /* Optional border for emphasis */
 }
 
-.StockHeader {
-  background-color: #1C75A6;
+.PageHeader {
+  background-color: #1C75A6; /* Consistent blue background */
   color: white;
-  padding: 35px;
-  margin-left: 350px;
-  margin-top: 0;
+  padding: 24.5px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  margin-left: 350px; /* Consistent left margin */
+  justify-content: center;
+  flex-direction: column; /* For smaller screen stacking */
+}
+
+.flex-container {
+  display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 20px;
+  text-align: left;
+}
+
 
 .container {
   margin-left: 350px;
-  padding: 20px;
+  padding: 6px;
   margin-top: 0;
 }
-
 .container button {
   padding: 10px 20px;
   background-color: #ffffff;
@@ -195,7 +212,7 @@ body {
 /* Container styling */
 .table-container {
   width: 100%;
-  height: 630px; /* Set the height of the table container */
+  height: 675px; /* Set the height of the table container */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #ddd; /* Optional: border around the container */
   box-sizing: border-box; 

@@ -5042,3 +5042,28 @@
 
 [2024-11-13 10:03:53] Executed sale insert for barcode: 10000074
 [2024-11-13 10:03:53] Executed product update for barcode: 10000074
+[2024-11-20 01:21:36] Received data: Array
+(
+    [invoice] => 20241119854300211
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 195
+                    [barcode] => 10000257
+                    [description] => toyo
+                    [price] => 1000
+                    [quantity] => 250
+                    [discount_amount] => 0
+                    [total] => 250000
+                )
+
+        )
+
+    [totalAmount] => 250000
+    [paymentAmount] => 250000
+    [change] => 0
+)
+
+[2024-11-20 01:21:36] Executed sale insert for barcode: 10000257
+[2024-11-20 01:21:36] Executed product update for barcode: 10000257

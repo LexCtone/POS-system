@@ -4,7 +4,6 @@ body {
   padding: 0;
   font-family: monospace;
 }
-
 .submenu {
   display: none;
   list-style-type: none;
@@ -115,41 +114,21 @@ body {
   text-align: left;
 }
 
-
 .container {
   margin-left: 350px;
   padding: 6px;
   margin-top: 0;
 }
-
 .container button {
-  padding: 10px 19px;
+  padding: 10px 20px;
   background-color: #ffffff;
   color: rgb(0, 0, 0);
   cursor: pointer;
-  margin: 0;
+  margin: 0; /* Add margin between buttons */
   font-size: 20px;
   border: none;
 }
 
-.form-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-  margin-left: 20px;
-}
-
-.date-label {
-  margin-right: 10px;
-  font-family: 'Arial', sans-serif;
-}
-
-.date-input {
-  padding: 10px;
-  font-family: 'Arial', sans-serif;
-  width: 15%;
-}
 
 .vendor {
   width: 10%;
@@ -157,53 +136,26 @@ body {
   color: white;
 }
 
-.option {
-  background-color: white;
-  color: black;
-}
-
-.load-data-button {
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  margin-left: 15px;
-}
-
-.load-data-button .fa-refresh {
-  font-size: 24px;
-  color: #FBC02D;
-  margin-right: 8px;
-}
-
-.load-data-text {
+.print-preview-text {
   font-family: Arial, sans-serif;
-  color: #1E88E5;
+  color: #1E88E5; /* Blue color */
   font-weight: bold;
-  font-size: 16px;
-}
-
-.load-data-button:hover .load-data-text {
-  opacity: 0.8;
 }
 
 .print-preview-button {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  margin-left: 15px;
+  margin-left: 1300px;
+  margin-top: 20px;
 }
 
 .print-preview-button .fa-print {
-  font-size: 24px;
-  color: #1ca658;
+  font-size: 24px; /* Adjust size as needed */
+  color: #1ca658; /* Yellow color */
   margin-right: 8px;
 }
 
-.print-preview-text {
-  font-family: Arial, sans-serif;
-  color: #1E88E5;
-  font-weight: bold;
-}
 
 /* Container for the two columns */
 .content {
@@ -212,53 +164,61 @@ body {
 
 /* Container styling */
 .table-container {
-  width: 100%;
-  height: 675px; /* Set the height of the table container */
+  height: 690px; /* Set the height of the table container */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #ddd; /* Optional: border around the container */
   box-sizing: border-box; 
   border-radius: 4px;
-  margin-top: 20px;/* Include padding and border in the element’s total width and height */
+  margin-top: 25px;/* Include padding and border in the element’s total width and height */
 }
-#stock-table {
+#inventory-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
 }
 
-#stock-table th, 
-#stock-table td {
+#inventory-table th, 
+#inventory-table td {
   padding: 12px 15px;
   text-align: center;
   font-weight: bold;
-  font-size: 18px; /* Increase the font size as needed */
+  font-size: 18px;
 }
 
-#stock-table th {
+/* Make the 2nd column's text not bold */
+#inventory-table td:nth-child(1) {
+  font-weight: normal;
+}
+#inventory-table td:nth-child(1) {
+  font-size: 50px;
+}
+
+#inventory-table th {
   background-color: #1C75A6;
   color: white;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 25px;
   letter-spacing: 0.5px;
   position: sticky;
   top: 0;
   z-index: 1;
 }
 
-#stock-table tr:nth-child(even) {
+#inventory-table tr:nth-child(even) {
   background-color: #f8f8f8;
 }
 
-#stock-table tr:hover {
+#inventory-table tr:hover {
   background-color: #e8f4f8;
   transition: background-color 0.3s ease;
 }
 
-#stock-table td {
+#inventory-table td {
   border-bottom: 1px solid #e0e0e0;
 }
 
+/* Total Sales Section */
 .total-sales {
   background-color: black;
   color: white;
@@ -271,7 +231,15 @@ body {
   font-size: 15px;
 }
 
+/* Ensure full width for the table */
+.table-container {
+  width: 100%;
+}
 
+/* Content area takes full width minus the sidebar */
+.content {
+  width: calc(100% - 15px); /* Adjust based on sidebar width */
+}
 
         /* Modal styles */
         .modal {
@@ -353,63 +321,81 @@ body {
         background-color: lightblue; /* Darker gray on hover */
       }
       
-      
       @media print {
-  /* Hide everything except the stock-in history table */
+  /* Hide everything except the table container */
   body * {
-    visibility: hidden !important; /* Force hide all elements */
+    visibility: hidden;
   }
 
-  /* Make only the stock-in history table and its contents visible */
-  #stock-table, #stock-table * {
-    visibility: visible !important; /* Force show the stock table */
+  /* Specifically make the inventory table and its contents visible */
+  #inventory-table, #inventory-table * {
+    visibility: visible;
   }
 
-  /* Show the table container */
-  .table-container {
-    visibility: visible !important;
-  }
-
-  /* Full-width table for printing */
-  #stock-table {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    margin-top: 20px !important;
-    border-collapse: collapse !important;
-    font-family: Arial, sans-serif !important;
+  /* Make the table occupy the full width of the print preview */
+  #inventory-table {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
   }
 
   /* Table header styling */
-  #stock-table th {
-    background-color: #1C75A6 !important;
-    color: black !important;
-    padding: 14px !important;
-    font-size: 14px !important;
-    font-weight: bold !important;
-    text-align: center !important;
-    border: 4px solid #000 !important;
-    border-radius: 4px !important;
+  #inventory-table th {
+    background-color: #1C75A6; /* Inner background color */
+    color: black; /* Header text color */
+    padding: 14px; /* Padding for header */
+    font-size: 25px; /* Font size */
+    font-weight: bold; /* Bold text */
+    text-align: center; /* Centered text */
+    border: 4px solid #000; /* Outer border color */
+    border-radius: 4px; /* Optional: add some rounding to the corners */
   }
 
   /* Table data cell styling */
-  #stock-table td {
-    padding: 10px !important;
-    text-align: center !important;
-    border: 1px solid #ddd !important;
-    font-size: 13px !important;
+  #inventory-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 15px;
   }
 
-  /* Force-hide unnecessary elements */
+  /* Make the 2nd column's text not bold */
+#inventory-table td:nth-child(1),
+#inventory-table th:nth-child(1) {
+  font-weight: normal;
+}
+#inventory-table td:nth-child(1) {
+  font-size: 60px;
+}
+
+
+  /* Alternating row colors for readability */
+  #inventory-table tr:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+
+  /* Additional styling to hide unwanted elements */
   .sidebar, .StockHeader, .button-container, .print-preview-button {
-    display: none !important; /* Force hide sidebar and buttons during print */
+    display: none !important; /* Hide sidebar, headers, and buttons during print */
   }
 
-  /* Ensure the table fills the width */
+  /* Ensure the table takes up the full screen width */
   .table-container {
-    width: 100% !important;
-    overflow: visible !important;
-    border: none !important;
+    width: 100%;
+    overflow: visible;
+    border: none;
   }
+}
+
+@font-face {
+  font-family: 'LibreBarcode39ExtendedText-Regular';
+  src: url('../fonts/LibreBarcode39ExtendedText-Regular.ttf');  /* Going up one level from the CSS folder */
+}
+.clean-barcode {
+  font-family: 'LibreBarcode39ExtendedText-Regular', sans-serif; /* Use barcode font */
+  font-size: 5rem; /* Adjust to match scanner requirements */
 }

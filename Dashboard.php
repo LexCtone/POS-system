@@ -305,9 +305,14 @@ if ($row_critical = $result_critical_stocks->fetch_assoc()) {
         <li><a href="Login.php" onclick="return confirmLogout();" style="cursor: pointer;"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>   
 </nav>
-<header>        
-        <h2 class="ProductHeader">Dashboard </h2>    
-    </header>
+<header>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Dashboard</span>
+        </div>
+    </h2>
+</header>
+
     <div>
     <div class="main-content-wrapper">
     <main class="main-content">

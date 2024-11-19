@@ -93,21 +93,44 @@ body {
 
 
 .VendorHeader {
-  background-color: #1C75A6;
+  background-color: #1C75A6; /* Same background as ProductHeader */
   color: white;
   padding: 20px;
-  margin-left: 350px;
-  margin-top: 0;
+  margin: 0;
+  display: flex;
   align-items: center;
+  margin-left: 350px; /* Consistent left margin as ProductHeader */
+  justify-content: center; /* Centers the content */
+  flex-direction: column; /* Stacks elements vertically if needed */
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.filter-tools {
+  display: flex;
+  align-items: center; /* Vertically center elements */
+  gap: 10px; /* Space between search input and button */
 }
 
 #search-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 8px;
   font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
   width: 200px;
-  margin-left: 1009px;
+  margin: 0; /* Ensure no extra margin */
 }
 
 button {
@@ -120,8 +143,10 @@ button {
 }
 
 button i {
-  font-size: 18px;
+  font-size: 16px;
 }
+
+
 
 .admin-section {
   text-align: center;

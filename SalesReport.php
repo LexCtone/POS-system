@@ -105,9 +105,14 @@ if ($total_sales_profit_result) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <header>
-    <h2 class="StockHeader">Sales Report</h2>
-  </header>
+<header>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Sales Report</span>
+        </div>
+    </h2>
+</header>
+
   
   <nav class="sidebar">
     <header>
@@ -138,6 +143,7 @@ if ($total_sales_profit_result) {
             <button class="btn selected" onclick="location.href='SalesReport.php'">Sales Report</button>
             <button class="btn" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
             <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
+            <button class="btn" onclick="location.href='Barcodes.php'">Barcodes</button>
         </div>
         <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
 

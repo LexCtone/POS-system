@@ -2,6 +2,7 @@
 session_start();
 include 'connect.php';
 
+
 // Fetch the username of the logged-in admin
 $admin_name = "ADMINISTRATOR"; // Default value
 if (isset($_SESSION['user_id'])) {
@@ -34,17 +35,17 @@ $sql = "
         p.Price, 
         p.cost_price, 
         p.Quantity, 
+        p.vendor_id,  -- Ensure vendor_id is included
         COALESCE(v.vendor, 'Unknown') AS Vendor
     FROM 
         products p
     LEFT JOIN 
-        vendor v
-    ON 
-        p.vendor_id = v.id";
+        vendor v ON p.vendor_id = v.id";
+
 
 $result = mysqli_query($conn, $sql);
 
-// Fetch brands and categories for dropdowns
+// Fetch brands, vendor, and categories for dropdowns
 $brand_query = "SELECT * FROM brands";
 $brand_result = mysqli_query($conn, $brand_query);
 $brand_result_update = mysqli_query($conn, $brand_query);
@@ -52,6 +53,20 @@ $brand_result_update = mysqli_query($conn, $brand_query);
 $category_query = "SELECT * FROM categories";
 $category_result = mysqli_query($conn, $category_query);
 $category_result_update = mysqli_query($conn, $category_query);
+
+if (!$brand_result || !$category_result) {
+    die("Error fetching data: " . mysqli_error($conn));
+}
+
+$vendor_query = "SELECT id, vendor FROM vendor";
+$vendor_result = mysqli_query($conn, $vendor_query);
+
+if (!$vendor_result) {
+    die("Error fetching vendors: " . mysqli_error($conn));
+}
+
+
+
 
 // Handle archive request
 if (isset($_GET['archiveid'])) {
@@ -280,12 +295,44 @@ if (isset($_GET['restoreid'])) {
     </ul>
 </nav>
 
-<header>    
-        <h2 class="ProductHeader">Product List  
-            <input id="search-input" type="text" placeholder="Search...">
-            <button id="add-product-button"><i class='fas fa-plus'></i></button>
-        </h2>    
-    </header>
+<header>
+    <h2 class="ProductHeader">
+        <div class="flex-container">
+            <span class="header-title">Product List</span>
+            <div class="filter-tools">
+                <select id="brand-filter">
+                    <option value="all">All Brands</option>
+                    <?php while ($brand = mysqli_fetch_assoc($brand_result)): ?>
+                        <option value="<?= htmlspecialchars($brand['Brand']) ?>">
+                            <?= htmlspecialchars($brand['Brand']) ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <select id="category-filter">
+                    <option value="all">All Categories</option>
+                    <?php while ($category = mysqli_fetch_assoc($category_result)): ?>
+                        <option value="<?= htmlspecialchars($category['Category']) ?>">
+                            <?= htmlspecialchars($category['Category']) ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <select id="vendor-filter">
+                    <option value="all">All Vendors</option>
+                    <?php while ($vendor = mysqli_fetch_assoc($vendor_result)): ?>
+                        <option value="<?= htmlspecialchars($vendor['vendor']) ?>">
+                            <?= htmlspecialchars($vendor['vendor']) ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+                <input id="search-input" type="text" placeholder="Search...">
+                <button id="add-product-button"><i class='fas fa-plus'></i></button>
+            </div>
+        </div>
+    </h2>
+</header>
+
+
+
     <div class="content">
     <div class="table-container">
         <table class="table" id="product-table">
@@ -303,11 +350,11 @@ if (isset($_GET['restoreid'])) {
                 <th scope="col">Operation</th>
             </tr>
         </thead>
-            <tbody>
+        <tbody>
     <?php if ($result && mysqli_num_rows($result) > 0): ?>
         <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <tr>
-                <td><?= $row['id'] ?></td>
+                <td><?= htmlspecialchars($row['id']) ?></td>
                 <td><?= htmlspecialchars($row['Barcode']) ?></td>
                 <td><?= htmlspecialchars($row['Description']) ?></td>
                 <td><?= htmlspecialchars($row['Brand']) ?></td>
@@ -318,18 +365,18 @@ if (isset($_GET['restoreid'])) {
                 <td><?= htmlspecialchars($row['Vendor'] ?? 'Unknown') ?></td>
                 <td>
                     <button class="button update-button" 
-                            data-id="<?= $row['id'] ?>" 
+                            data-id="<?= htmlspecialchars($row['id']) ?>" 
                             data-barcode="<?= htmlspecialchars($row['Barcode']) ?>" 
-                            data-description="<?= htmlspecialchars($row['Description']) ?>"
-                            data-brand="<?= htmlspecialchars($row['Brand']) ?>"
-                            data-category="<?= htmlspecialchars($row['Category']) ?>"
-                            data-price="<?= htmlspecialchars($row['Price']) ?>"
-                            data-cost-price="<?= htmlspecialchars($row['cost_price']) ?>"
-                            data-quantity="<?= htmlspecialchars($row['Quantity']) ?>"
-                            data-vendor="<?= htmlspecialchars($row['Vendor']) ?>">
+                            data-description="<?= htmlspecialchars($row['Description']) ?>" 
+                            data-brand="<?= htmlspecialchars($row['Brand']) ?>" 
+                            data-category="<?= htmlspecialchars($row['Category']) ?>" 
+                            data-price="<?= htmlspecialchars($row['Price']) ?>" 
+                            data-cost-price="<?= htmlspecialchars($row['cost_price']) ?>" 
+                            data-quantity="<?= htmlspecialchars($row['Quantity']) ?>" 
+                            data-vendor-id="<?= htmlspecialchars($row['vendor_id'] ?? '') ?>"> 
                         Update
                     </button>
-                    <button class="button"><a href="?archiveid=<?= $row['id'] ?>" class="text-light">Archive</a></button>
+                    <button class="button"><a href="?archiveid=<?= htmlspecialchars($row['id']) ?>" class="text-light">Archive</a></button>
                 </td>
             </tr>
         <?php endwhile; ?>
@@ -356,7 +403,21 @@ if (isset($_GET['restoreid'])) {
             <label for="generatedBarcode">Generated Barcode:</label>
             <input type="text" id="generatedBarcode" name="generatedBarcode" readonly> <!-- Generated barcode in input -->
 
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" required>
         <form id="product-form" action="add_product.php" method="post">
+
+        <label for="vendor">Vendor:</label>
+            <select id="vendor" name="vendor" required>
+                <option value="" disabled selected>Select Vendor</option>
+                <?php mysqli_data_seek($vendor_result, 0); ?>
+                <?php while ($vendor = mysqli_fetch_assoc($vendor_result)): ?>
+                    <option value="<?= htmlspecialchars($vendor['id']) ?>">
+                        <?= htmlspecialchars($vendor['vendor']) ?> <!-- Display the vendor name -->
+                    </option>
+                <?php endwhile; ?>
+            </select>
+
 
             <label for="brand">Brand:</label>
             <select id="brand" name="brand" required>
@@ -391,8 +452,6 @@ if (isset($_GET['restoreid'])) {
     </div>
 </div>
 
-
-
 <!-- Update Product Modal -->
 <div id="update-product-modal" class="modals">
     <div class="modal-contents">
@@ -402,10 +461,25 @@ if (isset($_GET['restoreid'])) {
             <input type="hidden" id="update-product-id" name="product-id">
 
             <label for="update-barcode">Barcode:</label>
-            <input type="text" id="update-barcode" name="barcode" required>
+            <input type="text" id="update-barcode" name="barcode" readonly>
+
+            <label for="update-generated-barcode">Generated Barcode:</label>
+            <input type="text" id="update-generatedBarcode" name="generatedBarcode" readonly>
 
             <label for="update-description">Description:</label>
             <input type="text" id="update-description" name="description" required>
+
+            <label for="update-vendor">Vendor:</label>
+            <select id="update-vendor" name="vendor" required>
+                <option value="" disabled selected>Select Vendor</option>
+                <?php mysqli_data_seek($vendor_result, 0); ?>
+                <?php while ($vendor = mysqli_fetch_assoc($vendor_result)): ?>
+                    <option value="<?= htmlspecialchars($vendor['id']) ?>">
+                        <?= htmlspecialchars($vendor['vendor']) ?>
+                    </option>
+                <?php endwhile; ?>
+            </select>
+
 
             <label for="update-brand">Brand:</label>
             <select id="update-brand" name="brand" required>
@@ -432,16 +506,14 @@ if (isset($_GET['restoreid'])) {
             <label for="update-price">Price:</label>
             <input type="number" id="update-price" name="price" step="0.01" required>
 
-            <!-- New cost_price field -->
             <label for="update-cost-price">Cost Price:</label>
             <input type="number" id="update-cost-price" name="cost_price" step="0.01" required>
 
-            <div id="update-form-feedback" class="form-feedback"></div>
-            <div id="update-loading" class="loading-indicator" style="display: none;">Updating...</div>
             <button type="submit">Update Product</button>
         </form>
     </div>
 </div>
+
 
 
     <style>

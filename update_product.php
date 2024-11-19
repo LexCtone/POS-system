@@ -27,12 +27,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product-id'])) {
     $category = trim($_POST['category']);
     $price = trim($_POST['price']);
     $cost_price = trim($_POST['cost_price']); // Get cost_price
+    $vendorId = (int)$_POST['vendor']; // Get the vendor ID and sanitize as an integer
 
     // Validate input
-    if (!empty($barcode) && !empty($description) && !empty($brand) && !empty($category) && is_numeric($price) && is_numeric($cost_price)) {
-        // Update the product in the database with cost_price
-        $stmt = $conn->prepare("UPDATE products SET Barcode = ?, Description = ?, Brand = ?, Category = ?, Price = ?, cost_price = ? WHERE id = ?");
-        $stmt->bind_param('ssssddi', $barcode, $description, $brand, $category, $price, $cost_price, $productId);
+    if (
+        !empty($barcode) &&
+        !empty($description) &&
+        !empty($brand) &&
+        !empty($category) &&
+        is_numeric($price) &&
+        is_numeric($cost_price) &&
+        $vendorId > 0 // Ensure vendor ID is valid
+    ) {
+        // Update the product in the database with cost_price and vendor_id
+        $stmt = $conn->prepare(
+            "UPDATE products 
+             SET Barcode = ?, Description = ?, Brand = ?, Category = ?, Price = ?, cost_price = ?, vendor_id = ? 
+             WHERE id = ?"
+        );
+        $stmt->bind_param(
+            'ssssddii',
+            $barcode,
+            $description,
+            $brand,
+            $category,
+            $price,
+            $cost_price,
+            $vendorId,
+            $productId
+        );
 
         if ($stmt->execute()) {
             sendJsonResponse(true, 'Product updated successfully');
@@ -42,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product-id'])) {
 
         $stmt->close();
     } else {
-        sendJsonResponse(false, 'All fields are required and price/cost price must be numeric');
+        sendJsonResponse(false, 'All fields are required, price/cost price must be numeric, and a valid vendor must be selected');
     }
 } else {
     sendJsonResponse(false, 'Invalid request method or missing product ID');

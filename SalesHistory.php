@@ -30,9 +30,14 @@ if (isset($_SESSION['user_id'])) {
   <script src="JAVASCRIPT/sales_history.js" defer></script>
 </head>
 <body>
-  <header>
-    <h2 class="StockHeader">Sales History</h2>
-  </header>
+<header>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Sales History</span>
+        </div>
+    </h2>
+</header>
+
   
   <nav class="sidebar">
     <header>
@@ -67,6 +72,7 @@ if (isset($_SESSION['user_id'])) {
           <button class="btn" onclick="location.href='SalesReport.php'">Sales Report</button>
           <button class="btn" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
           <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
+          <button class="btn" onclick="location.href='Barcodes.php'">Barcodes</button>
           </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
     <div class="form">

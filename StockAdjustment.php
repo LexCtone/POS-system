@@ -55,9 +55,14 @@ if (!$result) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <header>
-        <h2 class="StockHeader">Stock Adjustment</h2>
-    </header>
+<header>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Stock Adjustment</span>
+        </div>
+    </h2>
+</header>
+
 
     <div class="button-container">
     <button onclick="location.href='PurchaseOrder.php'">Purchase Order</button>

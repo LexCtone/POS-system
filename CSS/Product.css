@@ -73,23 +73,58 @@ body {
   background-color: #1C75A6;
   color: white;
   padding: 20px;
-  margin-left: 350px;
-  margin-top: 0;
+  margin: 0;
+  display: flex;
   align-items: center;
-  justify-content: space-between;
+  margin-left: 350px;
+  justify-content: center; /* Centers the content */
+  flex-direction: column; /* Makes the header title and tools stack vertically */
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ensures equal spacing between elements */
+  width: 100%;
+  flex-wrap: wrap; /* Allows wrapping for smaller screens */
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.filter-tools {
+  display: flex;
+  align-items: center; /* Vertically center dropdowns, search, and button */
+  gap: 10px; /* Add space between elements */
+}
+
+#brand-filter,
+#category-filter,
+#vendor-filter {
+  padding: 7.5px; /* Increased padding for better spacing */
+  font-size: 16px;
+  border-radius: 5px; /* Consistent rounding */
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+  font-size: 18px;
+  width: 150px; /* Ensure consistent width across dropdowns */
 }
 
 #search-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 10px; /* Adjusted padding for consistency */
   font-size: 16px;
-  width: 200px;
-  margin-left: 999px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 250px; /* Increased width for better visibility */
+  margin: 0px;
 }
 
 button {
-  padding: 10px;
+  padding: 10px 15px; /* Adjusted padding for a balanced button size */
   border: none;
   background-color: #125275;
   color: #fff;
@@ -97,9 +132,10 @@ button {
   cursor: pointer;
 }
 
-button i {
-  font-size: 18px;
+button:hover {
+  background-color: #0e394f; /* Hover effect for better interactivity */
 }
+
 
 .admin-section {
   text-align: center;

@@ -50,9 +50,14 @@ if (isset($_GET['error'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <header>
-    <h2 class="Header">Create Account</h2>
-  </header>
+<header>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Create Account</span>
+        </div>
+    </h2>
+</header>
+
   <nav class="sidebar">
     <header>
         <img src="profile.png" alt="profile"/>

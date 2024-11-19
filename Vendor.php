@@ -137,11 +137,18 @@ mysqli_close($conn);
         <li><a href="Login.php" onclick="return confirmLogout();" style="cursor: pointer;"><i class='fa-solid fa-arrow-right-from-bracket' style='font-size:30px'></i>Logout</a></li>
     </ul>
 </nav>
-    <header>    
-        <h2 class="VendorHeader">Vendor List  
-            <input id="search-input" type="text" placeholder="Search...">
-            <button id="add-vendor-button"><i class='fas fa-plus'></i></button>
-        </h2>    
+<header>
+    <h2 class="VendorHeader">
+        <div class="flex-container">
+            <span class="header-title">Vendor List</span>
+            <div class="filter-tools">
+                <input id="search-input" type="text" placeholder="Search...">
+                <button id="add-vendor-button"><i class='fas fa-plus'></i></button>
+            </div>
+        </div>
+    </h2>
+</header>
+
     </header>
     <div class="content">
     <div class="table-container">

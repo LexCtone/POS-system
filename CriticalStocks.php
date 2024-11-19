@@ -50,9 +50,14 @@ if (!$result) {
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header>
-    <h2 class="StockHeader">Critical Stocks</h2>
-  </header>
+<header>
+    <h2 class="PageHeader">
+        <div class="flex-container">
+            <span class="header-title">Critical Stocks</span>
+        </div>
+    </h2>
+</header>
+
   
   <nav class="sidebar">
     <header>
@@ -87,6 +92,7 @@ if (!$result) {
         <button class="btn" onclick="location.href='SalesReport.php'">Sales Report</button>
         <button class="btn selected" onclick="location.href='CriticalStocks.php'">Critical Stocks</button>
         <button class="btn" onclick="location.href='InventoryList.php'">Inventory List</button>
+        <button class="btn" onclick="location.href='Barcodes.php'">Barcodes</button>
       </div>
       <div style="margin-top: 10px; border-bottom: 2px solid #ccc;"></div>
       <div class="print-preview-button" onclick="window.print()">
@@ -157,6 +163,7 @@ if (!$result) {
   </tbody>
 </table>
 
+</div>
 
   </div>
 </div>
