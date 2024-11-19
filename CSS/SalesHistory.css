@@ -211,7 +211,7 @@ body {
 /* Container styling */
 .table-container {
   width: 100%;
-  max-height: 675px; /* Adjust this value as needed */
+  max-height: 715px; /* Adjust this value as needed */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #ddd; /* Optional: border around the container */
   box-sizing: border-box; 

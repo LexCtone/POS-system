@@ -134,10 +134,10 @@ button i {
 
 .button-container {
   align-items: flex-start;
-  margin-right: 503px;
+  margin-right: 455px;
   display: flex;
   justify-content: center;
-  margin-top: 35px;
+  margin-top: 20px;
 }
 
 .button-container button.selected {
@@ -487,6 +487,7 @@ input[type=submit]:hover {
 }
 
 .containers {
+  height: 745px;
   margin-left: 388px;
   margin-top: 10px;
   padding: 20px;

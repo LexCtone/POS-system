@@ -115,10 +115,10 @@ button i {
 
 .button-container {
   align-items: left;
-  margin-right: 500px;
+  margin-right: 455px;
   display: flex;
   justify-content: center; /* To horizontally center the buttons */
-  margin-top: 35px; /* Add margin as needed */
+  margin-top: 20px; /* Add margin as needed */
 }
 
 .button-container button.selected {
@@ -215,7 +215,7 @@ button:hover {
 
 /* Container styling */
 .table-container {
-  height: 600px; /* Set the height of the table container */
+  height: 680px; /* Set the height of the table container */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #ddd; /* Optional: border around the container */
   box-sizing: border-box; 

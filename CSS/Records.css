@@ -224,7 +224,7 @@ body {
 /* Container styling */
 .table-container {
   width: 48%; /* Reduce width slightly */
-  height: 675px; /* Set the height of the table container */
+  height: 715px; /* Set the height of the table container */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #ddd; /* Optional: border around the container */
   box-sizing: border-box; 
@@ -272,7 +272,7 @@ body {
 
 /* Right Column: Chart */
 .chart-container {
-  width: 48%; /* Reduce width slightly */
+  width: 51.5%; /* Reduce width slightly */
   border: 1px solid #ddd; /* Optional: border around the container */
   padding: 10px;
   box-sizing: border-box;

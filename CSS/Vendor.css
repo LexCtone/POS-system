@@ -173,12 +173,12 @@ button i {
 
 /* Container styling */
 .table-container {
-  height: 800px; /* Set the height of the table container */
+  height: 830px; /* Set the height of the table container */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #ddd; /* Optional: border around the container */
   box-sizing: border-box; 
   border-radius: 4px;
-  margin-top: 25px;/* Include padding and border in the element’s total width and height */
+  margin-top: 20px;/* Include padding and border in the element’s total width and height */
 }
 #vendor-table {
   width: 100%;

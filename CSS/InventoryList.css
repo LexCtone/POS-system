@@ -164,7 +164,7 @@ body {
 
 /* Container styling */
 .table-container {
-  height: 690px; /* Set the height of the table container */
+  height: 730px; /* Set the height of the table container */
   overflow-y: auto; /* Enable vertical scrolling */
   border: 1px solid #ddd; /* Optional: border around the container */
   box-sizing: border-box; 

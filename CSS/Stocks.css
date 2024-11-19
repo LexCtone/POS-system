@@ -134,10 +134,10 @@ button i {
 
 .button-container {
   align-items: left;
-  margin-right: 503px;
+  margin-right: 455px;
   display: flex;
   justify-content: center; /* To horizontally center the buttons */
-  margin-top: 35px; /* Add margin as needed */
+  margin-top: 20px; /* Add margin as needed */
 }
 .button-container button.selected {
   background-color: #ccc; /* Highlight background color */
@@ -453,7 +453,7 @@ input[type="date"] {
 
 
 .table-container {
-  height: 490px;
+  height: 520px;
   overflow-y: auto;
   border: 1px solid #ccc;
   box-sizing: border-box; 
