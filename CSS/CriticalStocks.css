@@ -279,6 +279,7 @@ body {
   #critical-table tr:nth-child(even) {
     background-color: #f8f8f8; /* Light gray for even rows */
   }
+  
 
   /* Hide unnecessary elements */
   .sidebar, .StockHeader, .account-box, .button-container, .print-preview-button {

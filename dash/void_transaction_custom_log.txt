@@ -7,3 +7,4 @@ Error: Illegal mix of collations (utf8mb4_general_ci,IMPLICIT) and (utf8mb4_unic
 Received data: {"invoice":"20241112749693106","totalAmount":450,"voidBy":"cashier","cancelReason":"asd"}
 Received data: {"invoice":"20241112633289632","totalAmount":450,"voidBy":"cashier","cancelReason":"asdasd"}
 Received data: {"invoice":"20241113386420783","totalAmount":495,"voidBy":"cashier","cancelReason":"asd"}
+Received data: {"invoice":"20241120878689213","totalAmount":2225,"voidBy":"cashier","cancelReason":"kasi tinesting lang"}

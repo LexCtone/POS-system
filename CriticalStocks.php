@@ -23,13 +23,17 @@ if (!isset($conn) || $conn->connect_error) {
     die("Database connection failed: " . ($conn->connect_error ?? "Unknown error"));
 }
 
-// Fetch products with quantity below 20
-// Updated query to fetch additional details like Brand, Category, and Vendor
+// Fetch products with quantity less than the 20%
 $query = "SELECT p.id, p.Barcode, p.Description, p.Price, p.Quantity, p.cost_price, 
                  p.Brand, p.Category, v.id AS vendor_id, v.vendor AS Vendor
           FROM products p
           LEFT JOIN vendor v ON p.vendor_id = v.id
-          WHERE p.Quantity < 20
+          LEFT JOIN (
+              SELECT Barcode, SUM(quantity) AS total_stocked
+              FROM stock_in_history
+              GROUP BY Barcode
+          ) sih ON p.Barcode = sih.Barcode
+          WHERE p.Quantity < (sih.total_stocked * 0.2)
           ORDER BY p.Quantity ASC";
 
 $result = $conn->query($query);

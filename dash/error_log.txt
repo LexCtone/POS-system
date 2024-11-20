@@ -5067,3 +5067,230 @@
 
 [2024-11-20 01:21:36] Executed sale insert for barcode: 10000257
 [2024-11-20 01:21:36] Executed product update for barcode: 10000257
+[2024-11-20 16:21:42] Received data: Array
+(
+    [invoice] => 20241120878689213
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 4
+                    [barcode] => 10000018
+                    [description] => Epoxy (All Purpose) - 15 ML
+                    [price] => 85
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 85
+                )
+
+            [1] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 10000016
+                    [description] => Epoxy (All Purpose) - 1/4 Liter
+                    [price] => 250
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 250
+                )
+
+            [2] => Array
+                (
+                    [product_id] => 3
+                    [barcode] => 10000017
+                    [description] => Epoxy (All Purpose) - 160 ML
+                    [price] => 165
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 330
+                )
+
+            [3] => Array
+                (
+                    [product_id] => 5
+                    [barcode] => 10000019
+                    [description] => Epoxy (Clear, Plus Five)
+                    [price] => 85
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 170
+                )
+
+            [4] => Array
+                (
+                    [product_id] => 6
+                    [barcode] => 10000020
+                    [description] => Epoxy (Marine) - 1 Liter
+                    [price] => 695
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 1390
+                )
+
+        )
+
+    [totalAmount] => 2225
+    [paymentAmount] => 2225
+    [change] => 0
+)
+
+[2024-11-20 16:21:42] Executed sale insert for barcode: 10000018
+[2024-11-20 16:21:42] Executed product update for barcode: 10000018
+[2024-11-20 16:21:42] Executed sale insert for barcode: 10000016
+[2024-11-20 16:21:42] Executed product update for barcode: 10000016
+[2024-11-20 16:21:42] Executed sale insert for barcode: 10000017
+[2024-11-20 16:21:42] Executed product update for barcode: 10000017
+[2024-11-20 16:21:42] Executed sale insert for barcode: 10000019
+[2024-11-20 16:21:42] Executed product update for barcode: 10000019
+[2024-11-20 16:21:42] Executed sale insert for barcode: 10000020
+[2024-11-20 16:21:42] Executed product update for barcode: 10000020
+[2024-11-21 01:20:01] Received data: Array
+(
+    [invoice] => 20241120157755202
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 10000016
+                    [description] => Epoxy (All Purpose) - 1/4 Liter
+                    [price] => 250
+                    [quantity] => 801
+                    [discount_amount] => 0
+                    [total] => 200250
+                )
+
+        )
+
+    [totalAmount] => 200250
+    [paymentAmount] => 200250
+    [change] => 0
+)
+
+[2024-11-21 01:20:01] Executed sale insert for barcode: 10000016
+[2024-11-21 01:20:01] Executed product update for barcode: 10000016
+[2024-11-21 01:29:51] Received data: Array
+(
+    [invoice] => 20241120208403142
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 194
+                    [barcode] => 10000257
+                    [description] => toyo
+                    [price] => 1000
+                    [quantity] => 200
+                    [discount_amount] => 0
+                    [total] => 200000
+                )
+
+        )
+
+    [totalAmount] => 200000
+    [paymentAmount] => 200000
+    [change] => 0
+)
+
+[2024-11-21 01:29:51] Executed sale insert for barcode: 10000257
+[2024-11-21 01:29:51] Executed product update for barcode: 10000257
+[2024-11-21 01:30:26] Received data: Array
+(
+    [invoice] => 20241120794346050
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 194
+                    [barcode] => 10000257
+                    [description] => toyo
+                    [price] => 1000
+                    [quantity] => 1
+                    [discount_amount] => 0
+                    [total] => 1000
+                )
+
+        )
+
+    [totalAmount] => 1000
+    [paymentAmount] => 1000
+    [change] => 0
+)
+
+[2024-11-21 01:30:26] Executed sale insert for barcode: 10000257
+[2024-11-21 01:30:26] Executed product update for barcode: 10000257
+[2024-11-21 01:31:30] Received data: Array
+(
+    [invoice] => 20241120829295785
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 191
+                    [barcode] => 10000254
+                    [description] => Heavy Duty Hammer
+                    [price] => 123
+                    [quantity] => 400
+                    [discount_amount] => 0
+                    [total] => 49200
+                )
+
+        )
+
+    [totalAmount] => 49200
+    [paymentAmount] => 49200
+    [change] => 0
+)
+
+[2024-11-21 01:31:30] Executed sale insert for barcode: 10000254
+[2024-11-21 01:31:30] Executed product update for barcode: 10000254
+[2024-11-21 01:37:58] Received data: Array
+(
+    [invoice] => 20241120893391825
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 194
+                    [barcode] => 10000257
+                    [description] => toyo
+                    [price] => 1000
+                    [quantity] => 90
+                    [discount_amount] => 0
+                    [total] => 90000
+                )
+
+        )
+
+    [totalAmount] => 90000
+    [paymentAmount] => 90000
+    [change] => 0
+)
+
+[2024-11-21 01:37:58] Executed sale insert for barcode: 10000257
+[2024-11-21 01:37:58] Executed product update for barcode: 10000257
+[2024-11-21 01:42:40] Received data: Array
+(
+    [invoice] => 20241120282061178
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 194
+                    [barcode] => 10000257
+                    [description] => toyo
+                    [price] => 1000
+                    [quantity] => 240
+                    [discount_amount] => 0
+                    [total] => 240000
+                )
+
+        )
+
+    [totalAmount] => 240000
+    [paymentAmount] => 240000
+    [change] => 0
+)
+
+[2024-11-21 01:42:40] Executed sale insert for barcode: 10000257
+[2024-11-21 01:42:40] Executed product update for barcode: 10000257
