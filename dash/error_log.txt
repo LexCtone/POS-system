@@ -5294,3 +5294,703 @@
 
 [2024-11-21 01:42:40] Executed sale insert for barcode: 10000257
 [2024-11-21 01:42:40] Executed product update for barcode: 10000257
+[2024-11-25 01:28:22] Received data: Array
+(
+    [invoice] => 20241124292443762
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 800
+                    [discount_amount] => 0
+                    [total] => 188000
+                )
+
+        )
+
+    [totalAmount] => 188000
+    [paymentAmount] => 188000
+    [change] => 0
+)
+
+[2024-11-25 01:28:22] Executed sale insert for barcode: 10000015
+[2024-11-25 01:28:22] Executed product update for barcode: 10000015
+[2024-11-25 01:31:32] Received data: Array
+(
+    [invoice] => 20241124445020149
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 100
+                    [discount_amount] => 0
+                    [total] => 23500
+                )
+
+        )
+
+    [totalAmount] => 23500
+    [paymentAmount] => 23500
+    [change] => 0
+)
+
+[2024-11-25 01:31:32] Executed sale insert for barcode: 10000015
+[2024-11-25 01:31:32] Executed product update for barcode: 10000015
+[2024-11-25 01:54:25] Received data: Array
+(
+    [invoice] => 20241124493677603
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 10000016
+                    [description] => Epoxy (All Purpose) - 1/4 Liter
+                    [price] => 250
+                    [quantity] => 800
+                    [discount_amount] => 0
+                    [total] => 200000
+                )
+
+        )
+
+    [totalAmount] => 200000
+    [paymentAmount] => 200000
+    [change] => 0
+)
+
+[2024-11-25 01:54:25] Executed sale insert for barcode: 10000016
+[2024-11-25 01:54:25] Executed product update for barcode: 10000016
+[2024-11-25 01:55:48] Received data: Array
+(
+    [invoice] => 20241124869512606
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 2
+                    [barcode] => 10000016
+                    [description] => Epoxy (All Purpose) - 1/4 Liter
+                    [price] => 250
+                    [quantity] => 100
+                    [discount_amount] => 0
+                    [total] => 25000
+                )
+
+        )
+
+    [totalAmount] => 25000
+    [paymentAmount] => 25000
+    [change] => 0
+)
+
+[2024-11-25 01:55:48] Executed sale insert for barcode: 10000016
+[2024-11-25 01:55:48] Executed product update for barcode: 10000016
+[2024-11-25 02:01:16] Received data: Array
+(
+    [invoice] => 20241124949630549
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 400
+                    [discount_amount] => 0
+                    [total] => 94000
+                )
+
+        )
+
+    [totalAmount] => 94000
+    [paymentAmount] => 94000
+    [change] => 0
+)
+
+[2024-11-25 02:01:16] Executed sale insert for barcode: 10000015
+[2024-11-25 02:01:16] Executed product update for barcode: 10000015
+[2024-11-25 02:02:15] Received data: Array
+(
+    [invoice] => 20241124277271344
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 100
+                    [discount_amount] => 0
+                    [total] => 23500
+                )
+
+        )
+
+    [totalAmount] => 23500
+    [paymentAmount] => 23500
+    [change] => 0
+)
+
+[2024-11-25 02:02:15] Executed sale insert for barcode: 10000015
+[2024-11-25 02:02:15] Executed product update for barcode: 10000015
+[2024-11-25 02:03:17] Received data: Array
+(
+    [invoice] => 20241124336198099
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 399
+                    [discount_amount] => 0
+                    [total] => 93765
+                )
+
+        )
+
+    [totalAmount] => 93765
+    [paymentAmount] => 93765
+    [change] => 0
+)
+
+[2024-11-25 02:03:17] Executed sale insert for barcode: 10000015
+[2024-11-25 02:03:17] Executed product update for barcode: 10000015
+[2024-11-25 02:04:16] Received data: Array
+(
+    [invoice] => 20241124398391589
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 2
+                    [discount_amount] => 0
+                    [total] => 470
+                )
+
+        )
+
+    [totalAmount] => 470
+    [paymentAmount] => 470
+    [change] => 0
+)
+
+[2024-11-25 02:04:16] Executed sale insert for barcode: 10000015
+[2024-11-25 02:04:16] Executed product update for barcode: 10000015
+[2024-11-25 02:04:35] Received data: Array
+(
+    [invoice] => 20241124458604671
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 50
+                    [discount_amount] => 0
+                    [total] => 11750
+                )
+
+        )
+
+    [totalAmount] => 11750
+    [paymentAmount] => 11750
+    [change] => 0
+)
+
+[2024-11-25 02:04:35] Executed sale insert for barcode: 10000015
+[2024-11-25 02:04:35] Executed product update for barcode: 10000015
+[2024-11-25 02:06:48] Received data: Array
+(
+    [invoice] => 20241124476447935
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 100
+                    [discount_amount] => 0
+                    [total] => 23500
+                )
+
+        )
+
+    [totalAmount] => 23500
+    [paymentAmount] => 23500
+    [change] => 0
+)
+
+[2024-11-25 02:06:48] Executed sale insert for barcode: 10000015
+[2024-11-25 02:06:48] Executed product update for barcode: 10000015
+[2024-11-25 02:07:05] Received data: Array
+(
+    [invoice] => 20241124611703090
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 300
+                    [discount_amount] => 0
+                    [total] => 70500
+                )
+
+        )
+
+    [totalAmount] => 70500
+    [paymentAmount] => 70500
+    [change] => 0
+)
+
+[2024-11-25 02:07:05] Executed sale insert for barcode: 10000015
+[2024-11-25 02:07:05] Executed product update for barcode: 10000015
+[2024-11-25 02:07:40] Received data: Array
+(
+    [invoice] => 20241124627464599
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 99
+                    [discount_amount] => 0
+                    [total] => 23265
+                )
+
+        )
+
+    [totalAmount] => 23265
+    [paymentAmount] => 23265
+    [change] => 0
+)
+
+[2024-11-25 02:07:40] Executed sale insert for barcode: 10000015
+[2024-11-25 02:07:40] Executed product update for barcode: 10000015
+[2024-11-25 02:12:44] Received data: Array
+(
+    [invoice] => 20241124938202520
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 600
+                    [discount_amount] => 0
+                    [total] => 141000
+                )
+
+        )
+
+    [totalAmount] => 141000
+    [paymentAmount] => 141000
+    [change] => 0
+)
+
+[2024-11-25 02:12:44] Executed sale insert for barcode: 10000015
+[2024-11-25 02:12:44] Executed product update for barcode: 10000015
+[2024-11-25 02:13:04] Received data: Array
+(
+    [invoice] => 20241124965254603
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 200
+                    [discount_amount] => 0
+                    [total] => 47000
+                )
+
+        )
+
+    [totalAmount] => 47000
+    [paymentAmount] => 47000
+    [change] => 0
+)
+
+[2024-11-25 02:13:04] Executed sale insert for barcode: 10000015
+[2024-11-25 02:13:04] Executed product update for barcode: 10000015
+[2024-11-25 02:13:29] Received data: Array
+(
+    [invoice] => 20241124985223403
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 100
+                    [discount_amount] => 0
+                    [total] => 23500
+                )
+
+        )
+
+    [totalAmount] => 23500
+    [paymentAmount] => 23500
+    [change] => 0
+)
+
+[2024-11-25 02:13:29] Executed sale insert for barcode: 10000015
+[2024-11-25 02:13:29] Executed product update for barcode: 10000015
+[2024-11-25 02:38:12] Received data: Array
+(
+    [invoice] => 20241124126385580
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 800
+                    [discount_amount] => 0
+                    [total] => 188000
+                )
+
+        )
+
+    [totalAmount] => 188000
+    [paymentAmount] => 188000
+    [change] => 0
+)
+
+[2024-11-25 02:38:12] Executed sale insert for barcode: 10000015
+[2024-11-25 02:38:12] Executed product update for barcode: 10000015
+[2024-11-25 02:38:45] Received data: Array
+(
+    [invoice] => 20241124493416837
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 900
+                    [discount_amount] => 0
+                    [total] => 211500
+                )
+
+        )
+
+    [totalAmount] => 211500
+    [paymentAmount] => 211500
+    [change] => 0
+)
+
+[2024-11-25 02:38:45] Executed sale insert for barcode: 10000015
+[2024-11-25 02:38:45] Executed product update for barcode: 10000015
+[2024-11-25 02:42:33] Received data: Array
+(
+    [invoice] => 20241124526049257
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 100
+                    [discount_amount] => 0
+                    [total] => 23500
+                )
+
+        )
+
+    [totalAmount] => 23500
+    [paymentAmount] => 23500
+    [change] => 0
+)
+
+[2024-11-25 02:42:33] Executed sale insert for barcode: 10000015
+[2024-11-25 02:42:33] Executed product update for barcode: 10000015
+[2024-11-25 02:45:57] Received data: Array
+(
+    [invoice] => 20241124773751175
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 880
+                    [discount_amount] => 0
+                    [total] => 206800
+                )
+
+        )
+
+    [totalAmount] => 206800
+    [paymentAmount] => 206800
+    [change] => 0
+)
+
+[2024-11-25 02:45:57] Executed sale insert for barcode: 10000015
+[2024-11-25 02:45:57] Executed product update for barcode: 10000015
+[2024-11-25 02:46:15] Received data: Array
+(
+    [invoice] => 20241124958833676
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 120
+                    [discount_amount] => 0
+                    [total] => 28200
+                )
+
+        )
+
+    [totalAmount] => 28200
+    [paymentAmount] => 28200
+    [change] => 0
+)
+
+[2024-11-25 02:46:15] Executed sale insert for barcode: 10000015
+[2024-11-25 02:46:15] Executed product update for barcode: 10000015
+[2024-11-25 02:49:27] Received data: Array
+(
+    [invoice] => 20241124976593365
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 880
+                    [discount_amount] => 0
+                    [total] => 206800
+                )
+
+        )
+
+    [totalAmount] => 206800
+    [paymentAmount] => 206800
+    [change] => 0
+)
+
+[2024-11-25 02:49:27] Executed sale insert for barcode: 10000015
+[2024-11-25 02:49:27] Executed product update for barcode: 10000015
+[2024-11-25 03:05:00] Received data: Array
+(
+    [invoice] => 20241124167801896
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 400
+                    [discount_amount] => 0
+                    [total] => 94000
+                )
+
+        )
+
+    [totalAmount] => 94000
+    [paymentAmount] => 94000
+    [change] => 0
+)
+
+[2024-11-25 03:05:00] Executed sale insert for barcode: 10000015
+[2024-11-25 03:05:00] Executed product update for barcode: 10000015
+[2024-11-25 03:07:24] Received data: Array
+(
+    [invoice] => 20241124101178855
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 500
+                    [discount_amount] => 0
+                    [total] => 117500
+                )
+
+        )
+
+    [totalAmount] => 117500
+    [paymentAmount] => 117500
+    [change] => 0
+)
+
+[2024-11-25 03:07:24] Executed sale insert for barcode: 10000015
+[2024-11-25 03:07:24] Executed product update for barcode: 10000015
+[2024-11-25 16:44:52] Received data: Array
+(
+    [invoice] => 20241125276652451
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 80
+                    [discount_amount] => 0
+                    [total] => 18800
+                )
+
+        )
+
+    [totalAmount] => 18800
+    [paymentAmount] => 18800
+    [change] => 0
+)
+
+[2024-11-25 16:44:52] Executed sale insert for barcode: 10000015
+[2024-11-25 16:44:52] Executed product update for barcode: 10000015
+[2024-11-25 16:48:25] Received data: Array
+(
+    [invoice] => 20241125338483113
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 10
+                    [discount_amount] => 0
+                    [total] => 2350
+                )
+
+        )
+
+    [totalAmount] => 2350
+    [paymentAmount] => 2350
+    [change] => 0
+)
+
+[2024-11-25 16:48:25] Executed sale insert for barcode: 10000015
+[2024-11-25 16:48:25] Executed product update for barcode: 10000015
+[2024-11-25 16:50:02] Received data: Array
+(
+    [invoice] => 20241125508409398
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 191
+                    [barcode] => 10000254
+                    [description] => Heavy Duty Hammer
+                    [price] => 123
+                    [quantity] => 400
+                    [discount_amount] => 0
+                    [total] => 49200
+                )
+
+        )
+
+    [totalAmount] => 49200
+    [paymentAmount] => 49200
+    [change] => 0
+)
+
+[2024-11-25 16:50:02] Executed sale insert for barcode: 10000254
+[2024-11-25 16:50:02] Executed product update for barcode: 10000254
+[2024-11-25 16:53:43] Received data: Array
+(
+    [invoice] => 20241125604171130
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 60
+                    [barcode] => 10000074
+                    [description] => (A-Plus) Tapal Seal - Gray
+                    [price] => 65
+                    [quantity] => 400
+                    [discount_amount] => 0
+                    [total] => 26000
+                )
+
+        )
+
+    [totalAmount] => 26000
+    [paymentAmount] => 26000
+    [change] => 0
+)
+
+[2024-11-25 16:53:43] Executed sale insert for barcode: 10000074
+[2024-11-25 16:53:43] Executed product update for barcode: 10000074
+[2024-11-25 16:54:53] Received data: Array
+(
+    [invoice] => 20241125824692773
+    [sales] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1
+                    [barcode] => 10000015
+                    [description] => Epoxy (All Purpose) - 1/2 Liter
+                    [price] => 235
+                    [quantity] => 80
+                    [discount_amount] => 0
+                    [total] => 18800
+                )
+
+        )
+
+    [totalAmount] => 18800
+    [paymentAmount] => 18800
+    [change] => 0
+)
+
+[2024-11-25 16:54:53] Executed sale insert for barcode: 10000015
+[2024-11-25 16:54:53] Executed product update for barcode: 10000015

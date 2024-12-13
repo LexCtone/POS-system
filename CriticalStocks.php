@@ -33,7 +33,7 @@ $query = "SELECT p.id, p.Barcode, p.Description, p.Price, p.Quantity, p.cost_pri
               FROM stock_in_history
               GROUP BY Barcode
           ) sih ON p.Barcode = sih.Barcode
-          WHERE p.Quantity < (sih.total_stocked * 0.2)
+          WHERE p.Quantity <= (sih.total_stocked * 0.2)
           ORDER BY p.Quantity ASC";
 
 $result = $conn->query($query);

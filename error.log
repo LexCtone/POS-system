@@ -13,3 +13,10 @@
 [2024-11-20 16:20:22] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 80000, adjustment_reason: sobra ng 10k, barcode: 10000015, reference: adjustment_reference
 [2024-11-20 16:20:48] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: -160000, adjustment_reason: sobra , barcode: 10000015, reference: adjustment_reference
 [2024-11-20 16:21:05] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: -5000, adjustment_reason: asd, barcode: 10000015, reference: adjustment_reference
+[2024-11-25 01:27:22] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 500, adjustment_reason: testing, barcode: 10000015, reference: adjustment_reference
+[2024-11-25 01:53:44] process_adjustment.php: Received data - product_id: 2, adjustment_quantity: 500, adjustment_reason: qweqwe, barcode: 10000016, reference: adjustment_reference
+[2024-11-25 01:55:21] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 1000, adjustment_reason: asdasd, barcode: 10000015, reference: adjustment_reference
+[2024-11-25 02:12:15] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 500, adjustment_reason: qwe, barcode: 10000015, reference: adjustment_reference
+[2024-11-25 02:42:11] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 100, adjustment_reason: asd, barcode: 10000015, reference: adjustment_reference
+[2024-11-25 03:05:55] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 500, adjustment_reason: asd, barcode: 10000015, reference: adjustment_reference
+[2024-11-25 03:18:18] process_adjustment.php: Received data - product_id: 1, adjustment_quantity: 100, adjustment_reason: asd, barcode: 10000015, reference: adjustment_reference
